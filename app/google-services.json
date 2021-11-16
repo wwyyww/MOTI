@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "382573987032",
+    "project_id": "moti-a1587",
+    "storage_bucket": "moti-a1587.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382573987032:android:24b5f40d02d1205db603ad",
+        "android_client_info": {
+          "package_name": "com.example.moti"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "382573987032-2qe3nhq9q8c73bv6gv79h57eg7tmjbea.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.moti",
+            "certificate_hash": "dab968e4a8be0e571dbb9a1655f331159fa56abc"
+          }
+        },
+        {
+          "client_id": "382573987032-88vb0ul5dhkdiu4hk759l9bo95v8sn8j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4wfaa8TuDBqb4AiNwIRkFP0RPsXewAHw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "382573987032-88vb0ul5dhkdiu4hk759l9bo95v8sn8j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
