@@ -17,6 +17,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.skt.Tmap.TMapGpsManager
+import com.skt.Tmap.TMapGpsManager.GPS_PROVIDER
+import com.skt.Tmap.TMapGpsManager.NETWORK_PROVIDER
 import com.skt.Tmap.TMapView
 import kotlinx.android.synthetic.main.activity_riding.*
 
@@ -52,21 +54,25 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         }
 
         // GPS using T Map
-        tMapGPS = TMapGpsManager(this);
+        tMapGPS = TMapGpsManager(this)
 
         // Initial Setting
-//        tMapGPS!!.setMinTime(1000);
-//        tMapGPS!!.setMinDistance(10F);
-//        tMapGPS!!.setProvider(tMapGPS.GPS_PROVIDER);
+        tMapGPS!!.minTime=1000
+        tMapGPS!!.minDistance= 10F
+        tMapGPS!!.provider=NETWORK_PROVIDER
 
-//        tMapGPS!!.OpenGps();
+//        tMapGPS!!.provider=GPS_PROVIDER
+        tMapGPS!!.OpenGps()
 
 
     }
 
 
 
-    override fun onLocationChange(p0: Location?) {
+    override fun onLocationChange(location: Location) {
+        tmapview!!.setLocationPoint(location.longitude, location.latitude)
+        tmapview!!.setCenterPoint(location.longitude, location.latitude)
+        Log.i("gps", "check gps change")
 
 
     }
