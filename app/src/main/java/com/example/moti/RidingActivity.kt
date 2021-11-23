@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
@@ -17,18 +18,15 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.skt.Tmap.TMapGpsManager
 import com.skt.Tmap.TMapGpsManager.GPS_PROVIDER
 import com.skt.Tmap.TMapGpsManager.NETWORK_PROVIDER
-import com.skt.Tmap.TMapPoint
-import com.skt.Tmap.TMapPolyLine
-import com.skt.Tmap.TMapView
 import kotlinx.android.synthetic.main.activity_riding.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.skt.Tmap.*
 import java.util.*
 
 class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallback  {
@@ -55,6 +53,8 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     lateinit var todayDate:String
 
     var courseCount=0
+    var coordList= ArrayList<Coordinate>()
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,15 +108,36 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         polyline= TMapPolyLine()
 
         riding_button.setOnClickListener{
-            pushRef.child("$courseCount/lat").setValue("0")
-            pushRef.child("$courseCount/lng").setValue("1")
-            courseCount+=1
+            //getCoordinates()
 
         }
 
+    }
 
+    fun getCoordinates(){
 
+        database.child("user/$uid/course/date").child(todayDate).child("-Mp6jea0jyVGqqdUmII_").get().addOnSuccessListener {
+            var post=it.children
+            for(p in post){
+                var pvalue=p.value
+                Log.i("firebase", "check value $pvalue")
+                var cord = Coordinate()
+                cord.lat = p.child("lat").value.toString()
+                cord.lng = p.child("lng").value.toString()
+                Log.i("firebase", "check cord lng ${cord.lng}")
+                coordList.add(cord)
+            }
 
+            //set coordinates to polyline
+//            for (coord in coordList){
+//                val latitude: Double = coord.lat!!.toDouble()
+//                val longitude: Double = coord.lng!!.toDouble()
+//                var point= TMapPoint(latitude, longitude)
+//                polyline.addLinePoint(point)
+//                tmapview!!.addTMapPolyLine("line", polyline)
+//            }
+
+        }
     }
 
 
@@ -130,12 +151,20 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         var lat=location.latitude
         var long=location.longitude
         var point=TMapPoint(lat, long)
+
+        //save coordinate
+        pushRef.child("$courseCount/lat").setValue("$lat")
+        pushRef.child("$courseCount/lng").setValue("$long")
+        courseCount+=1
+
         polyline.addLinePoint(point)
         tmapview!!.addTMapPolyLine("line", polyline)
         Log.i("gps", "check gps change")
 
 
     }
+
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onRequestPermissionsResult(
