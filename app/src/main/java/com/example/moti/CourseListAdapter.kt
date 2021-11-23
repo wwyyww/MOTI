@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.ktx.Firebase
 
 class CourseListAdapter(private val context: Context) {
-
+/*
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseListAdapter.CustomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.course_item_recycler,parent,false)
@@ -47,5 +47,5 @@ class CourseListAdapter(private val context: Context) {
         val myPostitem_photo = itemView.findViewById<ImageView>(R.id.imgView_course)
 
     }
-
+*/
 }
