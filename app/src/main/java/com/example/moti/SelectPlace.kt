@@ -20,16 +20,12 @@ class SelectPlace : AppCompatActivity() {
     lateinit var btn_selectLayover : Button
 
 
-    var placePoiItemList: MutableList<PoiItem> = mutableListOf<PoiItem>()
+    lateinit var departure: PoiItem
+    lateinit var destination: PoiItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_place)
-
-
-//        // getSharedPreferences POI 가져온거 여부 알아보기
-//        val prefs: SharedPreferences = this.getSharedPreferences("selectPlace_type", Context.MODE_PRIVATE)
-//        prefs.getString("type", "no email")
 
 
         // 인텐트 값 가져오기
@@ -38,6 +34,7 @@ class SelectPlace : AppCompatActivity() {
      //   var placePoiItem = intent.getParcelableExtra<PoiItem>("placePoiItem")
       //  Log.d("successM", "getIntent : ${placePoiItem}")
 
+
         val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
@@ -45,15 +42,16 @@ class SelectPlace : AppCompatActivity() {
                 Log.d("successM", "onActivityResult : ${placePoiItem}")
 
                 if (placePoiItem?.type =="departure"){
+                    departure = placePoiItem
+//                    placePoiItemList.add(0,placePoiItem )
+                    Log.d("successM", "final : ${placePoiItem}")
+                    textV_departure.text = placePoiItem.name +"\n" + placePoiItem.fullAddressRoad
 
-                    placePoiItemList.add(0,placePoiItem )
-                    Log.d("successM", "final : ${placePoiItemList}")
-                    textV_departure.text = placePoiItemList[0].name +"\n" + placePoiItemList[1].fullAddressRoad
                 }else if (placePoiItem?.type =="destination"){
-
-                    placePoiItemList.add(1,placePoiItem )
-                    Log.d("successM", "final : ${placePoiItemList}")
-                    textV_destination.text = placePoiItemList[1].name +"\n" + placePoiItemList[1].fullAddressRoad
+                    destination = placePoiItem
+                    //placePoiItemList.add(1,placePoiItem )
+                    Log.d("successM", "final : ${destination}")
+                    textV_destination.text = destination.name +"\n" + destination.fullAddressRoad
                 }
             }
         }
@@ -66,22 +64,10 @@ class SelectPlace : AppCompatActivity() {
         btn_selectLayover = findViewById(R.id.btn_selectLayover)
 
 
-        if (placePoiItemList.isEmpty() == false) {
+        if (this::destination.isInitialized && this::departure.isInitialized){
 
-            textV_destination.text = placePoiItemList[0].name  // 인덱스 o이 departure
-            textV_departure.text = placePoiItemList[1].name  // 인덱스 1은 destination
-
-            /*
-            var type: String = placePoiItem.type
-
-            if (type == "destination") {
-                textV_destination.text = placePoiItem.fullAddressRoad
-
-            } else if (type == "departure") {
-                textV_departure.text = placePoiItem.fullAddressRoad
-            }
-
-             */
+            textV_destination.text = destination.name  // 인덱스 o이 departure
+            textV_departure.text = departure.name  // 인덱스 1은 destination
         }
 
 
@@ -109,29 +95,12 @@ class SelectPlace : AppCompatActivity() {
 
         btn_selectLayover.setOnClickListener {
             val intent = Intent(this, SelectLayover::class.java).apply {
-                putExtra("departure", placePoiItemList[0])
-                putExtra("destination", placePoiItemList[1])
+                putExtra("departure", departure)
+                putExtra("destination", destination)
             }.run {startActivity(this) }
 
         }
 
     }
 
-/*
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        Log.d("successM", "onActivityResult!")
-        if (resultCode == RESULT_OK) {
-            var placePoiItem = data?.getParcelableExtra<PoiItem>("placePoiItem")
-            Log.d("successM", "onActivityResult : ${placePoiItem}")
-
-            if (placePoiItem?.type =="departure"){
-                placePoiItemList[0] = placePoiItem
-            }else if (placePoiItem?.type =="destination"){
-                placePoiItemList[1] = placePoiItem
-            }
-        }
-    }
-
- */
 }
