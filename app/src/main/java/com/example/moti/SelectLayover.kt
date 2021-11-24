@@ -36,7 +36,7 @@ class SelectLayover : AppCompatActivity() {
 
                     if (placePoiItem != null) {
                         placePoiItemList.add(2, placePoiItem)
-                        textV_layover1.text = placePoiItemList[2].fullAddressRoad
+                        textV_layover1.text = placePoiItemList[2].name +"\n" + placePoiItemList[1].fullAddressRoad
                     }
 
                 }

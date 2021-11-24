@@ -48,12 +48,12 @@ class SelectPlace : AppCompatActivity() {
 
                     placePoiItemList.add(0,placePoiItem )
                     Log.d("successM", "final : ${placePoiItemList}")
-                    textV_departure.text = placePoiItemList[0].fullAddressRoad
+                    textV_departure.text = placePoiItemList[0].name +"\n" + placePoiItemList[1].fullAddressRoad
                 }else if (placePoiItem?.type =="destination"){
 
                     placePoiItemList.add(1,placePoiItem )
                     Log.d("successM", "final : ${placePoiItemList}")
-                    textV_destination.text = placePoiItemList[1].fullAddressRoad
+                    textV_destination.text = placePoiItemList[1].name +"\n" + placePoiItemList[1].fullAddressRoad
                 }
             }
         }
@@ -68,8 +68,8 @@ class SelectPlace : AppCompatActivity() {
 
         if (placePoiItemList.isEmpty() == false) {
 
-            textV_destination.text = placePoiItemList[0].fullAddressRoad  // 인덱스 o이 departure
-            textV_departure.text = placePoiItemList[1].fullAddressRoad  // 인덱스 1은 destination
+            textV_destination.text = placePoiItemList[0].name  // 인덱스 o이 departure
+            textV_departure.text = placePoiItemList[1].name  // 인덱스 1은 destination
 
             /*
             var type: String = placePoiItem.type
