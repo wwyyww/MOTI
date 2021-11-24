@@ -3,10 +3,27 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_community.xml" value="0.264" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_courselist.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_directions.xml" value="0.1125" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_main.xml" value="0.25364583333333335" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_mobility.xml" value="0.25364583333333335" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_music_recycler_item.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_ready.xml" value="0.25364583333333335" />
-        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_search_poi.xml" value="0.4" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_ready_ticket.xml" value="0.25364583333333335" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_riding.xml" value="0.25364583333333335" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_search_place.xml" value="0.25729166666666664" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_search_poi.xml" value="0.264" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_search_road.xml" value="0.13854166666666667" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_select_layover.xml" value="0.25364583333333335" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_select_place.xml" value="0.264" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_test_kakao.xml" value="0.13333333333333333" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/course_item_recycler.xml" value="0.176" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_poi_info.xml" value="0.536" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_poi_info2.xml" value="0.264" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/login.xml" value="0.25364583333333335" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/searchplace_category_item.xml" value="0.25364583333333335" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/test.xml" value="0.25364583333333335" />
       </map>
     </option>
   </component>

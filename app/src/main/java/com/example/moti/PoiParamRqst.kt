@@ -10,8 +10,8 @@ data class PoiParamRqst(
     var resCoordType: String?,
     var searchType: String?,
     var multiPoint: String?,
-    var searchtypCd: String?,
-    var radius: String?,
+    var searchtypCd: String?, // A-정확도 순  R-거리 순
+    var radius: String?,  // 검색 반경
     var reqCoordType: String?,
     var centerLon: String?,
     var centerLat: String?,
