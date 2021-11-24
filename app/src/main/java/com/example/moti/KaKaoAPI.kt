@@ -24,7 +24,7 @@ interface KaKaoAPI_category {
         @Query("category_group_code") category: String, // 카테고리 코드 [필수]
         @Query("x") x: String, //  longitude
         @Query("y") y: String, // latitude
-        @Query("radius") radius: Int // 중심 좌표부터의 반경거리
-
+        @Query("radius") radius: Int, // 중심 좌표부터의 반경거리
+        @Query("sort") sort: String
     ): Call<ResultCategoryKeyword>    // 받아온 정보가 ResultSearchKeyword 클래스의 구조로 담김
 }
