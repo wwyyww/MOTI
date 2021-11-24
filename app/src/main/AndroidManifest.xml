@@ -13,7 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MOTI">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".SearchPoi"
+            android:exported="true" >
+
+        </activity>
+        <activity
+            android:name=".GuidePedestrian"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,10 +27,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".Login"
+            android:exported="true"></activity>
 
-        <activity android:name=".Login"
-            android:exported="true">
-        </activity>
 
         <activity android:name=".RidingActivity"
             android:exported="true">
@@ -50,6 +59,7 @@
         <activity android:name=".SearchPlaceActivity"
             android:exported="true">
         </activity>
+
 
     </application>
 
