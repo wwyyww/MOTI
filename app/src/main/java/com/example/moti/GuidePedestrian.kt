@@ -41,17 +41,17 @@ class GuidePedestrian : AppCompatActivity() {
 
         // 길찾기 api 호출을 위해 payload 담기
         var request = requst_pedestrian_guide()
-        request.startX="126.92365493654832"
-        request.startY="37.556770374096615"
+        request.startX="126.92365493654832" // 시작 위치
+        request.startY="37.556770374096615" // 시작 위치
         request.angle="1"
         request.speed="60"
         request.endPoiId="334852"
-        request.endX="126.92432158129688"
-        request.endY="37.55279861528311"
-        request.passList="126.92774822,37.55395475"
+        request.endX="126.92432158129688" // 도착 위치
+        request.endY="37.55279861528311" // 도착 위치
+        request.passList="126.92774822,37.55395475" // 경유지 목록
         request.reqCoordType="WGS84GEO"
-        request.startName="출발지"
-        request.endName="도착지"
+        request.startName="출발지" // 출발지 이름
+        request.endName="도착지" // 도착지 이름
         request.searchOption="0"
         request.resCoordType="WGS84GEO"
 

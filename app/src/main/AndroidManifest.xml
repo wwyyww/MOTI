@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.moti">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -14,12 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MOTI">
         <activity
-            android:name=".SearchPoi"
-            android:exported="true" >
-
-        </activity>
+            android:name=".Community"
+            android:exported="true" />
         <activity
-            android:name=".GuidePedestrian"
+            android:name=".SelectLayover"
+            android:exported="true" />
+        <activity
+            android:name=".SelectPlace"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,40 +31,46 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".SearchPoi"
+            android:exported="true" />
+        <activity
+            android:name=".GuidePedestrian"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".Login"
-            android:exported="true"></activity>
-
-
-        <activity android:name=".RidingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".RidingActivity"
             android:exported="true">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
 
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
-
-        <activity android:name=".CourseListActivity"
+        <activity
+            android:name=".CourseListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".KaKaoTestActivity"
             android:exported="true">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+
         </activity>
-        <activity android:name=".KaKaoTestActivity"
-            android:exported="true">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
-
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
-
-        </activity>
-        <activity android:name=".SearchPlaceActivity"
-            android:exported="true">
-        </activity>
-
-
-
+        <activity
+            android:name=".SearchPlaceActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
