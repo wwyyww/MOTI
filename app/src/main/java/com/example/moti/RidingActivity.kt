@@ -1,6 +1,7 @@
 package com.example.moti
 
 import android.Manifest
+import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,6 +14,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
@@ -28,8 +30,21 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.skt.Tmap.*
 import java.util.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
 
 class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallback  {
+
+    val retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL_TMAP_API)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+    val tmapApi = retrofit.create(TmapAPI::class.java)
+    var request = requst_pedestrian_guide()
 
     var tmapview: TMapView? = null
 
@@ -54,6 +69,12 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     var courseCount=0
     var coordList= ArrayList<Coordinate>()
+    var placePoiItemList: MutableList<PoiItem> = mutableListOf<PoiItem>()
+    var responseFeatureList= ArrayList<response_features>()
+
+    lateinit var departure:PoiItem
+    lateinit var destination:PoiItem
+    lateinit var layover:PoiItem
 
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -64,6 +85,35 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         riding_gps_textview.bringToFront()
         riding_button.bringToFront()
 
+//        departure = intent.getParcelableExtra<PoiItem>("departure")!!
+//        destination = intent.getParcelableExtra<PoiItem>("destination")!!
+//        layover = intent.getParcelableExtra<PoiItem>("layover")!!
+
+
+
+        setPayload()
+        val callGuidePedestrian = tmapApi.guidePedestrian(APPKEY, request.startX,request.startY,
+            request.angle, request.speed, request.endPoiId, request.endX, request.endY, request.passList,
+            request.reqCoordType, request.startName, request.endName, request.searchOption, request.resCoordType)
+
+        callGuidePedestrian.enqueue(object : Callback<response_pedestrian_guide>{
+
+            override fun onResponse(
+                call: Call<response_pedestrian_guide>,
+                response: Response<response_pedestrian_guide>
+            ) {
+//                Log.d("tmap", "성공 : ${response.raw()}")
+//                Log.d("tmap", "성공 : ${response.body()!!.features}")
+//                Log.d("tmap", "성공 : ${response.headers()}")
+                responseFeatureList= response.body()!!.features as ArrayList<response_features>
+                Log.d("tmap", "list : ${responseFeatureList[0].properties.description}")
+
+            }
+
+            override fun onFailure(call: Call<response_pedestrian_guide>, t: Throwable) {
+                Log.d("errorM", t.message.toString() )
+            }
+        })
 
         auth = FirebaseAuth.getInstance()
         database = Firebase.database.reference
@@ -100,6 +150,7 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         tMapGPS = TMapGpsManager(this)
 
         // Initial Setting
+        // Initial Setting
         tMapGPS!!.minTime=1000
         tMapGPS!!.minDistance= 10F
         tMapGPS!!.provider=NETWORK_PROVIDER
@@ -109,9 +160,43 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
         riding_button.setOnClickListener{
             //getCoordinates()
+//            Log.d("tmap","잘 넘어왔는지 확인. departure : ${departure}")
+//            Log.d("tmap","잘 넘어왔는지 확인. destination : ${destination}")
+//            Log.d("tmap","잘 넘어왔는지 확인. layover : ${layover}")
+
 
         }
 
+    }
+
+    // 길찾기 api 호출을 위해 payload 담기
+    fun setPayload(){
+        request.startX="126.92365493654832" // 시작 위치
+        request.startY="37.556770374096615" // 시작 위치
+        request.angle="1"
+        request.speed="60"
+        request.endPoiId="334852"
+        request.endX="126.92432158129688" // 도착 위치
+        request.endY="37.55279861528311" // 도착 위치
+        request.passList="126.92774822,37.55395475" // 경유지 목록
+        request.reqCoordType="WGS84GEO"
+        request.startName="출발지" // 출발지 이름
+        request.endName="도착지" // 도착지 이름
+        request.searchOption="0"
+        request.resCoordType="WGS84GEO"
+//        request.startX="${departure.frontLon}" // 시작 위치
+//        request.startY="${departure.frontLat}"// 시작 위치
+//        request.angle="1"
+//        request.speed="60"
+//        request.endPoiId="334852"
+//        request.endX="${destination.frontLon}" // 도착 위치
+//        request.endY="${destination.frontLat}" // 도착 위치
+//        request.passList="${layover.frontLon},${layover.frontLat}" // 경유지 목록
+//        request.reqCoordType="WGS84GEO"
+//        request.startName="출발지" // 출발지 이름
+//        request.endName="도착지" // 도착지 이름
+//        request.searchOption="0"
+//        request.resCoordType="WGS84GEO"
     }
 
     fun getCoordinates(){
@@ -129,13 +214,13 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             }
 
             //set coordinates to polyline
-//            for (coord in coordList){
-//                val latitude: Double = coord.lat!!.toDouble()
-//                val longitude: Double = coord.lng!!.toDouble()
-//                var point= TMapPoint(latitude, longitude)
-//                polyline.addLinePoint(point)
-//                tmapview!!.addTMapPolyLine("line", polyline)
-//            }
+            for (coord in coordList){
+                val latitude: Double = coord.lat!!.toDouble()
+                val longitude: Double = coord.lng!!.toDouble()
+                var point= TMapPoint(latitude, longitude)
+                polyline.addLinePoint(point)
+                tmapview!!.addTMapPolyLine("line", polyline)
+            }
 
         }
     }
