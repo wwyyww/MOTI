@@ -30,35 +30,35 @@ class KaKaoTestActivity : AppCompatActivity() {
         setContentView(view)
 
         searchKeyword("은행")
-        searchCategory("CE7")
+        //searchCategory("CE7")
 
     }
     // 카테고리 검색 함
-    private fun searchCategory(category_group_code: String) {
-        val retrofit = Retrofit.Builder()   // Retrofit 구성
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val api = retrofit.create(KaKaoAPI_category::class.java)   // 통신 인터페이스를 객체로 생성
-        val call = api.getSearchKeyword(API_KEY, category_group_code)   // 검색 조건 입력
-
-        // API 서버에 요청
-        call.enqueue(object: Callback<ResultCategoryKeyword> {
-            override fun onResponse(
-                call: Call<ResultCategoryKeyword>,
-                response: Response<ResultCategoryKeyword>
-            ) {
-                // 통신 성공 (검색 결과는 response.body()에 담겨있음)
-                Log.d("Test", "Raw: ${response.raw()}")
-                Log.d("Test", "Body: ${response.body()}")
-            }
-
-            override fun onFailure(call: Call<ResultCategoryKeyword>, t: Throwable) {
-                // 통신 실패
-                Log.w("KaKaoTestActivity", "통신 실패: ${t.message}")
-            }
-        })
-    }
+//    private fun searchCategory(category_group_code: String) {
+//        val retrofit = Retrofit.Builder()   // Retrofit 구성
+//            .baseUrl(BASE_URL)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//        val api = retrofit.create(KaKaoAPI_category::class.java)   // 통신 인터페이스를 객체로 생성
+//        val call = api.getSearchKeyword(API_KEY, category_group_code)   // 검색 조건 입력
+//
+//        // API 서버에 요청
+//        call.enqueue(object: Callback<ResultCategoryKeyword> {
+//            override fun onResponse(
+//                call: Call<ResultCategoryKeyword>,
+//                response: Response<ResultCategoryKeyword>
+//            ) {
+//                // 통신 성공 (검색 결과는 response.body()에 담겨있음)
+//                Log.d("Test", "Raw: ${response.raw()}")
+//                Log.d("Test", "Body: ${response.body()}")
+//            }
+//
+//            override fun onFailure(call: Call<ResultCategoryKeyword>, t: Throwable) {
+//                // 통신 실패
+//                Log.w("KaKaoTestActivity", "통신 실패: ${t.message}")
+//            }
+//        })
+//    }
     // 키워드 검색 함수
     private fun searchKeyword(keyword: String) {
         val retrofit = Retrofit.Builder()   // Retrofit 구성
