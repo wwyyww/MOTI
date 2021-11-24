@@ -124,11 +124,20 @@ class SearchPoi : AppCompatActivity(), TMapGpsManager.onLocationChangedCallback{
 
 
         btn_searchPoi.setOnClickListener {
-            destination = editT_searchPoi.text.toString()
-            Toast.makeText(this, destination, Toast.LENGTH_SHORT).show()
-            Log.d("successM", "성공 : ${destination}")
 
-            CallSearchPoi(destination)  // api 함수 호출
+            if (this::longitude.isInitialized && this::latitude.isInitialized)
+            {
+
+                destination = editT_searchPoi.text.toString()
+                Toast.makeText(this, destination, Toast.LENGTH_SHORT).show()
+                Log.d("successM", "성공 : ${destination}")
+                CallSearchPoi(destination)  // api 함수 호출
+            }
+            else {
+                //onRequestPermissionsResult()
+                Toast.makeText(this, "권한 요청 필요", Toast.LENGTH_SHORT).show()
+
+            }
         }
 
 

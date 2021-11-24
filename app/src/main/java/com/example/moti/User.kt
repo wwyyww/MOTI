@@ -5,6 +5,7 @@ import com.google.firebase.database.IgnoreExtraProperties
 
 @IgnoreExtraProperties
 data class User(
+    /*
     var uid: String ?= "",
     var email: String ?= "",
     var password: String ?= "",
@@ -18,6 +19,22 @@ data class User(
     //var posts : String ?= ""
     var posts:  MutableMap<String, Boolean> = HashMap(),  // 게시물 목록
 
+     */
+
+    var uid : String ?= "",
+    var id :  String ?= "",
+    var pw : String ?= "",
+    var tel : String ?= "",
+    var birth : String ?= "",
+    var sex : String ?= "",
+    var name : String ?= "",
+    var nickname : String ?= "",
+    var local : String ?= "",
+    var taste : String ?= "",
+    var freindNum : Int ?= 0,
+    var recordNum : String ?= "",
+    var isActive : Boolean ?= false,
+    var location : String ?= "",
 ){
     /*
        data class TmpRecord(
@@ -36,19 +53,19 @@ data class User(
     fun toMap() : Map<String, Any?>{
         return mapOf(
             "uid" to uid,
-            "email" to email,
-            "password" to password,
+            "pw" to pw,
+            "tel" to tel,
+            "birth " to birth ,
+            "sex" to sex,
+            "name" to name,
             "nickname" to nickname,
-            "phone" to phone,
-            "grade" to grade,
-            "credit" to credit,
-            "lastAuth" to lastAuth,
-            "joindate" to joindate,
-            "posts" to posts,
-            "lastAuthPost" to lastAuthPost
+            "local " to local,
+            "taste " to taste,
+            "freindNum " to freindNum ,
+            "recordNum" to recordNum,
+            "isActive" to isActive,
+            "location" to location,
         )
     }
-
-
 
 }

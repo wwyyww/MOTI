@@ -83,7 +83,7 @@ class Login : AppCompatActivity() {
 
         // /* 구글 로그인 */
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestIdToken("382573987032-88vb0ul5dhkdiu4hk759l9bo95v8sn8j.apps.googleusercontent.com")
             .requestEmail()
             .build()
 
@@ -100,7 +100,7 @@ class Login : AppCompatActivity() {
 
         // /* 회원 가입 */
         login_signUpBtn.setOnClickListener {
-            var intent = Intent(this, MainActivity::class.java)
+            var intent = Intent(this, SignUp::class.java)
             startActivity(intent)
             //val myRef : DatabaseReference = database.getReference("message")
             //myRef.setValue("안녕 반가워!")
@@ -214,14 +214,16 @@ class Login : AppCompatActivity() {
                                 CurrentUser?.let {
                                     for (profile in it.providerData) {
                                         User.uid = CurrentUser?.uid
-                                        User.email = CurrentUser?.email
+                                        User.id = CurrentUser?.email
                                         // google 연동이라 password는 따로 저장하지 않음
                                         User.nickname = CurrentUser?.displayName
-                                        User.phone = CurrentUser?.phoneNumber
-
+                                        User.tel = CurrentUser?.phoneNumber
+/*
                                         var mCalendar = Calendar.getInstance()
                                         var todayDate = (mCalendar.get(Calendar.YEAR)).toString() + "/" + (mCalendar.get(Calendar.MONTH) + 1).toString() + "/" + (mCalendar.get(Calendar.DAY_OF_MONTH)).toString()
                                         User.joindate = todayDate
+
+ */
                                     }
                                     var UserValues = User.toMap()
 

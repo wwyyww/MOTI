@@ -16,7 +16,9 @@ class SelectLayover : AppCompatActivity() {
     lateinit var btn_startRiding: Button
 
 
-    var placePoiItemList: MutableList<PoiItem> = mutableListOf<PoiItem>()
+    lateinit var departure: PoiItem
+    lateinit var destination: PoiItem
+    lateinit var layover : PoiItem
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,23 +37,25 @@ class SelectLayover : AppCompatActivity() {
                     Log.d("successM", "getIntent : ${placePoiItem}")
 
                     if (placePoiItem != null) {
-                        placePoiItemList.add(2, placePoiItem)
-                        textV_layover1.text = placePoiItemList[2].name +"\n" + placePoiItemList[1].fullAddressRoad
+                        layover = placePoiItem
+                        textV_layover1.text = layover.name +"\n" + layover.fullAddressRoad
                     }
 
                 }
             }
 
-
         // 인텐트 값 가져오기
         val intent: Intent = getIntent()
-        var departure = intent.getParcelableExtra<PoiItem>("departure")
-        var destination = intent.getParcelableExtra<PoiItem>("destination")
+        var departureIntent = intent.getParcelableExtra<PoiItem>("departure")
+        var destinationIntent = intent.getParcelableExtra<PoiItem>("destination")
 
 
-        if (departure != null && destination != null) {
-            placePoiItemList.add(0, departure)
-            placePoiItemList.add(1, destination)
+
+        if (departureIntent != null && destinationIntent != null) {
+
+            departure = departureIntent
+            destination = destinationIntent
+
         }
 
 
@@ -63,32 +67,16 @@ class SelectLayover : AppCompatActivity() {
 
 
         btn_startRiding.setOnClickListener {
-            Log.d("successM", "final : ${placePoiItemList}")
 
             val intent = Intent(this, RidingActivity::class.java).apply {
-                putExtra("departure", placePoiItemList[0])
-                putExtra("destination", placePoiItemList[1])
-                putExtra("layout",placePoiItemList[2] )
+                putExtra("departure", departure)
+                putExtra("destination", destination)
+                putExtra("layover", layover)
             }.run {startActivity(this) }
         }
 
     }
 
-    /*
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == RESULT_OK) {
-            var placePoiItem = data?.getParcelableExtra<PoiItem>("placePoiItem")
-            Log.d("successM", "getIntent : ${placePoiItem}")
-
-            if (placePoiItem != null) {
-                placePoiItemList[3] = placePoiItem
-            }
-
-        }
-    }
-
-     */
 
 }
