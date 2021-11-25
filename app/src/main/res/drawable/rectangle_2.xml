@@ -13,13 +13,10 @@
         <clip-path
             android:pathData="M6 0H288C291.314 0 294 2.68629 294 6V30C294 33.3137 291.314 36 288 36H6C2.68629 36 0 33.3137 0 30V6C0 2.68629 2.68629 0 6 0Z"
             />
-
         <path
             android:pathData="M0 0V36H294V0"
             android:fillColor="#85FFFFFF"
             />
-
     </group>
-
 </vector>
 
