@@ -22,7 +22,6 @@ import androidx.appcompat.app.AlertDialog
 import com.skt.Tmap.TMapGpsManager.NETWORK_PROVIDER
 import com.skt.Tmap.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_riding.*
 import java.util.*
 
 class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallback {
@@ -57,7 +56,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         tmapview!!.setIconVisibility(true)
         tmapview!!.setCompassMode(true)
         tmapview!!.setTrackingMode(true)
-        main_tmaplayout.addView(tmapview)
+        main_tmaplayout2.addView(tmapview)
 
         //위치 권한 확인
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)

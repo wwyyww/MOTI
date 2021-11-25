@@ -24,11 +24,24 @@
             android:exported="true" >
         </activity>
         <activity
+            android:name=".CommunityMain"
+            android:exported="true" >
+
+
+        </activity>
+        <activity
             android:name=".SelectLayover"
             android:exported="true" />
         <activity
             android:name=".SelectPlace"
             android:exported="true" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
         <activity
             android:name=".SearchPoi"
@@ -54,12 +67,12 @@
             android:name=".RidingActivity"
             android:exported="true" >
 
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
 
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".CourseListActivity"
