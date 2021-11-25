@@ -74,7 +74,7 @@ data class response_features(
 
 data class geometry(
     var type: String,
-    var coordinate : List<String>
+    var coordinates : List<Object>
 )
 
 
