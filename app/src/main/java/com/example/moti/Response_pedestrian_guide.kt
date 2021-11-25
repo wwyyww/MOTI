@@ -95,5 +95,6 @@ data class properties(
     var facilityName : String?,
     var turnType : Number?,
     var pointType : String?,
+    var distance : Number?,
 )
 
