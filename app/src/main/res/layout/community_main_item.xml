@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="380dp"
+            android:layout_height="170dp"
+            android:layout_margin="10dp"
+            android:scaleType="centerCrop"
+            android:id="@+id/community_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/seoul"/>
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/category_text"-->
+<!--            android:textSize="14dp"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_below="@+id/category_icon"-->
+<!--            android:text="menu"/>-->
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>
