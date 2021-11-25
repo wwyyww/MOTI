@@ -1,6 +1,7 @@
 package com.example.moti
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -37,6 +38,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
+@Suppress("DEPRECATION")
 class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallback  {
 
     val retrofit = Retrofit.Builder()
@@ -79,6 +81,19 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     var i = 0
 
+    //시간 측정용 변수
+    private var timerTask:Timer?=null
+    private var time = 0
+    private var timerIsRunning = false
+    var hour = 0
+    var min = 0
+    var sec = 0
+    var timerStart = true
+
+    var photoCount = 0
+    var hashtagCount = 0
+
+    @SuppressLint("UseCompatLoadingForDrawables")
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +102,7 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         riding_gps_textview.bringToFront()
         riding_button.bringToFront()
         riding_guide_layout.bringToFront()
-
+        riding_bottom_layout.bringToFront()
 
 //        departure = intent.getParcelableExtra<PoiItem>("departure")!!
 //        destination = intent.getParcelableExtra<PoiItem>("destination")!!
@@ -165,6 +180,9 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         tMapGPS!!.OpenGps()
         polyline= TMapPolyLine()
 
+        timerIsRunning = !timerIsRunning
+        if (timerIsRunning) startTimer()
+
         riding_button.setOnClickListener{
             //getCoordinates()
 //            Log.d("tmap","잘 넘어왔는지 확인. departure : ${departure}")
@@ -172,17 +190,17 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 //            Log.d("tmap","잘 넘어왔는지 확인. layover : ${layover}")
 //            Log.d("tmap", "list[i] : ${responseFeatureList[i]}")
 //            Log.d("tmap", "list[i+1] : ${responseFeatureList[i+1].geometry}")
-//            var distance=responseFeatureList[i+1].properties.distance
-//            var addr=responseFeatureList[i+1].properties.name
-//            riding_mainGuide_textview.text="${distance}m"
-//            riding_mainAddr_textview.text="${addr}"
-//            if (i<responseFeatureList.size){
-//                i += 2
-//                if(i<responseFeatureList.size){
-//                    var subdistance=responseFeatureList[i+1].properties.distance
-//                    riding_subGuide_textview.text="${subdistance}m"
-//                }
-//            }
+            var distance=responseFeatureList[i+1].properties.distance
+            var addr=responseFeatureList[i+1].properties.name
+            riding_mainGuide_textview.text="${distance}m"
+            riding_mainAddr_textview.text="${addr}"
+            if (i<responseFeatureList.size){
+                i += 2
+                if(i<responseFeatureList.size){
+                    var subdistance=responseFeatureList[i+1].properties.distance
+                    riding_subGuide_textview.text="${subdistance}m"
+                }
+            }
 
 //            for (res in responseFeatureList){
 //                if (res.geometry.coordinate.size > 1){
@@ -196,19 +214,72 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 //                }
 //
 //            }
+        }
+
+        riding_stop_imgview.setOnClickListener{
+            pauseTimer()
+            timerStart = !timerStart
+
+            if (timerStart){
+                riding_stop_imgview.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_pause_circle_filled_24))
+                startTimer()
+            }else{
+                riding_stop_imgview.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_play_circle_filled_24))
+            }
+
+        }
+
+        riding_end_imgview.setOnClickListener {
+            pauseTimer()
+
+            pushRef.child("Record/distance").setValue("10")
+            pushRef.child("Record/time").setValue("00:11:11")
+            pushRef.child("Record/date").setValue("2021/11/25")
+            pushRef.child("Record/start").setValue("출발지")
+            pushRef.child("Record/arrive").setValue("도착지")
+            pushRef.child("Record/layover").setValue("경유지")
+            pushRef.child("Record/text").setValue("사용자가 생각 쓰는 부분")
+            pushRef.child("Photo/${photoCount}").setValue("photo url")
+            pushRef.child("Hashtag/${hashtagCount}").setValue("해시태그")
 
 
 
 
+            val intent = Intent(this, AfterRidingActivity::class.java).apply {
+                putExtra("time", riding_timer_textview.text)
+                putExtra("pushKey", pushRef.key)
 
 
 
+            }.run {startActivity(this) }
 
+//            intent.putExtra("type", "departure")
 
 
         }
 
+
+
+
     }
+
+    private fun startTimer(){
+        timerTask=kotlin.concurrent.timer(period = 10){
+            time++
+            hour=time/100/3600
+            min=(time/100/60)%60
+            sec=(time/100)%60
+            this@RidingActivity?.runOnUiThread{
+                riding_timer_textview.text=String.format("%02d:%02d:%02d", hour, min, sec)
+            }
+
+        }
+    }
+
+    private fun pauseTimer(){
+        timerTask?.cancel()
+    }
+
 
 
     // 길찾기 api 호출을 위해 payload 담기
@@ -280,8 +351,8 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         var point=TMapPoint(lat, long)
 
         //save coordinate
-        pushRef.child("$courseCount/lat").setValue("$lat")
-        pushRef.child("$courseCount/lng").setValue("$long")
+        pushRef.child("Coordinates/$courseCount/lat").setValue("$lat")
+        pushRef.child("Coordinates/$courseCount/lng").setValue("$long")
         courseCount+=1
 
         polyline.addLinePoint(point)

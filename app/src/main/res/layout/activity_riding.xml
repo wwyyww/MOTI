@@ -141,14 +141,16 @@
             tools:ignore="VectorDrawableCompat" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/riding_timer_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textSize=""
+            android:layout_marginStart="24dp"
+            android:text="00:00:00"
             android:textColor="@color/white"
-            tools:layout_editor_absoluteX="48dp"
-            tools:layout_editor_absoluteY="27dp" />
+            android:textSize="40sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
