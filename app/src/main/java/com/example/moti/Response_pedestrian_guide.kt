@@ -1,5 +1,7 @@
 package com.example.moti
 
+import java.util.ArrayList
+
 /*
 data class response_pedestrian_guide(
     var type1 : String,
@@ -71,10 +73,15 @@ data class response_features(
     var properties : properties,
 )
 
+//
+//data class geometry(
+//    var type: String,
+//    var coordinate : List<String>
+//)
 
 data class geometry(
     var type: String,
-    var coordinate : List<String>
+    var coordinates : List<Number>,
 )
 
 
@@ -95,5 +102,6 @@ data class properties(
     var facilityName : String?,
     var turnType : Number?,
     var pointType : String?,
+    var distance : Number?,
 )
 

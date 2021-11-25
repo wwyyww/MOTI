@@ -71,11 +71,13 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     var coordList= ArrayList<Coordinate>()
     var placePoiItemList: MutableList<PoiItem> = mutableListOf<PoiItem>()
     var responseFeatureList= ArrayList<response_features>()
+    var responseCoordList=ArrayList<List<String>>()
 
     lateinit var departure:PoiItem
     lateinit var destination:PoiItem
     lateinit var layover:PoiItem
 
+    var i = 0
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,6 +86,8 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         riding_course_textview.bringToFront()
         riding_gps_textview.bringToFront()
         riding_button.bringToFront()
+        riding_guide_layout.bringToFront()
+
 
 //        departure = intent.getParcelableExtra<PoiItem>("departure")!!
 //        destination = intent.getParcelableExtra<PoiItem>("destination")!!
@@ -103,10 +107,11 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 response: Response<response_pedestrian_guide>
             ) {
 //                Log.d("tmap", "성공 : ${response.raw()}")
-//                Log.d("tmap", "성공 : ${response.body()!!.features}")
+                Log.d("tmap", "성공 : ${response.body()!!.features}")
 //                Log.d("tmap", "성공 : ${response.headers()}")
                 responseFeatureList= response.body()!!.features as ArrayList<response_features>
-                Log.d("tmap", "list : ${responseFeatureList[0].properties.description}")
+//                Log.d("tmap", "list : ${responseFeatureList[0].properties.turnType}")
+//                Log.d("tmap", "list : ${responseFeatureList[1].properties.distance}")
 
             }
 
@@ -114,6 +119,8 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 Log.d("errorM", t.message.toString() )
             }
         })
+
+
 
         auth = FirebaseAuth.getInstance()
         database = Firebase.database.reference
@@ -163,11 +170,46 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 //            Log.d("tmap","잘 넘어왔는지 확인. departure : ${departure}")
 //            Log.d("tmap","잘 넘어왔는지 확인. destination : ${destination}")
 //            Log.d("tmap","잘 넘어왔는지 확인. layover : ${layover}")
+//            Log.d("tmap", "list[i] : ${responseFeatureList[i]}")
+//            Log.d("tmap", "list[i+1] : ${responseFeatureList[i+1].geometry}")
+//            var distance=responseFeatureList[i+1].properties.distance
+//            var addr=responseFeatureList[i+1].properties.name
+//            riding_mainGuide_textview.text="${distance}m"
+//            riding_mainAddr_textview.text="${addr}"
+//            if (i<responseFeatureList.size){
+//                i += 2
+//                if(i<responseFeatureList.size){
+//                    var subdistance=responseFeatureList[i+1].properties.distance
+//                    riding_subGuide_textview.text="${subdistance}m"
+//                }
+//            }
+
+//            for (res in responseFeatureList){
+//                if (res.geometry.coordinate.size > 1){
+//                    var tmpCoordList=res.geometry.coordinate
+//                    for (coord in tmpCoordList){
+//                        responseCoordList.add(coord)
+//                    }
+//                }else{
+//                    responseCoordList.add(res.geometry.coordinate)
+//
+//                }
+//
+//            }
+
+
+
+
+
+
+
+
 
 
         }
 
     }
+
 
     // 길찾기 api 호출을 위해 payload 담기
     fun setPayload(){
