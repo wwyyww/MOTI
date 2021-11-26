@@ -22,11 +22,12 @@
         android:id="@+id/hashtag_category1_btn"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="60dp"
         android:background="@drawable/hashtag"
         android:text="음식점"
+        android:textColor="#10111A"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,11 +36,12 @@
         android:id="@+id/hashtag_category2_btn"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="60dp"
         android:background="@drawable/hashtag"
         android:text="카페"
+        android:textColor="#10111A"
         app:layout_constraintStart_toEndOf="@+id/hashtag_category1_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,12 +49,13 @@
         android:id="@+id/hashtag_category3_btn"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/hashtag"
         android:text="병원"
+        android:textColor="#10111A"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hashtag_category2_btn"
         app:layout_constraintTop_toTopOf="parent" />
@@ -61,11 +64,12 @@
         android:id="@+id/hashtag_category4_btn"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="72dp"
         android:layout_marginTop="116dp"
         android:background="@drawable/hashtag"
         android:text="공원"
+        android:textColor="#10111A"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,11 +77,12 @@
         android:id="@+id/hashtag_category5_btn"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="116dp"
         android:layout_marginStart="20dp"
         android:background="@drawable/hashtag"
         android:text="학교"
+        android:textColor="#10111A"
         app:layout_constraintStart_toEndOf="@+id/hashtag_category4_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -89,6 +94,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="20dp"
         android:text="분위기"
+        android:textColor="#10111A"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hashtag_category4_btn" />
 
@@ -96,23 +102,27 @@
         android:id="@+id/hashtag_mood1_btn"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="216dp"
         android:background="@drawable/hashtag"
         android:text="조용한"
+        android:textColor="#10111A"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/hashtag_mood2_btn"
         style="@style/Widget.AppCompat.Button.Borderless"
+        android:paddingStart="17dp"
+        android:paddingEnd="17dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="216dp"
         android:layout_marginStart="20dp"
         android:background="@drawable/hashtag"
         android:text="분위기 있는"
+        android:textColor="#10111A"
         app:layout_constraintStart_toEndOf="@+id/hashtag_mood1_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -120,12 +130,13 @@
         android:id="@+id/hashtag_mood3_btn"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="216dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/hashtag"
         android:text="즐거운"
+        android:textColor="#10111A"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hashtag_mood2_btn"
         app:layout_constraintTop_toTopOf="parent" />

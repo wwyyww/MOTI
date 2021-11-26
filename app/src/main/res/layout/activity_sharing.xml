@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/imageView5"
@@ -55,30 +56,32 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/sharing_search_layout"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
         android:layout_marginStart="27dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="27dp"
-        android:background="#F6F6F6"
+        android:background="@drawable/layout_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sharing_course_textview">
 
         <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:id="@+id/sharing_search_imgview"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/search" />
+            app:srcCompat="@drawable/ic_baseline_search_24"
+            tools:ignore="VectorDrawableCompat" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="314dp"
-            android:layout_height="58dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView7"
+            android:id="@+id/sharing_recyclerview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintEnd_toStartOf="@+id/sharing_search_imgview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -107,9 +110,14 @@
         android:layout_marginStart="27dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="27dp"
+        android:paddingTop="10dp"
+        android:paddingStart="15dp"
+        android:textSize="15sp"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="나누고 싶은 생각을 적어주세요,"
+        android:hint="나누고 싶은 생각을 적어주세요."
+        android:textColorHint="#70727C"
+        android:background="@drawable/edittext_round"
         android:inputType="textMultiLine"
         android:lines="7"
         app:layout_constraintEnd_toEndOf="parent"
