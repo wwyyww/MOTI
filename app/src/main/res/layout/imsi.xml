@@ -22,7 +22,7 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/hashtag"
+            android:id="@+id/mytickets"
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:layout_marginStart="20dp"
@@ -37,7 +37,7 @@
         </androidx.recyclerview.widget.RecyclerView>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/community_main_contents"
+            android:id="@+id/mytickets"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:clickable="true"
@@ -49,7 +49,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/hashtag"
+            app:layout_constraintTop_toBottomOf="@+id/mytickets"
             app:layout_constraintVertical_bias="0.0">
 
         </androidx.recyclerview.widget.RecyclerView>
@@ -74,7 +74,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/hashtag"
+            app:layout_constraintBottom_toTopOf="@+id/mytickets"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/textView7"
@@ -112,7 +112,7 @@
             android:layout_height="1dp"
             android:layout_marginTop="96dp"
             android:background="?android:attr/listDivider"
-            app:layout_constraintBottom_toTopOf="@+id/hashtag"
+            app:layout_constraintBottom_toTopOf="@+id/mytickets"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/textView9"

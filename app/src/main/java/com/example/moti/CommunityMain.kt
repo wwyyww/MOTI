@@ -8,15 +8,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -38,150 +35,52 @@ class CommunityMain: AppCompatActivity() {
 
     lateinit var hashtagRecyclerView: RecyclerView
     lateinit var hashTagAdapter : HashTagAdapter
-    //lateinit var hashtagList : MutableList<String>
-    lateinit var hashtagList :  ArrayList<String>
+    var hashtagList =  ArrayList<String>()
 
+    var rowindex : Int = 0
+    var colindex : Int = 0
 
     lateinit var communityRecyclerView: RecyclerView
     lateinit var communityAdapter: CommunityAdapter
-    //var communityData = ArrayList<Content>()
+    var communityData = ArrayList<Post>()
 
-    lateinit var selectedData :  MutableList<Post>
+    //lateinit var selectedData :  MutableList<Post>
 
-    class CommunityAdapter(private val context: Context) : RecyclerView.Adapter<CommunityAdapter.CustomViewHolder>() {
+    class HashTagAdapter(val context: Context, private val HashTagData: ArrayList<String>): RecyclerView.Adapter<HashTagAdapter.ViewHolder>() {
 
-        //var hashtagList =  ArrayList<MutableCollection<String>> ()
-        // var placeList = ArrayList<Place> ()
-
-        var communityData: MutableList<Post> = mutableListOf<Post>()
-
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int,
-        ): CommunityAdapter.CustomViewHolder {
-            Log.d("[2]firebaseMAdapter2", communityData.toString())
-            val view =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_placeinfo, parent, false)
-            return CommunityAdapter.CustomViewHolder(view)
-
-        }
-
-        override fun onBindViewHolder(holder: CommunityAdapter.CustomViewHolder, position: Int) {
-            //holder.imgV_image.src
-            holder.txtV_title.text  = communityData.get(position).toString()
-            //holder.recy_hashtag
-            holder.constL_startbtn
-            Log.d("[2]onBindViewHolder",communityData.get(position).toString())
-        }
-
-        override fun getItemCount(): Int {
-            return communityData.size
-        }
-
-
-        class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            // val textV_hashtag = itemView.findViewById<TextView>(R.id.textV_hashtag)
-            val imgV_image = itemView.findViewById<ImageView>(R.id.imgV_image)
-            val txtV_title = itemView.findViewById<TextView>(R.id.txtV_title)
-            val recy_hashtag = itemView.findViewById<RecyclerView>(R.id.recy_hashtag)
-            val constL_startbtn = itemView.findViewById<ConstraintLayout>(R.id.constL_startbtn)
-        }
-
-
-    }
-
-    /*
-    class HashTagAdapter(private val context: Context, var hashtagList: ArrayList<String>) : RecyclerView.Adapter<HashTagAdapter.ViewHolder>(){
-
-        //var hashtagList =  ArrayList<MutableCollection<String>> ()
-        // var hashtagList = ArrayList<String>()
-        //val mutableData = MutableLiveData<MutableList<Post>>()
-
+        var rowindex = 0
 
 
         inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
-
-            val textV_hashtag = view?.findViewById<TextView>(R.id.textV_hashtag)
-            val constL_rectangle = view?.findViewById<ConstraintLayout>(R.id.constL_rectangle)
+            val hashtag = view!!.findViewById<TextView>(R.id.textV_hashtag)
 
 
-            fun bind( context: Context, position: Int) {
-                textV_hashtag!!.text = hashtagList.get(position)
+            fun bind(hash : String, context: Context, position: Int) {
+                hashtag!!.text = hash
+                if (rowindex == position) {
+                    hashtag!!.setTextColor(ContextCompat.getColor(context, R.color.green))
+
+                } else {
+                    hashtag!!.setTextColor(ContextCompat.getColor(context, R.color.gray))
+
+                }
             }
+
         }
 
-
-
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int,
-        ): HashTagAdapter.ViewHolder {
-            Log.d("firebaseMAdapter1",hashtagList.toString())
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_hashtag,parent,false)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HashTagAdapter.ViewHolder {
+            val view = LayoutInflater.from(context).inflate(R.layout.item_hashtag, parent, false)
             return ViewHolder(view)
-
         }
-
 
         override fun onBindViewHolder(holder: HashTagAdapter.ViewHolder, position: Int) {
-            holder.bind( context, position)
-
-            var selectedHashTag = hashtagList.get(position)
-
-            holder.constL_rectangle!!.setOnClickListener {
+            holder.bind(HashTagData[position], context, position)
+            holder.itemView.setOnClickListener {
                 itemClickListener.onClick(it, position)
-                //rowindex = position
+                rowindex = position
                 notifyDataSetChanged()
-
             }
-
-
         }
-
-        /*
-        fun searchPlaces(selectedHashTag: String) {
-            Log.i("ttt", "dddd")
-
-            var mutableData: MutableList<Post> = mutableListOf<Post>()
-            val postRef = Firebase.database.getReference("community")
-
-
-            postRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d("firebaseM2","호출됨")
-                    val postList: MutableList<Post> = mutableListOf<Post>()
-
-                    if (snapshot.exists()) {
-                        for (userSnapshot in snapshot.children) {
-                            Log.d("firebaseM2",userSnapshot.value.toString())
-                            val getData = userSnapshot.getValue(Post::class.java)
-                            getData?.toString()?.let { it1 -> Log.d("firebaseM3", it1) }
-
-                            // 현재 선택된 해시태그만 가져옴
-                            if (getData?.hashtag?.containsValue(selectedHashTag) == true) {
-                                postList.add(getData!!)
-
-                            }
-
-                            mutableData = postList
-
-                            communityAdapter = CommunityAdapter(applicationContext, mutableData)
-
-
-                            Log.d("firebaseM0",mutableData.toString())
-
-
-                        }
-                    }
-                }
-                override fun onCancelled(error: DatabaseError) {
-
-                }
-            })
-
-        }
-
-         */
 
         interface OnItemClickListener {
             fun onClick(v: View, position: Int)
@@ -193,20 +92,69 @@ class CommunityMain: AppCompatActivity() {
         // (4) setItemClickListener로 설정한 함수 실행
         private lateinit var itemClickListener : OnItemClickListener
 
-        override fun getItemCount() = hashtagList.size
-
-
+        override fun getItemCount() = HashTagData.size
 
     }
 
 
+    class CommunityAdapter(private val context: Context, private val CommunityData: ArrayList<Post>) : RecyclerView.Adapter<CommunityAdapter.ViewHolder>() {
+
+        var colindex  = 0
+
+        //var communityData: MutableList<Post> = mutableListOf<Post>()
+
+        inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
+            val title = view!!.findViewById<TextView>(R.id.txtV_title)
+            //val imgV_image = itemView.findViewById<ImageView>(R.id.imgV_image)
+            val list_hashtag = itemView.findViewById<RecyclerView>(R.id.list_hashtag)
+            val constL_startbtn = itemView.findViewById<ConstraintLayout>(R.id.constL_startbtn)
 
 
+            fun bind(community : Post, context: Context, position: Int) {
+                title!!.text = community.title
 
-     */
+                /*
+                var arrayOfListView = ArrayList<String>()
+                arrayOfListView = community.hashtag as ArrayList<String>
+                val adapter = ArrayAdapter(this@CommunityAdapter, android.R.layout.activity_list_item, arrayOfListView)
+                list_hashtag.adapter = adapter
+
+                 */
+            }
+
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommunityAdapter.ViewHolder {
+            val view = LayoutInflater.from(context).inflate(R.layout.item_placeinfo, parent, false)
+            return ViewHolder(view)
+        }
 
 
+        override fun onBindViewHolder(holder: CommunityAdapter.ViewHolder, position: Int) {
+            holder.bind(CommunityData[position], context, position)
+            holder.itemView.setOnClickListener {
+                itemClickListener.onClick(it, position)
+                colindex = position
+                notifyDataSetChanged()
+            }
 
+            //holder.item
+        }
+
+        interface OnItemClickListener {
+            fun onClick(v: View, position: Int)
+        }
+        // (3) 외부에서 클릭 시 이벤트 설정
+        fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+            this.itemClickListener = onItemClickListener
+        }
+        // (4) setItemClickListener로 설정한 함수 실행
+        private lateinit var itemClickListener : OnItemClickListener
+
+        override fun getItemCount() = CommunityData.size
+
+
+    }
 
 
 
@@ -215,13 +163,13 @@ class CommunityMain: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_community_main)
 
-        hashtagRecyclerView = findViewById(R.id.hashtag)
+        hashtagRecyclerView = findViewById(R.id.mytickets)
+
+
         communityRecyclerView = findViewById(R.id.community_main_contents)
         edit_searchBar = findViewById(R.id.edit_searchBar)
 
-        // 저장 배열 초기화
-        hashtagList = ArrayList<String>()
-       // postList= MutableLiveData<MutableList<Post>>()
+
 
 
         // 검색 결과 가져오기
@@ -246,11 +194,19 @@ class CommunityMain: AppCompatActivity() {
 
 
         //어댑터 연결
-        hashtagRecyclerView = findViewById(R.id.hashtag)
-        hashTagAdapter = HashTagAdapter(this)
+        hashtagRecyclerView = findViewById(R.id.mytickets)
+        hashTagAdapter = HashTagAdapter(this, hashtagList)
         hashtagRecyclerView.adapter = hashTagAdapter
 
-
+//        // 해시태그 클릭 리스너
+//        hashTagAdapter.setItemClickListener(object : HashTagAdapter.OnItemClickListener{
+//            override fun onClick(v: View, position: Int) {
+//                Log.d("hashTagAdapterListener", "클릭됨")
+//                rowindex = position
+//
+//                searchCategory(category_group_code, radius, sort)
+//            }
+//        })
 
 
         // 사용자 해시태그 목록 가져오기
@@ -275,29 +231,33 @@ class CommunityMain: AppCompatActivity() {
                 // 어댑터에 데이터 저장
                 hashtagList.apply {
                     Log.d("firebaseM", hashtagList.toString())
-                    hashTagAdapter = HashTagAdapter(this@CommunityMain)
-                    hashTagAdapter.hashtagList = hashtagList
+                    hashTagAdapter = HashTagAdapter(this@CommunityMain, hashtagList)
+                    //hashTagAdapter.hashtagList = hashtagList
                     hashtagRecyclerView.adapter = hashTagAdapter
                     hashTagAdapter.notifyDataSetChanged()
+                    // 해시태그 클릭 리스너
+                    hashTagAdapter.setItemClickListener(object : HashTagAdapter.OnItemClickListener{
+                        override fun onClick(v: View, position: Int) {
+                            Log.d("hashTagAdapterListener", "클릭됨")
+                            rowindex = position
+                            searchPlaces(hashtagList[position])
+                            //searchCategory(category_group_code, radius, sort)
+                        }
+                    })
+
                 }
 
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
         })
 
 
 
 
-        // 해시태그 클릭 리스너
-        hashTagAdapter.setItemClickListener(object : HashTagAdapter.OnItemClickListener{
-            override fun onClick(v: View, position: Int) {
-                Log.d("hashTagAdapterListener", "클릭됨")
 
-            }
-        })
+
 
 
 
@@ -339,7 +299,87 @@ class CommunityMain: AppCompatActivity() {
 
     }
 
+    fun searchPlaces(selectedHashTag: String) {
+        Log.i("ttt", "dddd")
+
+        var mutableData: MutableList<Post> = mutableListOf<Post>()
+        val postRef = Firebase.database.getReference("community")
+
+
+        postRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("firebaseM2","호출됨")
+                //val postList: MutableList<Post> = mutableListOf<Post>()
+                communityData = ArrayList<Post>()
+                if (snapshot.exists()) {
+                    for (userSnapshot in snapshot.children) {
+                        Log.d("firebaseM2",userSnapshot.value.toString())
+                        val getData = userSnapshot.getValue(Post::class.java)
+                        getData?.toString()?.let { it1 -> Log.d("firebaseM3", it1) }
+
+                        // 현재 선택된 해시태그만 가져옴
+                        if (getData?.hashtag?.containsValue(selectedHashTag) == true) {
+                            communityData.add(getData!!)
+                            Log.d("CM", getData.hashtag.toString())
+                        }
+
+                        //mutableData = postList
+
+                        communityAdapter = CommunityAdapter(applicationContext, communityData)
+                        communityRecyclerView.adapter = communityAdapter
+
+                        communityAdapter.setItemClickListener(object : CommunityAdapter.OnItemClickListener{
+                            override fun onClick(v: View, position: Int) {
+                                Log.d("CommunityAdapter", "클릭됨")
+                                colindex = position
+                                showPlaces(communityData[position])
+                                //searchCategory(category_group_code, radius, sort)
+                            }
+                        })
+                        //Log.d("firebaseM0",mutableData.toString())
+
+
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+    }
+
+    private fun showPlaces(selectedPlace: Post) {
+        Log.i("showPlaces", selectedPlace.title.toString())
+
+        var riderId = selectedPlace.riderId
+        var date = selectedPlace.date?.split("/")
+        var recordId = selectedPlace.recordId
+
+        Log.i("showPlaces", date.toString())
+        Log.i("recordId", recordId.toString())
+        // 사용자 티켓 정보 가져오기
+        val postRef = Firebase.database.getReference("user")
+
+        //  TODO("${riderId}/course/date로 바꿔야함 ")
+
+        postRef.child("Ru1rsTPKgKctYN2mY1OfEW89hnn1/course/date/${date?.get(0)}/${date?.get(1)}/${date?.get(2)}/${recordId}").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+
+                if (snapshot.exists()) {
+                    Log.i("showPlacesSN", snapshot.value.toString())
+                 }
+
+                }
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+
+    }
 
 
 }
+
+
 
