@@ -101,7 +101,7 @@
 
 
     <EditText
-        android:id="@+id/editTextTextMultiLine2"
+        android:id="@+id/sharing_post_textview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="27dp"
@@ -121,15 +121,15 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="90dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="39dp"
         android:backgroundTint="#0BE795"
         android:text="공유하기"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine2" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
