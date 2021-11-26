@@ -14,10 +14,10 @@
         android:layout_marginBottom="5dp"
         android:gravity="center">
 
-        <ImageView
-            android:id="@+id/place_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/place_img"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"/>-->
         <TextView
             android:id="@+id/place_name"
             android:text="가게 이름"
@@ -35,9 +35,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:textSize="15sp"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/place_name"/>
+            android:textSize="12sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_below="@+id/place_name"/>
 
         <TextView
             android:id="@+id/address"
@@ -59,19 +60,31 @@
             android:textColor="@color/blue"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_below="@+id/place_name"/>
+            android:layout_below="@+id/category_name"/>
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        <ImageView
+            android:id="@+id/image"
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="160dp"
+            android:src="@drawable/seoul"
+            android:scaleType="centerCrop"
             android:layout_below="@+id/address"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:layout_marginRight="10dp" />
 
-        </androidx.recyclerview.widget.RecyclerView>
+
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@+id/address"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:layout_marginRight="10dp">-->
+
+<!--        </androidx.recyclerview.widget.RecyclerView>-->
 
 
     </RelativeLayout>

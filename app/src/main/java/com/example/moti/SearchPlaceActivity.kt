@@ -203,7 +203,8 @@ class SearchPlaceActivity : AppCompatActivity() {
                         //var doc = Jsoup.connect(response.body()?.documents?.get(i)?.place_url.toString()).get()
                         contentData.add(Content(response.body()?.documents?.get(i)?.place_name.toString(), response.body()?.documents?.get(i)?.phone.toString(),
                             response.body()?.documents?.get(i)?.address_name.toString(), response.body()?.documents?.get(i)?.road_address_name.toString(),
-                            response.body()?.documents?.get(i)?.distance.toString(), response.body()?.documents?.get(i)?.place_url.toString()))
+                            response.body()?.documents?.get(i)?.distance.toString(), response.body()?.documents?.get(i)?.place_url.toString(),
+                            response.body()?.documents?.get(i)?.category_name.toString()))
                     }
                 }
 
@@ -246,7 +247,7 @@ class SearchPlaceActivity : AppCompatActivity() {
         })
     }
 }
-class Content(var placename: String, var phone: String, var addressname: String, var road_add: String, var distance: String, var url: String)
+class Content(var placename: String, var phone: String, var addressname: String, var road_add: String, var distance: String, var url: String, var category: String)
 
 class ContentAdapter(val context: Context, private val ContentData: ArrayList<Content>): RecyclerView.Adapter<ContentAdapter.ViewHolder>() {
 
@@ -256,10 +257,12 @@ class ContentAdapter(val context: Context, private val ContentData: ArrayList<Co
         val addressname = view!!.findViewById<TextView>(R.id.address)
         //val road_add = view!!.findViewById<TextView>(R.id.road_address)
         val distance = view!!.findViewById<TextView>(R.id.distance)
+        val place_category = view!!.findViewById<TextView>(R.id.category_name)
 
         fun bind(content: Content, context: Context) {
             place_name!!.text = content.placename
             phone!!.text = content.phone
+            place_category!!.text = content.category
             if(content.addressname != "" && content.road_add != ""){
                 addressname!!.text = content.addressname +"\n" + content.road_add
             } else if(content.addressname != "" || content.road_add != ""){
