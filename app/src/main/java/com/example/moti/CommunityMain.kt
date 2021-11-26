@@ -164,7 +164,7 @@ class CommunityMain: AppCompatActivity() {
                             for (userSnapshot in snapshot.children) {
 
                                 val getData = userSnapshot.getValue(Post::class.java)
-                                if (getData?.hashtags?.containsValue(selectedHashtag) == true) {
+                                if (getData?.hashtag?.containsValue(selectedHashtag) == true) {
                                     // 현재 선택된 해시태그만 가져옴
                                     Log.d("firebaseM2", getData?.toString())
                                     postList.add(getData!!)
