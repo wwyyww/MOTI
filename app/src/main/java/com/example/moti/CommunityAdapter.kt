@@ -29,7 +29,10 @@ class CommunityAdapter(private val context: Context) : RecyclerView.Adapter<Comm
 
     override fun onBindViewHolder(holder: CommunityAdapter.CustomViewHolder, position: Int) {
       //  holder.imgV_image.text = hashtagList.get(position)
-
+        //holder.imgV_image.src
+       // holder.txtV_title.text  = placeList.get(position)
+       // holder.recy_hashtag
+        //holder.constL_start
 
     }
 
@@ -45,4 +48,6 @@ class CommunityAdapter(private val context: Context) : RecyclerView.Adapter<Comm
         val recy_hashtag = itemView.findViewById<RecyclerView>(R.id.recy_hashtag)
         val constL_start = itemView.findViewById<ConstraintLayout>(R.id.constL_start)
     }
+
+
 }
