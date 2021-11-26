@@ -374,7 +374,7 @@ class SelectPlace : AppCompatActivity() {
         btn_next.setOnClickListener {
 
             Log.d("SUCCESSM", "다음 버튼 : ${departure} ${destination} ${layover1} ")
-            val intent = Intent(this, SelectLayover::class.java).apply {
+            val intent = Intent(this, ReadyActivity::class.java).apply {
                 putExtra("departure", departure)
                 putExtra("destination", destination)
                 putExtra("layover", layover1)

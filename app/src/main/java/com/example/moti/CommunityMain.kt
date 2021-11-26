@@ -8,15 +8,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -41,6 +38,7 @@ class CommunityMain: AppCompatActivity() {
     var hashtagList =  ArrayList<String>()
 
     var rowindex : Int = 0
+    var colindex : Int = 0
 
     lateinit var communityRecyclerView: RecyclerView
     lateinit var communityAdapter: CommunityAdapter
@@ -51,6 +49,7 @@ class CommunityMain: AppCompatActivity() {
     class HashTagAdapter(val context: Context, private val HashTagData: ArrayList<String>): RecyclerView.Adapter<HashTagAdapter.ViewHolder>() {
 
         var rowindex = 0
+
 
         inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
             val hashtag = view!!.findViewById<TextView>(R.id.textV_hashtag)
@@ -100,19 +99,27 @@ class CommunityMain: AppCompatActivity() {
 
     class CommunityAdapter(private val context: Context, private val CommunityData: ArrayList<Post>) : RecyclerView.Adapter<CommunityAdapter.ViewHolder>() {
 
+        var colindex  = 0
 
         //var communityData: MutableList<Post> = mutableListOf<Post>()
 
         inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
             val title = view!!.findViewById<TextView>(R.id.txtV_title)
-            val imgV_image = itemView.findViewById<ImageView>(R.id.imgV_image)
-            val recy_hashtag = itemView.findViewById<RecyclerView>(R.id.recy_hashtag)
+            //val imgV_image = itemView.findViewById<ImageView>(R.id.imgV_image)
+            val list_hashtag = itemView.findViewById<RecyclerView>(R.id.list_hashtag)
             val constL_startbtn = itemView.findViewById<ConstraintLayout>(R.id.constL_startbtn)
 
 
             fun bind(community : Post, context: Context, position: Int) {
                 title!!.text = community.title
 
+                /*
+                var arrayOfListView = ArrayList<String>()
+                arrayOfListView = community.hashtag as ArrayList<String>
+                val adapter = ArrayAdapter(this@CommunityAdapter, android.R.layout.activity_list_item, arrayOfListView)
+                list_hashtag.adapter = adapter
+
+                 */
             }
 
         }
@@ -122,12 +129,16 @@ class CommunityMain: AppCompatActivity() {
             return ViewHolder(view)
         }
 
+
         override fun onBindViewHolder(holder: CommunityAdapter.ViewHolder, position: Int) {
             holder.bind(CommunityData[position], context, position)
             holder.itemView.setOnClickListener {
                 itemClickListener.onClick(it, position)
-
+                colindex = position
+                notifyDataSetChanged()
             }
+
+            //holder.item
         }
 
         interface OnItemClickListener {
@@ -152,7 +163,7 @@ class CommunityMain: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_community_main)
 
-        hashtagRecyclerView = findViewById(R.id.hashtag)
+        hashtagRecyclerView = findViewById(R.id.mytickets)
 
 
         communityRecyclerView = findViewById(R.id.community_main_contents)
@@ -183,7 +194,7 @@ class CommunityMain: AppCompatActivity() {
 
 
         //어댑터 연결
-        hashtagRecyclerView = findViewById(R.id.hashtag)
+        hashtagRecyclerView = findViewById(R.id.mytickets)
         hashTagAdapter = HashTagAdapter(this, hashtagList)
         hashtagRecyclerView.adapter = hashTagAdapter
 
@@ -309,7 +320,7 @@ class CommunityMain: AppCompatActivity() {
                         // 현재 선택된 해시태그만 가져옴
                         if (getData?.hashtag?.containsValue(selectedHashTag) == true) {
                             communityData.add(getData!!)
-
+                            Log.d("CM", getData.hashtag.toString())
                         }
 
                         //mutableData = postList
@@ -317,6 +328,14 @@ class CommunityMain: AppCompatActivity() {
                         communityAdapter = CommunityAdapter(applicationContext, communityData)
                         communityRecyclerView.adapter = communityAdapter
 
+                        communityAdapter.setItemClickListener(object : CommunityAdapter.OnItemClickListener{
+                            override fun onClick(v: View, position: Int) {
+                                Log.d("CommunityAdapter", "클릭됨")
+                                colindex = position
+                                showPlaces(communityData[position])
+                                //searchCategory(category_group_code, radius, sort)
+                            }
+                        })
                         //Log.d("firebaseM0",mutableData.toString())
 
 
@@ -329,7 +348,38 @@ class CommunityMain: AppCompatActivity() {
         })
     }
 
+    private fun showPlaces(selectedPlace: Post) {
+        Log.i("showPlaces", selectedPlace.title.toString())
+
+        var riderId = selectedPlace.riderId
+        var date = selectedPlace.date?.split("/")
+        var recordId = selectedPlace.recordId
+
+        Log.i("showPlaces", date.toString())
+        Log.i("recordId", recordId.toString())
+        // 사용자 티켓 정보 가져오기
+        val postRef = Firebase.database.getReference("user")
+
+        //  TODO("${riderId}/course/date로 바꿔야함 ")
+
+        postRef.child("Ru1rsTPKgKctYN2mY1OfEW89hnn1/course/date/${date?.get(0)}/${date?.get(1)}/${date?.get(2)}/${recordId}").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+
+                if (snapshot.exists()) {
+                    Log.i("showPlacesSN", snapshot.value.toString())
+                 }
+
+                }
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+
+    }
 
 
 }
+
+
 
