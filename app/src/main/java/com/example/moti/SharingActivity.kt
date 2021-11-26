@@ -62,6 +62,7 @@ class SharingActivity: AppCompatActivity() {
         myPost.recordId=pushKey
 
         sharingtagAdapter= SharingTagAdapter(this, selectList)
+        sharingtagAdapter.setOnItemClickListener()
         sharing_recyclerview.adapter=sharingtagAdapter
 
 
@@ -235,9 +236,15 @@ class SharingTagAdapter(private val context: Context, private var hashtagList:Ar
 
         }
 
+    interface OnItemClickEventListener {
+        fun onItemClick(view: View?, position: Int)
+    }
 
     }
 
+    public fun setClickListsener(itemClickListener : OnItemClickEventListener){
+        this.mItemClickListener=itemClickListener
+    }
 
 
     override fun getItemCount(): Int {

@@ -41,7 +41,7 @@ class CommunityMain: AppCompatActivity() {
 
 
     lateinit var communityRecyclerView: RecyclerView
-    lateinit var communityAdapter: ContentAdapter
+    lateinit var communityAdapter: CommunityAdapter
     //var communityData = ArrayList<Content>()
 
 
@@ -86,6 +86,11 @@ class CommunityMain: AppCompatActivity() {
         hashtagRecyclerView.adapter = hashTagAdapter
 
 
+        // 커뮤니티 어댑터 설정
+        communityAdapter = CommunityAdapter(this@CommunityMain)
+        communityRecyclerView.adapter = communityAdapter
+
+
         //tmap 세팅
         tmapview = TMapView(this)
         tmapview!!.setSKTMapApiKey("l7xx3a42dd9f094c468e969018fba936e361")
@@ -122,12 +127,16 @@ class CommunityMain: AppCompatActivity() {
                 hashtagList.add(1,"핫스팟")
 
 
+                // 어댑터에 데이터 저장
                 hashtagList.apply {
                     Log.d("firebaseM", hashtagList.toString())
                     hashTagAdapter = HashTagAdapter(this@CommunityMain)
                     hashTagAdapter.hashtagList = hashtagList
                     hashtagRecyclerView.adapter = hashTagAdapter
                     hashTagAdapter.notifyDataSetChanged()
+
+                    communityAdapter.notifyDataSetChanged()
+
                 }
 
             }
