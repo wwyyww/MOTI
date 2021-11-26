@@ -116,17 +116,24 @@ class SelectPlace : AppCompatActivity() {
             val place_img = view!!.findViewById<ImageView>(R.id.image)
 
 
-            fun bind(select : Select, context: Context) {
+            fun bind(select : Select, context: Context, position: Int) {
                 place_name!!.text = select.placename
                 place_cate!!.text = select.category
                 place_add!!.text = select.addressname
                 if(select.addressname != "" && select.road_add != ""){
-                    place_add!!.text = select.addressname +"\n" + select.road_add
+                    place_add!!.text = select.addressname +" | " + select.road_add
                 } else if(select.addressname != "" || select.road_add != ""){
                     place_add!!.text = select.addressname + select.road_add
                 }
                 place_phone!!.text = select.phone
-                place_img!!.setImageResource(R.drawable.seoul)
+                if ( position%3 == 0 ) {
+                    place_img!!.setImageResource(R.drawable.cafe2)
+                } else if ( position%3 == 1) {
+                    place_img!!.setImageResource(R.drawable.cafe3)
+                } else {
+                    place_img!!.setImageResource(R.drawable.cafe)
+                }
+
 
 //                if(rowindex == position){
 //                    menu_btn!!.setTextColor(ContextCompat.getColor(context, R.color.green))
@@ -145,7 +152,7 @@ class SelectPlace : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: SelectAdapter.ViewHolder, position: Int) {
-            holder.bind(SelectData[position], context)
+            holder.bind(SelectData[position], context, position)
             holder.itemView.setOnClickListener {
                 itemClickListener.onClick(it, position)
 //                rowindex = position
@@ -315,7 +322,7 @@ class SelectPlace : AppCompatActivity() {
                     Log.d("successM", "final : ${destination}")
                     textV_destination.text = destination.name
                     textV_destination.setTextColor(Color.BLACK)
-
+1
                 }else if (placePoiItem?.type =="layover1"){
                     layover1 = placePoiItem
                     textV_layover1.text = layover1.name

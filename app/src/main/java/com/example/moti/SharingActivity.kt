@@ -145,6 +145,9 @@ public class SelectHashtag : Activity() {
     var selectList=ArrayList<String>()
     var mapHashList= hashMapOf<String, String>()
 
+    //달력
+    var mCalendar = Calendar.getInstance()
+    lateinit var todayDate:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
