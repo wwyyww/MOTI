@@ -5,14 +5,15 @@
     android:layout_width="wrap_content"
     android:layout_height="40dp"
     android:layout_marginStart="10dp"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
     android:background="@drawable/hashtag"
 
 
     >
 
     <ImageView
-        android:id="@+id/sharing_close_imgview"
+        android:id="@+id/sharingitem_close_imgview"
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:layout_marginStart="4dp"
@@ -20,12 +21,12 @@
         android:src="@drawable/ic_baseline_close_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/category_text"
+        app:layout_constraintStart_toEndOf="@id/sharingitem_category_text"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="#A3A6AE" />
 
     <TextView
-        android:id="@+id/category_text"
+        android:id="@+id/sharingitem_category_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"

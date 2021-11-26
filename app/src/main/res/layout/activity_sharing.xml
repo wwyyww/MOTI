@@ -7,7 +7,7 @@
     android:background="@color/white">
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/sharing_before_imgview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
@@ -18,7 +18,7 @@
         tools:ignore="VectorDrawableCompat" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/sharing_end_imgview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="27dp"
@@ -38,7 +38,7 @@
         android:text="2021년 11월 26일 금요일"
         android:textColor="#70727C"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        app:layout_constraintTop_toBottomOf="@+id/sharing_before_imgview" />
 
     <TextView
         android:id="@+id/sharing_course_textview"
@@ -81,6 +81,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/sharing_search_imgview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -88,7 +89,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/seoul_image"
+        android:id="@+id/sharing_ticket_imgview"
         android:layout_width="0dp"
         android:layout_height="160dp"
         android:layout_marginStart="27dp"
@@ -122,22 +123,22 @@
         android:lines="7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seoul_image" />
+        app:layout_constraintTop_toBottomOf="@+id/sharing_ticket_imgview" />
 
     <Button
         android:id="@+id/sharing_button"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="200dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="39dp"
         android:backgroundTint="#0BE795"
         android:text="공유하기"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sharing_ticket_imgview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

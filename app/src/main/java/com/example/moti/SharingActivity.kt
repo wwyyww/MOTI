@@ -57,7 +57,7 @@ class SharingActivity: AppCompatActivity() {
         pushKey="abcdefg"
 
         sharingtagAdapter= SharingTagAdapter(this, selectList)
-       // sharingtagAdapter.setOnItemClickListener()
+        sharingtagAdapter.setOnItemClickListener()
         sharing_recyclerview.adapter=sharingtagAdapter
 
 
@@ -68,6 +68,8 @@ class SharingActivity: AppCompatActivity() {
 
         sharing_button.setOnClickListener {
             database.child("community/$pushKey/uid").setValue("$uid")
+            database.child("community/$pushKey/content").setValue("${sharing_post_textview.text}")
+
 
 
         }
@@ -75,6 +77,10 @@ class SharingActivity: AppCompatActivity() {
         sharing_search_imgview.setOnClickListener {
             val intent = Intent(this, SelectHashtag::class.java)
             startActivityForResult(intent, 2000)
+        }
+
+        sharing_before_imgview.setOnClickListener {
+            finish()
         }
 
 
@@ -230,7 +236,7 @@ class SharingTagAdapter(private val context: Context, private var hashtagList:Ar
         var sharing_close_imgview = itemView.findViewById<ImageView>(R.id.sharing_close_imgview)
 
         override fun onClick(view: View?) {
-            //mItemClickListener.onItemClick()
+            mItemClickListener.onItemClick()
         }
 
 
