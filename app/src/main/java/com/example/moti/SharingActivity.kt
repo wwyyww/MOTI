@@ -57,7 +57,7 @@ class SharingActivity: AppCompatActivity() {
         pushKey="abcdefg"
 
         sharingtagAdapter= SharingTagAdapter(this, selectList)
-        sharingtagAdapter.setOnItemClickListener()
+       // sharingtagAdapter.setOnItemClickListener()
         sharing_recyclerview.adapter=sharingtagAdapter
 
 
@@ -230,7 +230,7 @@ class SharingTagAdapter(private val context: Context, private var hashtagList:Ar
         var sharing_close_imgview = itemView.findViewById<ImageView>(R.id.sharing_close_imgview)
 
         override fun onClick(view: View?) {
-            mItemClickListener.onItemClick()
+            //mItemClickListener.onItemClick()
         }
 
 

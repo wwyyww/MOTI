@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 
-class CommunityAdapter(private val context: Context) : RecyclerView.Adapter<CommunityAdapter.CustomViewHolder>() {
+class CommunityAdapter1(private val context: Context) : RecyclerView.Adapter<CommunityAdapter.CustomViewHolder>() {
 
     //var hashtagList =  ArrayList<MutableCollection<String>> ()
      var placeList = ArrayList<Place> ()
