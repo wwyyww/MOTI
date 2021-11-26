@@ -25,6 +25,7 @@
             android:id="@+id/hashtag"
             android:layout_width="match_parent"
             android:layout_height="65dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="124dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
