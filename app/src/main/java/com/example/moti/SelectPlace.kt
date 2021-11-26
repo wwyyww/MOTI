@@ -316,7 +316,7 @@ class SelectPlace : AppCompatActivity() {
                     textV_destination.text = destination.name
                     textV_destination.setTextColor(Color.BLACK)
 
-                }else if (placePoiItem?.type =="layover"){
+                }else if (placePoiItem?.type =="layover1"){
                     layover1 = placePoiItem
                     textV_layover1.text = layover1.name
                     textV_layover1.setTextColor(Color.BLACK)
@@ -367,7 +367,7 @@ class SelectPlace : AppCompatActivity() {
         btn_next.setOnClickListener {
 
             Log.d("SUCCESSM", "다음 버튼 : ${departure} ${destination} ${layover1} ")
-            val intent = Intent(this, SelectLayover::class.java).apply {
+            val intent = Intent(this, ReadyActivity::class.java).apply {
                 putExtra("departure", departure)
                 putExtra("destination", destination)
                 putExtra("layover", layover1)

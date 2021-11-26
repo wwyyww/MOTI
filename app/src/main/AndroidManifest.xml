@@ -54,12 +54,22 @@
             android:exported="true" >
 
         </activity>
+
+        <activity
+            android:name=".ReadyActivity"
+            android:exported="true" >
+
+        </activity>
+
+        <activity
+            android:name=".ReadyTicketActivity"
+            android:exported="true" >
+
+        </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true" >
-
-
-
         </activity>
         <activity
             android:name=".Login"

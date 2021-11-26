@@ -10,17 +10,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
         android:text="Button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/riding_bottom_layout"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/riding_course_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:text="밤 하늘을 수 놓은 별 코스"
         android:textColor="@color/black"
         android:textSize="18sp"
@@ -44,50 +44,109 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/riding_guide_layout"
-        android:layout_width="250dp"
-        android:layout_height="150dp"
+        android:layout_width="220dp"
+        android:layout_height="130dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/layout_rounder"
+        android:backgroundTint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/riding_gps_textview">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/riding_mainGuide_layout"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/black"
+            android:layout_height="80dp"
+            android:background="@drawable/layout_rounder"
+            android:backgroundTint="#0CE795"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/riding_mainGuide_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="TextView"
-                android:textColor="@color/white"
-                android:textSize="34sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+            <View
+                android:id="@+id/vector_114"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/vector_114"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <View
+                android:id="@+id/view1"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/vector_114"
+                android:backgroundTint="#0CE795"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/riding_mainAddr_textview"
+            <View
+                android:id="@+id/polygon_6"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="13dp"
+                android:background="@drawable/polygon_6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="TextView"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/riding_mainGuide_textview" />
+                app:layout_constraintStart_toEndOf="@+id/polygon_6"
+                app:layout_constraintTop_toTopOf="parent">
 
+                <TextView
+                    android:id="@+id/riding_mainGuide_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="TextView"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/riding_mainAddr_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="TextView"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/riding_mainGuide_textview" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#0CE795"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -97,14 +156,24 @@
             android:id="@+id/riding_subGuide_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="45dp"
             android:text="TextView"
-            android:textColor="@color/black"
-            android:textSize="30sp"
-            android:textStyle="bold"
+            android:textColor="#0CE795"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/riding_mainGuide_layout" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="40dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/riding_mainGuide_layout"
+            app:srcCompat="@drawable/ic_baseline_north_24"
+            tools:ignore="VectorDrawableCompat" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -112,8 +181,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/riding_bottom_layout"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/black"
+        android:layout_height="100dp"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -122,22 +191,24 @@
             android:id="@+id/riding_stop_imgview"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginEnd="60dp"
+            android:layout_marginStart="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/riding_end_imgview"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_pause_circle_filled_24"
+            app:tint="#DEE0E3"
             tools:ignore="VectorDrawableCompat" />
 
         <ImageView
             android:id="@+id/riding_end_imgview"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginStart="65dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/riding_stop_imgview"
+            app:layout_constraintStart_toEndOf="@+id/textView10"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_stop_circle_24"
+            app:tint="#DEE0E3"
             tools:ignore="VectorDrawableCompat" />
 
         <TextView
@@ -145,12 +216,48 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
             android:text="00:00:00"
-            android:textColor="@color/white"
-            android:textSize="40sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="@color/black"
+            android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="2dp"
+            android:text="3.1km, 1.6km 남음"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/riding_timer_textview" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/riding_camera_imgview"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="5dp"
+            android:backgroundTint="#DEE0E3"
+            android:background="@drawable/circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/riding_stop_imgview"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_photo_camera_24"
+                tools:ignore="VectorDrawableCompat" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
