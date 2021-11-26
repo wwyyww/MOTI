@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.moti">
+    package="com.example.moti" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -22,7 +22,15 @@
         </activity>
         <activity
             android:name=".SignUp"
-            android:exported="true" />
+            android:exported="true" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".Community"
             android:exported="true">
@@ -30,28 +38,47 @@ x
         </activity>
         <activity
             android:name=".CommunityMain"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="true" >
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        </activity>
+        <activity
+            android:name=".OnBoardActivity"
+            android:exported="true" >
+
         </activity>
         <activity
             android:name=".SelectLayover"
             android:exported="true" />
         <activity
             android:name=".SelectPlace"
-            android:exported="true"></activity>
+            android:exported="true" >
+
+        </activity>
         <activity
             android:name=".SearchPoi"
             android:exported="true" />
         <activity
             android:name=".GuidePedestrian"
-            android:exported="true"></activity>
+            android:exported="true" >
+
+        </activity>
+
+        <activity
+            android:name=".ReadyActivity"
+            android:exported="true" >
+
+        </activity>
+
+        <activity
+            android:name=".ReadyTicketActivity"
+            android:exported="true" >
+
+        </activity>
+
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" >
+        </activity>
         <activity
             android:name=".Login"
             android:exported="true">
@@ -66,6 +93,8 @@ x
         <activity
             android:name=".RidingActivity"
             android:exported="true" />
+
+
         <activity
             android:name=".AfterRidingActivity"
             android:exported="true"></activity>
@@ -80,6 +109,7 @@ x
         <activity
             android:name=".CourseListActivity"
             android:exported="true" />
+
         <activity
             android:name=".KaKaoTestActivity"
             android:exported="true"></activity>

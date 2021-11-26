@@ -22,19 +22,19 @@ class AfterRidingActivity: AppCompatActivity() {
         actionBar=supportActionBar
         actionBar?.hide()
 
-
-        after_time_txtview.text=intent.getStringExtra("time")
-        pushKey= intent.getStringExtra("pushKey")!!
-        Log.d("intent", "check pushKey ${pushKey}")
-
-
-        after_next_button.setOnClickListener {
-            val intent = Intent(this, SharingActivity::class.java).apply {
-//                putExtra("time", riding_timer_textview.text)
-                putExtra("pushKey", pushKey)
-
-            }.run {startActivity(this) }
-        }
+//
+//        after_time_txtview.text=intent.getStringExtra("time")
+//        pushKey= intent.getStringExtra("pushKey")!!
+//        Log.d("intent", "check pushKey ${pushKey}")
+//
+//
+//        after_next_button.setOnClickListener {
+//            val intent = Intent(this, SharingActivity::class.java).apply {
+////                putExtra("time", riding_timer_textview.text)
+//                putExtra("pushKey", pushKey)
+//
+//            }.run {startActivity(this) }
+//        }
 
 
     }

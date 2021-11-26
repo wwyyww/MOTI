@@ -36,6 +36,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.collections.ArrayList
 
 
 @Suppress("DEPRECATION")
@@ -73,7 +74,9 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     var coordList= ArrayList<Coordinate>()
     var placePoiItemList: MutableList<PoiItem> = mutableListOf<PoiItem>()
     var responseFeatureList= ArrayList<response_features>()
-    var responseCoordList=ArrayList<List<String>>()
+
+    var ResponsecoordList= ArrayList<Coordinate>()
+
 
     lateinit var departure:PoiItem
     lateinit var destination:PoiItem
@@ -93,6 +96,7 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     var photoCount = 0
     var hashtagCount = 0
 
+
     @SuppressLint("UseCompatLoadingForDrawables")
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,9 +108,22 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         riding_guide_layout.bringToFront()
         riding_bottom_layout.bringToFront()
 
-//        departure = intent.getParcelableExtra<PoiItem>("departure")!!
-//        destination = intent.getParcelableExtra<PoiItem>("destination")!!
-//        layover = intent.getParcelableExtra<PoiItem>("layover")!!
+        // 인텐트 값 가져오기
+        val intent: Intent = getIntent()
+        var departureIntent = intent.getParcelableExtra<PoiItem>("departure")
+        var destinationIntent = intent.getParcelableExtra<PoiItem>("destination")
+        var layoverIntent = intent.getParcelableExtra<PoiItem>("layover")
+
+        if (departureIntent != null && destinationIntent != null) {
+
+            departure = departureIntent
+            destination = destinationIntent
+            layover = layoverIntent!!
+
+        }
+
+        Log.d("riding", "departure 확인 : ${departure}")
+
 
 
 
@@ -189,7 +206,28 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 //            Log.d("tmap","잘 넘어왔는지 확인. destination : ${destination}")
 //            Log.d("tmap","잘 넘어왔는지 확인. layover : ${layover}")
 //            Log.d("tmap", "list[i] : ${responseFeatureList[i]}")
-//            Log.d("tmap", "list[i+1] : ${responseFeatureList[i+1].geometry}")
+
+            for (res in responseFeatureList){
+
+                var resCoordList=res.geometry.coordinates
+                for (rescoord in resCoordList){
+                    var restext=rescoord.toString()
+
+                    if(restext.indexOf("[")==0){
+//                        Log.d("tmap", "rescoord 확인 : ${rescoord}")
+                        var array=rescoord as ArrayList<Any>
+                        var coord=Coordinate()
+                        coord.lat= array[1].toString()
+                        coord.lng= array[0].toString()
+                        ResponsecoordList.add(coord)
+
+                    }
+                }
+            }
+
+            getCoordinates()
+
+            Log.d("tmap", "list[i+1] : ${responseFeatureList[i+1].geometry}")
             var distance=responseFeatureList[i+1].properties.distance
             var addr=responseFeatureList[i+1].properties.name
             riding_mainGuide_textview.text="${distance}m"
@@ -284,58 +322,66 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     // 길찾기 api 호출을 위해 payload 담기
     fun setPayload(){
-        request.startX="126.92365493654832" // 시작 위치
-        request.startY="37.556770374096615" // 시작 위치
-        request.angle="1"
-        request.speed="60"
-        request.endPoiId="334852"
-        request.endX="126.92432158129688" // 도착 위치
-        request.endY="37.55279861528311" // 도착 위치
-        request.passList="126.92774822,37.55395475" // 경유지 목록
-        request.reqCoordType="WGS84GEO"
-        request.startName="출발지" // 출발지 이름
-        request.endName="도착지" // 도착지 이름
-        request.searchOption="0"
-        request.resCoordType="WGS84GEO"
-//        request.startX="${departure.frontLon}" // 시작 위치
-//        request.startY="${departure.frontLat}"// 시작 위치
+//        request.startX="126.92365493654832" // 시작 위치
+//        request.startY="37.556770374096615" // 시작 위치
 //        request.angle="1"
 //        request.speed="60"
 //        request.endPoiId="334852"
-//        request.endX="${destination.frontLon}" // 도착 위치
-//        request.endY="${destination.frontLat}" // 도착 위치
-//        request.passList="${layover.frontLon},${layover.frontLat}" // 경유지 목록
+//        request.endX="126.92432158129688" // 도착 위치
+//        request.endY="37.55279861528311" // 도착 위치
+//        request.passList="126.92774822,37.55395475" // 경유지 목록
 //        request.reqCoordType="WGS84GEO"
 //        request.startName="출발지" // 출발지 이름
 //        request.endName="도착지" // 도착지 이름
 //        request.searchOption="0"
 //        request.resCoordType="WGS84GEO"
+        request.startX="${departure.frontLon}" // 시작 위치
+        request.startY="${departure.frontLat}"// 시작 위치
+        request.angle="1"
+        request.speed="60"
+        request.endPoiId="334852"
+        request.endX="${destination.frontLon}" // 도착 위치
+        request.endY="${destination.frontLat}" // 도착 위치
+        request.passList="${layover.frontLon},${layover.frontLat}" // 경유지 목록
+        request.reqCoordType="WGS84GEO"
+        request.startName="출발지" // 출발지 이름
+        request.endName="도착지" // 도착지 이름
+        request.searchOption="0"
+        request.resCoordType="WGS84GEO"
     }
 
     fun getCoordinates(){
 
-        database.child("user/$uid/course/date").child(todayDate).child("-Mp6jea0jyVGqqdUmII_").get().addOnSuccessListener {
-            var post=it.children
-            for(p in post){
-                var pvalue=p.value
-                Log.i("firebase", "check value $pvalue")
-                var cord = Coordinate()
-                cord.lat = p.child("lat").value.toString()
-                cord.lng = p.child("lng").value.toString()
-                Log.i("firebase", "check cord lng ${cord.lng}")
-                coordList.add(cord)
-            }
-
-            //set coordinates to polyline
-            for (coord in coordList){
-                val latitude: Double = coord.lat!!.toDouble()
-                val longitude: Double = coord.lng!!.toDouble()
-                var point= TMapPoint(latitude, longitude)
-                polyline.addLinePoint(point)
-                tmapview!!.addTMapPolyLine("line", polyline)
-            }
-
+        for (coord in ResponsecoordList){
+            val latitude: Double = coord.lat!!.toDouble()
+            val longitude: Double = coord.lng!!.toDouble()
+            var point= TMapPoint(latitude, longitude)
+            polyline.addLinePoint(point)
+            tmapview!!.addTMapPolyLine("line", polyline)
         }
+
+//        database.child("user/$uid/course/date").child(todayDate).child("-Mp6jea0jyVGqqdUmII_").get().addOnSuccessListener {
+//            var post=it.children
+//            for(p in post){
+//                var pvalue=p.value
+//                Log.i("firebase", "check value $pvalue")
+//                var cord = Coordinate()
+//                cord.lat = p.child("lat").value.toString()
+//                cord.lng = p.child("lng").value.toString()
+//                Log.i("firebase", "check cord lng ${cord.lng}")
+//                coordList.add(cord)
+//            }
+//
+//            //set coordinates to polyline
+//            for (coord in coordList){
+//                val latitude: Double = coord.lat!!.toDouble()
+//                val longitude: Double = coord.lng!!.toDouble()
+//                var point= TMapPoint(latitude, longitude)
+//                polyline.addLinePoint(point)
+//                tmapview!!.addTMapPolyLine("line", polyline)
+//            }
+//
+//        }
 
     }
 
@@ -344,8 +390,11 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
 
     override fun onLocationChange(location: Location) {
-        tmapview!!.setLocationPoint(location.longitude, location.latitude)
-        tmapview!!.setCenterPoint(location.longitude, location.latitude)
+//        tmapview!!.setLocationPoint(location.longitude, location.latitude)
+//        tmapview!!.setCenterPoint(location.longitude, location.latitude)
+
+        tmapview!!.setLocationPoint(departure.frontLon.toDouble(), departure.frontLat.toDouble())
+        tmapview!!.setCenterPoint(departure.frontLon.toDouble(), departure.frontLat.toDouble())
 
         var lat=location.latitude
         var long=location.longitude

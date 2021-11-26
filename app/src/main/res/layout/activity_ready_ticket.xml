@@ -35,57 +35,43 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="35dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginBottom="60dp"
-        android:background="@color/white"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/ticket_crop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ready_ticket_subtxt_txtView">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/ready_ticket_title_layout"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/ready_ticket_title_textview"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/layout_round"
-            android:backgroundTint="#434746"
+            android:layout_marginTop="32dp"
+            android:text="밤하늘을 수 놓은 별"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="밤하늘을 수 놓은 별"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ready_ticket_place_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="25dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ready_ticket_title_layout">
+            app:layout_constraintTop_toBottomOf="@+id/ready_ticket_title_textview">
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="42dp"
+                android:layout_marginStart="50dp"
                 android:text="공릉동"
                 android:textColor="@color/black"
                 android:textSize="26sp"
@@ -94,22 +80,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="31dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView2"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_arrow_right_alt_24"
-                tools:ignore="VectorDrawableCompat" />
-
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="42dp"
+                android:layout_marginEnd="50dp"
                 android:text="한양대"
                 android:textColor="@color/black"
                 android:textSize="26sp"
@@ -123,13 +98,101 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:textSize="12sp"
+            android:text="Name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ready_ticket_place_layout" />
+
+        <TextView
+            android:id="@+id/after_name_txtview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="1dp"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:text="Jang Jimak"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="14dp"
+            android:textSize="12sp"
+            android:text="Depart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/after_name_txtview" />
+
+
+        <TextView
+            android:id="@+id/after_date_txtview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="1dp"
+            android:text="10:30 12/11/2021"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="14dp"
+            android:textSize="12sp"
+            android:text="Moving time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/after_date_txtview" />
+
+        <TextView
+            android:id="@+id/after_time_txtview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="1dp"
+            android:text="1hour 20min"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+
+
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-
-
-
+<!--    <ImageView-->
+<!--        android:id="@+id/ready_ticket_imgview"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginStart="32dp"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:layout_marginEnd="32dp"-->
+<!--        android:layout_marginBottom="24dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:srcCompat="@drawable/ticket_crop" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
