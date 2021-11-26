@@ -16,6 +16,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <Button
+            android:id="@+id/main_menu"
+            android:layout_width="25dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/mainmenu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/activity_main_date_textview"
             android:layout_width="wrap_content"
@@ -110,7 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="25dp"
                 android:text="밤하늘을 수 놓은 별 코스"
                 android:textColor="#10111A"
                 android:textSize="17sp"
@@ -143,10 +153,10 @@
 
             <ImageView
                 android:id="@+id/v"
-                android:layout_width="19dp"
-                android:layout_height="19dp"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/mainvector"
                 app:layout_constraintLeft_toRightOf="@id/activity_main_time_textview"
                 app:layout_constraintTop_toBottomOf="@+id/activity_main_course_textview" />
@@ -187,13 +197,13 @@
 
             <ImageView
                 android:id="@+id/activity_main_arrow_imageview"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_width="70dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="25dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_add_box_24"
+                app:srcCompat="@drawable/mainroute"
                 tools:ignore="VectorDrawableCompat" />
 
 

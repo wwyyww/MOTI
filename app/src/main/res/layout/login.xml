@@ -14,18 +14,18 @@
         android:layout_marginStart="45dp"
         android:layout_marginTop="80dp"
         android:text="MOTI"
-        android:textColor="#D3D3D3"
+        android:textColor="#10B175"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/login_btn"
-        android:layout_width="0dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginStart="32dp"
+
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
+
         android:backgroundTint="#00EB93"
         android:text="로그인"
         android:textColor="@color/black"
@@ -55,7 +55,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="@color/browser_actions_bg_grey"
+        android:background="@color/white"
         android:ems="10"
         android:hint="아이디 또는 이메일을 입력해주세요."
         android:inputType="textEmailAddress"
@@ -72,7 +72,7 @@
         android:layout_marginStart="35dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="35dp"
-        android:backgroundTint="@color/browser_actions_bg_grey"
+        android:background="@color/white"
         android:ems="10"
         android:hint="비밀번호를 입력해주세요."
         android:inputType="textPassword"
@@ -86,12 +86,14 @@
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/login_googleBtn"
-        android:layout_width="180dp"
+        android:layout_width="300dp"
         android:layout_height="45dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13"></com.google.android.gms.common.SignInButton>
+        app:layout_constraintTop_toBottomOf="@+id/textView13">
+
+    </com.google.android.gms.common.SignInButton>
 
 
     <TextView
