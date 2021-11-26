@@ -42,20 +42,22 @@ class CommunityMain: AppCompatActivity() {
 
     lateinit var communityRecyclerView: RecyclerView
     lateinit var communityAdapter: ContentAdapter
-    var communityData = ArrayList<Content>()
+    //var communityData = ArrayList<Content>()
 
+
+    //lateinit var postList:  MutableLiveData<MutableList<Post>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_community_main)
 
         hashtagRecyclerView = findViewById(R.id.hashtag)
-
         communityRecyclerView = findViewById(R.id.community_main_contents)
-
         edit_searchBar = findViewById(R.id.edit_searchBar)
 
+        // 저장 배열 초기화
         hashtagList = ArrayList<String>()
+       // postList= MutableLiveData<MutableList<Post>>()
 
 
         // 검색 결과 가져오기
@@ -120,7 +122,6 @@ class CommunityMain: AppCompatActivity() {
                 hashtagList.add(1,"핫스팟")
 
 
-
                 hashtagList.apply {
                     Log.d("firebaseM", hashtagList.toString())
                     hashTagAdapter = HashTagAdapter(this@CommunityMain)
@@ -137,58 +138,7 @@ class CommunityMain: AppCompatActivity() {
         })
 
 
-
-
-        // 추가함
-        hashTagAdapter = HashTagAdapter(this@CommunityMain)
-        hashtagRecyclerView.adapter = hashTagAdapter
-        hashTagAdapter.notifyDataSetChanged()
-
-
-        // 해쉬 태그 선택 시 해당 장소들 뿌려지도록
-        hashTagAdapter.setItemClickListener(object : HashTagAdapter.OnItemClickListener{
-            override fun onClick(v: View, position: Int) {
-
-                var selectedHashtag : String = hashtagList[position]
-                Log.d("firebaseM2","클릭됨 ${selectedHashtag}")
-
-
-                val mutableData = MutableLiveData<MutableList<Post>>()
-
-                val postRef = Firebase.database.getReference("community")
-                postRef.addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val postList: MutableList<Post> = mutableListOf<Post>()
-
-                        if (snapshot.exists()) {
-                            for (userSnapshot in snapshot.children) {
-
-                                val getData = userSnapshot.getValue(Post::class.java)
-                                if (getData?.hashtag?.containsValue(selectedHashtag) == true) {
-                                    // 현재 선택된 해시태그만 가져옴
-                                    Log.d("firebaseM2", getData?.toString())
-                                    postList.add(getData!!)
-
-                                }
-
-                                mutableData.value = postList
-
-                            }
-
-
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-
-                    }
-                })
-
-                }
-
-
-
-        })
+        // 선택한 해시태그 기반 데이터 불러오기
 
 
 
@@ -200,42 +150,3 @@ class CommunityMain: AppCompatActivity() {
 
 }
 
-
-//class Communityy(var image: Int)
-//
-//class CommunityAdapter(val context: Context, private val CommunityData: ArrayList<Communityy>): RecyclerView.Adapter<CommunityAdapter.ViewHolder>() {
-//
-//    inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
-//        val course = view!!.findViewById<ImageView>(R.id.community_content)
-//
-//        fun bind(content: Content, context: Context) {
-//            course!!.setImageResource(R.drawable.seoul)
-//        }
-//
-//    }
-//
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommunityAdapter.ViewHolder {
-//        val view = LayoutInflater.from(context).inflate(R.layout.community_main_item, parent, false)
-//        return ViewHolder(view)
-//    }
-//
-//    override fun onBindViewHolder(holder: CommunityAdapter.ViewHolder, position: Int) {
-//        holder.bind(CommunityData[position], context)
-//        holder.itemView.setOnClickListener {
-//            itemClickListener.onClick(it, position)
-//        }
-//    }
-//
-//    interface OnItemClickListener {
-//        fun onClick(v: View, position: Int)
-//    }
-//    // (3) 외부에서 클릭 시 이벤트 설정
-//    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
-//        this.itemClickListener = onItemClickListener
-//    }
-//    // (4) setItemClickListener로 설정한 함수 실행
-//    private lateinit var itemClickListener : OnItemClickListener
-//
-//    override fun getItemCount() = CommunityData.size
-//
-//}

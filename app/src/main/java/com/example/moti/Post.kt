@@ -10,7 +10,8 @@ class Post (
     var recordId : String ?= "", // riding 고유 id,
     var hashtag : MutableMap<String, String> = HashMap(),  // 해시태그 한 목록
     var date : String ?= "", // 작성일
-
+    var title : String ?= "", // 글 제목
+    var photoUrl : String ?= "", // 사진 저장 경로
 )
 {
     @Exclude
@@ -22,6 +23,8 @@ class Post (
             "heart" to heart,
             "recordId" to recordId,
             "hashtag" to hashtag,
+            "title" to title,
+            "photoUrl" to photoUrl,
             "date" to date,
         )
     }

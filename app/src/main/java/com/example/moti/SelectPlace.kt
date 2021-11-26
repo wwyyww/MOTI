@@ -335,7 +335,7 @@ class SelectPlace : AppCompatActivity() {
         }
 
     }
-
+/*
     // 카테고리 검색 함
     private fun searchCategory(category_group_code: String, radius: Int, sort: String) {
         val retrofit = Retrofit.Builder()   // Retrofit 구성
@@ -358,7 +358,7 @@ class SelectPlace : AppCompatActivity() {
                         //var doc = Jsoup.connect(response.body()?.documents?.get(i)?.place_url.toString()).get()
                         selectData.add(Select(response.body()?.documents?.get(i)?.place_name.toString(), response.body()?.documents?.get(i)?.phone.toString(),
                             response.body()?.documents?.get(i)?.address_name.toString(), response.body()?.documents?.get(i)?.road_address_name.toString(),
-                            response.body()?.documents?.get(i)?.distance.toString()))
+                            response.body()?.documents?.get(i)?.distance.toString())
                     }
                 }
 
@@ -383,6 +383,6 @@ class SelectPlace : AppCompatActivity() {
                 Log.w("KaKaoTestActivity", "통신 실패: ${t.message}")
             }
         })
-    }
+    }*/
 
 }

@@ -62,6 +62,7 @@ class SharingActivity: AppCompatActivity() {
         myPost.recordId=pushKey
 
         sharingtagAdapter= SharingTagAdapter(this, selectList)
+        sharingtagAdapter.setOnItemClickListener()
         sharing_recyclerview.adapter=sharingtagAdapter
 
 
@@ -225,28 +226,37 @@ class SharingTagAdapter(private val context: Context, private var hashtagList:Ar
 
     override fun onBindViewHolder(holder: SharingTagAdapter.CustomViewHolder, position: Int) {
 
-        holder.sharingitem_category_text.text = hashtagList[position]
+        holder.category_text.text = hashtagList[position]
         Log.d("firebaseMAdapter2",hashtagList.get(position))
-
-        holder.sharingitem_close_imgview.setOnClickListener {
-            hashtagList.removeAt(position)
-            updateHashtagList(hashtagList)
-            Log.d("firebaseMAdapter2", "remove 확인 $hashtagList")
-
-        }
 
 
     }
 
+    interface OnItemClickEventListener {
+        fun onItemClick(view: View?, position: Int)
+    }
+
+    private var mItemClickListener: OnItemClickEventListener? = null
+
+    public fun setClickListsener(itemClickListener : OnItemClickEventListener){
+        this.mItemClickListener=itemClickListener
+    }
 
 
     override fun getItemCount(): Int {
         return hashtagList.size
     }
 
-    class CustomViewHolder(itemView : View): RecyclerView.ViewHolder(itemView) {
-        var sharingitem_category_text = itemView.findViewById<TextView>(R.id.sharingitem_category_text)
-        var sharingitem_close_imgview = itemView.findViewById<ImageView>(R.id.sharingitem_close_imgview)
+    class CustomViewHolder(itemView : View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        var category_text = itemView.findViewById<TextView>(R.id.category_text)
+        var sharing_close_imgview = itemView.findViewById<ImageView>(R.id.sharing_close_imgview)
+
+        override fun onClick(view: View?) {
+            mItemClickListener.onItemClick()
+        }
+
+
+
 
     }
 
