@@ -19,11 +19,15 @@ import com.google.firebase.ktx.Firebase
 
 //lateinit var postList:  MutableLiveData<MutableList<Post>>
 
+//val mutableData = MutableLiveData<MutableList<Post>>()
+
+var mutableData: MutableList<Post> = mutableListOf<Post>()
+
 class HashTagAdapter(private val context: Context) : RecyclerView.Adapter<HashTagAdapter.CustomViewHolder>(){
 
     //var hashtagList =  ArrayList<MutableCollection<String>> ()
     var hashtagList = ArrayList<String>()
-    val mutableData = MutableLiveData<MutableList<Post>>()
+    //val mutableData = MutableLiveData<MutableList<Post>>()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -63,9 +67,11 @@ class HashTagAdapter(private val context: Context) : RecyclerView.Adapter<HashTa
 
                             }
 
-                            mutableData.value = postList
+                            mutableData = postList
                            // Log.d("firebaseM5", mutableData?.toString())
-                            Log.d("firebaseM0",mutableData.value.toString())
+                            Log.d("firebaseM0",mutableData.toString())
+
+
                         }
                     }
                 }
@@ -95,14 +101,14 @@ class HashTagAdapter(private val context: Context) : RecyclerView.Adapter<HashTa
 class CommunityAdapter(private val context: Context) : RecyclerView.Adapter<CommunityAdapter.CustomViewHolder>() {
 
     //var hashtagList =  ArrayList<MutableCollection<String>> ()
-    var placeList = ArrayList<Place> ()
+    // var placeList = ArrayList<Place> ()
 
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
     ): CommunityAdapter.CustomViewHolder {
-        Log.d("firebaseMAdapter1", placeList.toString())
+        Log.d("[2]firebaseMAdapter2", mutableData.toString())
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_placeinfo, parent, false)
         return CommunityAdapter.CustomViewHolder(view)
@@ -110,16 +116,15 @@ class CommunityAdapter(private val context: Context) : RecyclerView.Adapter<Comm
     }
 
     override fun onBindViewHolder(holder: CommunityAdapter.CustomViewHolder, position: Int) {
-        //  holder.imgV_image.text = hashtagList.get(position)
-        //holder.imgV_image.src
-        // holder.txtV_title.text  = placeList.get(position)
-        // holder.recy_hashtag
-        //holder.constL_start
-
+         //holder.imgV_image.src
+         holder.txtV_title.text  = mutableData.get(position).toString()
+         //holder.recy_hashtag
+         holder.constL_startbtn
+        Log.d("[2]onBindViewHolder",mutableData.get(position).toString())
     }
 
     override fun getItemCount(): Int {
-        return placeList.size
+        return mutableData.size
     }
 
 
@@ -128,7 +133,7 @@ class CommunityAdapter(private val context: Context) : RecyclerView.Adapter<Comm
         val imgV_image = itemView.findViewById<ImageView>(R.id.imgV_image)
         val txtV_title = itemView.findViewById<TextView>(R.id.txtV_title)
         val recy_hashtag = itemView.findViewById<RecyclerView>(R.id.recy_hashtag)
-        val constL_start = itemView.findViewById<ConstraintLayout>(R.id.constL_start)
+        val constL_startbtn = itemView.findViewById<ConstraintLayout>(R.id.constL_startbtn)
     }
 
 
