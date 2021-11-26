@@ -24,6 +24,9 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_hashtag.*
 import kotlinx.android.synthetic.main.activity_sharing.*
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 @Suppress("DEPRECATION")
@@ -34,13 +37,21 @@ class SharingActivity: AppCompatActivity() {
     private lateinit var database: DatabaseReference
     private val CurrentUser = FirebaseAuth.getInstance().currentUser
     val uid = CurrentUser?.uid
+    private lateinit var pushRef:DatabaseReference
 
     var pushKey=String()
     var selectList=ArrayList<String>()
+    var postHashList= hashMapOf<String, String>()
 
     //recycler view
     lateinit var sharingtagAdapter: SharingTagAdapter
 
+    var myPost=Post()
+    var recordKey=String()
+
+    //달력
+    var mCalendar = Calendar.getInstance()
+    lateinit var todayDate:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +64,12 @@ class SharingActivity: AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         database = Firebase.database.reference
+        todayDate = (mCalendar.get(Calendar.YEAR)).toString() + "/" + (mCalendar.get(Calendar.MONTH) + 1).toString() +
+                "/" + (mCalendar.get(Calendar.DAY_OF_MONTH)).toString()
 //        pushKey= intent.getStringExtra("pushKey")!!
-        pushKey="abcdefg"
+        recordKey="abcdefg"
+        myPost.recordId=recordKey
+
 
         sharingtagAdapter= SharingTagAdapter(this, selectList)
         sharing_recyclerview.adapter=sharingtagAdapter
@@ -66,9 +81,24 @@ class SharingActivity: AppCompatActivity() {
 
 
         sharing_button.setOnClickListener {
-            database.child("community/$pushKey/uid").setValue("$uid")
-            database.child("community/$pushKey/content").setValue("${sharing_post_textview.text}")
 
+
+            pushRef=database.child("community").push()
+            pushRef.child("date").setValue(todayDate)
+            for (i in postHashList){
+                pushRef.child("hashtag/${i.key}").setValue(i.value)
+            }
+            pushRef.child("heart").setValue(0)
+            pushRef.child("postId").setValue("${pushRef.key}")
+            pushRef.child("sharedNum").setValue(0)
+            pushRef.child("record").setValue(recordKey)
+            pushRef.child("title").setValue("코스 제목")
+            pushRef.child("riderId").setValue(uid)
+            pushRef.child("photoUrl").setValue("imsiurl")
+            pushRef.child("content").setValue(sharing_post_textview.text.toString())
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
 
 
         }
@@ -94,7 +124,8 @@ class SharingActivity: AppCompatActivity() {
         if (requestCode == 2000 && resultCode == RESULT_OK) {
             selectList= data?.getStringArrayListExtra("hashtagList")!!
             sharingtagAdapter.updateHashtagList(selectList)
-            Log.d("sharing", "receive selectlist $selectList")
+            postHashList= data?.getSerializableExtra("mapHashList") as HashMap<String, String>
+            Log.d("sharing", "receive posthash $postHashList")
 
         }else{
             Log.d("sharing", "no data")
@@ -112,6 +143,8 @@ public class SelectHashtag : Activity() {
 
     var hashtagList=ArrayList<hashtag>()
     var selectList=ArrayList<String>()
+    var mapHashList= hashMapOf<String, String>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,7 +155,9 @@ public class SelectHashtag : Activity() {
 
         hashtag_check_button.setOnClickListener{
             var myintent=Intent()
+
             myintent.putExtra("hashtagList", selectList)
+            myintent.putExtra("mapHashList", mapHashList)
 
             setResult(RESULT_OK, myintent)
             finish()
@@ -149,11 +184,13 @@ public class SelectHashtag : Activity() {
                     test.background=ContextCompat.getDrawable(this, R.drawable.hashtag_select)
                     test.setTextColor(Color.parseColor("#0BE795"))
                     selectList.add("${test.text}")
+                    mapHashList["c${i}"]="${test.text}"
                 }else{
                     test.background=ContextCompat.getDrawable(this, R.drawable.hashtag)
                     selectList.remove("${test.text}")
                     test.setTextColor(Color.parseColor("#10111A"))
                     Log.d("sharing", "$selectList")
+                    mapHashList.remove("c${i}")
 
                 }
             }
@@ -171,10 +208,13 @@ public class SelectHashtag : Activity() {
                 if (hashtagList[i+4].select){
                     test.background=ContextCompat.getDrawable(this, R.drawable.hashtag_select)
                     selectList.add("${test.text}")
+                    mapHashList["m${i}"]="${test.text}"
+
                 }else{
                     test.background=ContextCompat.getDrawable(this, R.drawable.hashtag)
                     selectList.remove("${test.text}")
-                    Log.d("sharing", "$selectList")
+                    mapHashList.remove("m${i}")
+//                    Log.d("sharing", "$selectList")
                 }
             }
         }

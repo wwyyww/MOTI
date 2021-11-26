@@ -48,7 +48,7 @@
         android:layout_height="150dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="200dp"
-        android:background="@color/gray"
+        android:background="@drawable/layout_rounder"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 

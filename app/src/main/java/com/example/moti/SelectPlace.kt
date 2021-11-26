@@ -18,7 +18,6 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.SeekBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
@@ -129,6 +128,13 @@ class SelectPlace : AppCompatActivity() {
                 place_phone!!.text = select.phone
                 place_img!!.setImageResource(R.drawable.seoul)
 
+//                if(rowindex == position){
+//                    menu_btn!!.setTextColor(ContextCompat.getColor(context, R.color.green))
+//                    menu_btn!!.setBackgroundResource(R.drawable.solid_button2)
+//                } else {
+//                    menu_btn!!.setTextColor(ContextCompat.getColor(context, R.color.gray))
+//                    menu_btn!!.setBackgroundResource(R.drawable.solid_button)
+//                }
             }
 
         }
@@ -142,6 +148,8 @@ class SelectPlace : AppCompatActivity() {
             holder.bind(SelectData[position], context)
             holder.itemView.setOnClickListener {
                 itemClickListener.onClick(it, position)
+//                rowindex = position
+//                notifyDataSetChanged()
             }
         }
 
