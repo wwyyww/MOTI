@@ -30,11 +30,11 @@ data class User(
     var name : String ?= "",
     var nickname : String ?= "",
     var local : String ?= "",
-    var taste : String ?= "",
     var freindNum : Int ?= 0,
     var recordNum : String ?= "",
     var isActive : Boolean ?= false,
     var location : String ?= "",
+    var taste : MutableMap<String, String> = HashMap(),
 ){
     /*
        data class TmpRecord(
