@@ -24,6 +24,9 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_hashtag.*
 import kotlinx.android.synthetic.main.activity_sharing.*
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 @Suppress("DEPRECATION")
@@ -44,7 +47,11 @@ class SharingActivity: AppCompatActivity() {
     lateinit var sharingtagAdapter: SharingTagAdapter
 
     var myPost=Post()
+    var recordKey=String()
 
+    //달력
+    var mCalendar = Calendar.getInstance()
+    lateinit var todayDate:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +64,12 @@ class SharingActivity: AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         database = Firebase.database.reference
+        todayDate = (mCalendar.get(Calendar.YEAR)).toString() + "/" + (mCalendar.get(Calendar.MONTH) + 1).toString() +
+                "/" + (mCalendar.get(Calendar.DAY_OF_MONTH)).toString()
 //        pushKey= intent.getStringExtra("pushKey")!!
-        pushKey="abcdefg"
-        myPost.recordId=pushKey
+        recordKey="abcdefg"
+        myPost.recordId=recordKey
+
 
         sharingtagAdapter= SharingTagAdapter(this, selectList)
         sharing_recyclerview.adapter=sharingtagAdapter
@@ -71,10 +81,24 @@ class SharingActivity: AppCompatActivity() {
 
 
         sharing_button.setOnClickListener {
-            database.child("community/$pushKey/uid").setValue("$uid")
-            database.child("community/$pushKey/content").setValue("${sharing_post_textview.text}")
+
 
             pushRef=database.child("community").push()
+            pushRef.child("date").setValue(todayDate)
+            for (i in postHashList){
+                pushRef.child("hashtag/${i.key}").setValue(i.value)
+            }
+            pushRef.child("heart").setValue(0)
+            pushRef.child("postId").setValue("${pushRef.key}")
+            pushRef.child("sharedNum").setValue(0)
+            pushRef.child("record").setValue(recordKey)
+            pushRef.child("title").setValue("코스 제목")
+            pushRef.child("riderId").setValue(uid)
+            pushRef.child("photoUrl").setValue("imsiurl")
+            pushRef.child("content").setValue(sharing_post_textview.text.toString())
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
 
 
         }
