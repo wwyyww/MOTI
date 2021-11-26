@@ -42,7 +42,6 @@ class HashTagAdapter(private val context: Context) : RecyclerView.Adapter<HashTa
     }
 
 
-
     interface OnItemClickListener {
         fun onClick(v: View, position: Int)
     }
