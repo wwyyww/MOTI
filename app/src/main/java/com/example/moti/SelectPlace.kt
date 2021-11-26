@@ -322,8 +322,8 @@ class SelectPlace : AppCompatActivity() {
                     Log.d("successM", "final : ${destination}")
                     textV_destination.text = destination.name
                     textV_destination.setTextColor(Color.BLACK)
-
-                }else if (placePoiItem?.type =="layover"){
+1
+                }else if (placePoiItem?.type =="layover1"){
                     layover1 = placePoiItem
                     textV_layover1.text = layover1.name
                     textV_layover1.setTextColor(Color.BLACK)

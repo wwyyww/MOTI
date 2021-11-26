@@ -21,13 +21,15 @@ import com.google.firebase.ktx.Firebase
 
 //val mutableData = MutableLiveData<MutableList<Post>>()
 
-var mutableData: MutableList<Post> = mutableListOf<Post>()
+
+
 
 class HashTagAdapter(private val context: Context) : RecyclerView.Adapter<HashTagAdapter.CustomViewHolder>(){
 
     //var hashtagList =  ArrayList<MutableCollection<String>> ()
     var hashtagList = ArrayList<String>()
     //val mutableData = MutableLiveData<MutableList<Post>>()
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -39,54 +41,16 @@ class HashTagAdapter(private val context: Context) : RecyclerView.Adapter<HashTa
 
     }
 
+
     override fun onBindViewHolder(holder: HashTagAdapter.CustomViewHolder, position: Int) {
         holder.textV_hashtag.text = hashtagList.get(position)
 
         holder.constL_rectangle.setOnClickListener {
-
-            var selectedHashtag : String = hashtagList[position]
-            Log.d("firebaseM2","클릭됨 ${selectedHashtag}")
-
-
-
-            val postRef = Firebase.database.getReference("community")
-            postRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d("firebaseM2","호출됨")
-                    val postList: MutableList<Post> = mutableListOf<Post>()
-
-                    if (snapshot.exists()) {
-                        for (userSnapshot in snapshot.children) {
-                            Log.d("firebaseM2",userSnapshot.value.toString())
-                            val getData = userSnapshot.getValue(Post::class.java)
-                            getData?.toString()?.let { it1 -> Log.d("firebaseM3", it1) }
-                            if (getData?.hashtag?.containsValue(selectedHashtag) == true) {
-                                // 현재 선택된 해시태그만 가져옴
-                               // getData.postId?.let { it1 -> Log.d("firebaseM3", it1) }
-                                postList.add(getData!!)
-
-                            }
-
-                            mutableData = postList
-                           // Log.d("firebaseM5", mutableData?.toString())
-                            Log.d("firebaseM0",mutableData.toString())
-
-
-                        }
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-
-                }
-            })
+            itemClickListener.onClick(it, position)
+            notifyDataSetChanged()
         }
-
     }
 
-    override fun getItemCount(): Int {
-        return hashtagList.size
-    }
 
 
     class CustomViewHolder(itemView : View): RecyclerView.ViewHolder(itemView) {
@@ -94,15 +58,34 @@ class HashTagAdapter(private val context: Context) : RecyclerView.Adapter<HashTa
         val constL_rectangle = itemView.findViewById<ConstraintLayout>(R.id.constL_rectangle)
     }
 
+
+
+    interface OnItemClickListener {
+        fun onClick(v: View, position: Int)
+    }
+    // (3) 외부에서 클릭 시 이벤트 설정
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.itemClickListener = onItemClickListener
+    }
+    // (4) setItemClickListener로 설정한 함수 실행
+    private lateinit var itemClickListener : OnItemClickListener
+
+
+    override fun getItemCount(): Int {
+        return hashtagList.size
+    }
+
+
 }
 
 ////////////
 
-class CommunityAdapter(private val context: Context) : RecyclerView.Adapter<CommunityAdapter.CustomViewHolder>() {
+class CommunityAdapter(val context: Context) : RecyclerView.Adapter<CommunityAdapter.CustomViewHolder>() {
 
     //var hashtagList =  ArrayList<MutableCollection<String>> ()
     // var placeList = ArrayList<Place> ()
 
+    var mutableData: MutableList<Post> = mutableListOf<Post>()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
