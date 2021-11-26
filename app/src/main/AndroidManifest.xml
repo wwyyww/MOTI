@@ -27,6 +27,7 @@
             android:name=".CommunityMain"
             android:exported="true" >
 
+
         </activity>
         <activity
             android:name=".SelectLayover"
