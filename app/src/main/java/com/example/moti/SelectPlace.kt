@@ -1,10 +1,13 @@
 package com.example.moti
 
+import KaKaoAPI_category
+import ResultCategoryKeyword
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,11 +17,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class SelectPlace : AppCompatActivity() {
 
@@ -31,7 +40,7 @@ class SelectPlace : AppCompatActivity() {
     var menuData = ArrayList<Menu>()
 
     lateinit var selectRecyclerView: RecyclerView
-    lateinit var selectAdapter: CategoryAdapter
+    lateinit var selectAdapter: SelectAdapter
     var selectData = ArrayList<Select>()
 
     lateinit var textV_departure : TextView
@@ -88,6 +97,60 @@ class SelectPlace : AppCompatActivity() {
     }
 
     class Select(var name: String, var cate: String, var address: String, var road: String, var url: String, var Image: Int)
+
+    class SelectAdapter(val context: Context, private val SelectData: ArrayList<Select>): RecyclerView.Adapter<SelectAdapter.ViewHolder>() {
+        inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
+            val place_name = view!!.findViewById<TextView>(R.id.place_item)
+            val place_cate = view!!.findViewById<TextView>(R.id.category_name)
+            val place_add = view!!.findViewById<TextView>(R.id.place_item)
+            val place_road = view!!.findViewById<TextView>(R.id.place_item)
+            val place_image = view!!.findViewById<ImageView>(R.id.place_item)
+
+
+            fun bind(select : Select, context: Context, position: Int) {
+                place_name!!.text = select.name
+                place_cate!!.text = select.cate
+                place_add!!.text = select.address
+                place_road!!.text = select.road
+
+//                if(rowindex == position){
+//                    menu_btn!!.setTextColor(ContextCompat.getColor(context, R.color.green))
+//                    menu_btn!!.setBackgroundResource(R.drawable.solid_button2)
+//                } else {
+//                    menu_btn!!.setTextColor(ContextCompat.getColor(context, R.color.gray))
+//                    menu_btn!!.setBackgroundResource(R.drawable.solid_button)
+//                }
+            }
+
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectAdapter.ViewHolder {
+            val view = LayoutInflater.from(context).inflate(R.layout.select_place_item, parent, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: SelectAdapter.ViewHolder, position: Int) {
+            holder.bind(SelectData[position], context, position)
+            holder.itemView.setOnClickListener {
+                itemClickListener.onClick(it, position)
+//                rowindex = position
+//                notifyDataSetChanged()
+            }
+        }
+
+        interface OnItemClickListener {
+            fun onClick(v: View, position: Int)
+        }
+        // (3) 외부에서 클릭 시 이벤트 설정
+        fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+            this.itemClickListener = onItemClickListener
+        }
+        // (4) setItemClickListener로 설정한 함수 실행
+        private lateinit var itemClickListener : OnItemClickListener
+
+        override fun getItemCount() = SelectData.size
+
+    }
 
     class Menu(var menu: String)
 
@@ -172,8 +235,8 @@ class SelectPlace : AppCompatActivity() {
 
 
         selectRecyclerView = findViewById(R.id.select_main)
-        //selectAdapter = CategoryAdapter(this, selectData)
-        //selectRecyclerView.adapter = selectAdapter
+        selectAdapter = SelectAdapter(this, selectData)
+        selectRecyclerView.adapter = selectAdapter
 
         // 인텐트 값 가져오기
 
@@ -271,6 +334,55 @@ class SelectPlace : AppCompatActivity() {
 
         }
 
+    }
+
+    // 카테고리 검색 함
+    private fun searchCategory(category_group_code: String, radius: Int, sort: String) {
+        val retrofit = Retrofit.Builder()   // Retrofit 구성
+            .baseUrl(KaKaoTestActivity.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val api = retrofit.create(KaKaoAPI_category::class.java)   // 통신 인터페이스를 객체로 생성
+        val call = api.getSearchKeyword(KaKaoTestActivity.API_KEY, category_group_code, this.long, this.lat, radius, sort)   // 검색 조건 입력
+
+        // API 서버에 요청
+        call.enqueue(object: Callback<ResultCategoryKeyword> {
+            override fun onResponse(
+                call: Call<ResultCategoryKeyword>,
+                response: Response<ResultCategoryKeyword>
+            ) {
+
+                selectData = ArrayList<Select>()
+                if (response.body()?.documents?.size!!.toInt() > 0){
+                    for (i in 0..response.body()?.documents?.size!!.toInt()-1){
+                        //var doc = Jsoup.connect(response.body()?.documents?.get(i)?.place_url.toString()).get()
+                        selectData.add(Select(response.body()?.documents?.get(i)?.place_name.toString(), response.body()?.documents?.get(i)?.phone.toString(),
+                            response.body()?.documents?.get(i)?.address_name.toString(), response.body()?.documents?.get(i)?.road_address_name.toString(),
+                            response.body()?.documents?.get(i)?.distance.toString()))
+                    }
+                }
+
+
+
+
+                contentAdapter = ContentAdapter(applicationContext, contentData)
+                contentRecyclerView.adapter = contentAdapter
+                contentAdapter.setItemClickListener(object: ContentAdapter.OnItemClickListener{
+                    override fun onClick(v: View, position: Int) {
+                        //Toast.makeText(v.context, "${contentData[position].url}", Toast.LENGTH_SHORT).show()
+                        val i = Intent(Intent.ACTION_VIEW)
+                        i.data = Uri.parse(contentData[position].url.toString())
+                        startActivity(i)
+                    }
+                })
+
+            }
+
+            override fun onFailure(call: Call<ResultCategoryKeyword>, t: Throwable) {
+                // 통신 실패
+                Log.w("KaKaoTestActivity", "통신 실패: ${t.message}")
+            }
+        })
     }
 
 }
