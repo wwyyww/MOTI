@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.*
 
 class SignUp : AppCompatActivity() {
@@ -59,10 +61,7 @@ class SignUp : AppCompatActivity() {
         win.attributes = winParams
     }
 
-    lateinit var signup_email: EditText
     lateinit var signup_nickname: EditText
-    lateinit var signup_password: EditText
-    lateinit var signup_phone: EditText
     lateinit var signup_signBtn: Button
 
     private var auth: FirebaseAuth? = null
@@ -75,11 +74,14 @@ class SignUp : AppCompatActivity() {
         transparentStatusAndNavigation()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-//        signup_email = findViewById(R.id.signup_email)
-//        signup_password = findViewById(R.id.signup_password)
-//        signup_nickname = findViewById(R.id.signup_nickname)
-//        signup_phone = findViewById(R.id.signup_phone)
-//        signup_signBtn = findViewById(R.id.signup_signBtn)
+        signup_nickname = findViewById(R.id.signup_nickname)
+        signup_signBtn = findViewById(R.id.signup_signBtn)
+
+        signup_signBtn.setOnClickListener {
+            var intent: Intent = Intent(this, OnBoardActivity::class.java)
+            startActivity(intent)
+        }
+
 //
 //        supportActionBar!!.hide()
 //

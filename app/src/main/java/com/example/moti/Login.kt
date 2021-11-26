@@ -69,7 +69,7 @@ class Login : AppCompatActivity() {
         if (user != null) {
             Log.e("user", "user: ${user.toString()}")
 //            Toast.makeText(this, "[Login] currentUser가 null이 아님" + user, Toast.LENGTH_SHORT).show()
-            var intent = Intent(this, MainActivity::class.java)
+            var intent = Intent(this, SignUp::class.java)
             startActivity(intent)
             finish()
         }
