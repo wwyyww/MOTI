@@ -132,7 +132,7 @@
         android:id="@+id/btn_next"
         android:layout_width="310dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/rectangle_1"
         android:text="다음"
         app:layout_constraintBottom_toBottomOf="parent"
