@@ -5,15 +5,34 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBar
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 
 class SelectPlace : AppCompatActivity() {
+
+    //임의로
+    var lat = "37.6403239"
+    var long = "127.0678909"
+
+    lateinit var menuRecyclerView: RecyclerView
+    lateinit var menuAdapter: MenuAdapter
+    var menuData = ArrayList<Menu>()
+
+    lateinit var selectRecyclerView: RecyclerView
+    lateinit var selectAdapter: CategoryAdapter
+    var selectData = ArrayList<Select>()
 
     lateinit var textV_departure : TextView
     lateinit var textV_destination : TextView
@@ -24,17 +43,137 @@ class SelectPlace : AppCompatActivity() {
     lateinit var v_layover1 : View
 
     lateinit var btn_next : Button
-
+    var rowindex : Int = 0
 
     lateinit var departure: PoiItem
     lateinit var destination: PoiItem
     lateinit var layover1 :PoiItem
 
+    private fun transparentStatusAndNavigation() {
+        //make full transparent statusBar
+        if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
+            setWindowFlag(
+                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, true
+            )
+        }
+        if (Build.VERSION.SDK_INT >= 19) {
+            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
+        }
+        if (Build.VERSION.SDK_INT >= 21) {
+            setWindowFlag(
+                (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION), false
+            )
+            //window.statusBarColor = Color.TRANSPARENT
+            window.navigationBarColor = Color.TRANSPARENT
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            window.statusBarColor = Color.parseColor("#0CE795")
+            window.navigationBarColor = Color.TRANSPARENT
+        }
+    }
+
+    private fun setWindowFlag(bits: Int, on: Boolean) {
+        val win = window
+        val winParams = win.attributes
+        if (on) {
+            winParams.flags = winParams.flags or bits
+        } else {
+            winParams.flags = winParams.flags and bits.inv()
+        }
+        win.attributes = winParams
+    }
+
+    class Select(var name: String, var cate: String, var address: String, var road: String, var url: String, var Image: Int)
+
+    class Menu(var menu: String)
+
+    class MenuAdapter(val context: Context, private val MenuData: ArrayList<Menu>): RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
+
+
+        var rowindex : Int = 0
+
+        inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
+            val menu_btn = view!!.findViewById<TextView>(R.id.btn_menu)
+
+
+            fun bind(menu : Menu, context: Context, position: Int) {
+                menu_btn!!.text = menu.menu
+                if(rowindex == position){
+                    menu_btn!!.setTextColor(ContextCompat.getColor(context, R.color.green))
+                    menu_btn!!.setBackgroundResource(R.drawable.solid_button2)
+                } else {
+                    menu_btn!!.setTextColor(ContextCompat.getColor(context, R.color.gray))
+                    menu_btn!!.setBackgroundResource(R.drawable.solid_button)
+                }
+            }
+
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuAdapter.ViewHolder {
+            val view = LayoutInflater.from(context).inflate(R.layout.community_hashtag_item, parent, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: MenuAdapter.ViewHolder, position: Int) {
+            holder.bind(MenuData[position], context, position)
+            holder.itemView.setOnClickListener {
+                itemClickListener.onClick(it, position)
+                rowindex = position
+                notifyDataSetChanged()
+            }
+        }
+
+        interface OnItemClickListener {
+            fun onClick(v: View, position: Int)
+        }
+        // (3) 외부에서 클릭 시 이벤트 설정
+        fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+            this.itemClickListener = onItemClickListener
+        }
+        // (4) setItemClickListener로 설정한 함수 실행
+        private lateinit var itemClickListener : OnItemClickListener
+
+        override fun getItemCount() = MenuData.size
+
+    }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_place)
+        transparentStatusAndNavigation()
 
+        val actionBar: ActionBar?
+        actionBar=supportActionBar
+        actionBar?.hide()
+
+        menuData.add(Menu("카페"))
+        menuData.add(Menu("음식점"))
+        menuData.add(Menu("편의점"))
+        menuData.add(Menu("마트"))
+        menuData.add(Menu("관광명소"))
+        menuData.add(Menu("문화시설"))
+        menuData.add(Menu("숙박"))
+
+        menuRecyclerView = findViewById(R.id.category)
+        menuAdapter = MenuAdapter(this, menuData)
+        menuRecyclerView.adapter = menuAdapter
+
+        menuAdapter.setItemClickListener(object: MenuAdapter.OnItemClickListener{
+            override fun onClick(v: View, position: Int) {
+                rowindex = position
+            }
+        })
+
+
+        selectRecyclerView = findViewById(R.id.select_main)
+        //selectAdapter = CategoryAdapter(this, selectData)
+        //selectRecyclerView.adapter = selectAdapter
 
         // 인텐트 값 가져오기
 
