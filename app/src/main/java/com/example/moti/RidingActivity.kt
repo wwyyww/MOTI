@@ -336,6 +336,7 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             }
 
         }
+
     }
 
 
