@@ -90,6 +90,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     lateinit var address:String
 
     lateinit var toggle: ActionBarDrawerToggle
+    lateinit var main_total : Button
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
