@@ -1,6 +1,7 @@
 package com.example.moti
 
 import android.Manifest
+import android.Manifest.permission.CAMERA
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues.TAG
@@ -399,6 +400,40 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             Toast.makeText(this, " 업로드 실패" , Toast.LENGTH_SHORT).show()
         }
     }
+    private fun requestPermission(){
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,CAMERA),1)
+
+    }
+    private fun checkPermission():Boolean{
+
+        return (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
+            Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+
+    }
+
+
+    /*
+    @Override
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if( requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(this, "권한 설정 OK", Toast.LENGTH_SHORT).show()
+        }
+        else
+        {
+            Toast.makeText(this, "권한 허용 안됨", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+
+     */
 
 
     // 카메라 관련
@@ -416,7 +451,7 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 // Continue only if the File was successfully created
                 photoFile?.also {
                     photoURI = FileProvider.getUriForFile(
-                        this,"com.cookandroid.weplog.fileprovider", it   // 수정해야 됨
+                        this,"com.example.moti.fileprovider", it   // 수정해야 됨
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
@@ -424,6 +459,8 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             }
         }
     }
+
+
 
 
     // 카메라 관련

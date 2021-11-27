@@ -2,16 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="365dp"
         android:layout_height="200dp"
-        android:layout_margin="20dp"
+        android:layout_margin="12dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="15dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,23 +26,32 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/scenery" />
+            android:src="@drawable/picture2" />
 
         <View
             android:id="@+id/polygon_5"
-            android:layout_width="20dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="257dp"
+            android:layout_width="24dp"
+            android:layout_height="27dp"
+            android:layout_marginLeft="270dp"
             android:background="@drawable/polygon5" />
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginLeft="315dp"
+            android:layout_marginTop="135dp"
+            app:srcCompat="@drawable/ic_favorite_fill" />
 
         <TextView
             android:id="@+id/txtV_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="110dp"
+            android:layout_marginTop="102dp"
             android:text="한강을 살랑살랑 거닐기"
             android:textColor="#FFFFFF"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -52,29 +61,9 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="135dp"
             android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
-        </androidx.recyclerview.widget.RecyclerView>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"></androidx.recyclerview.widget.RecyclerView>
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constL_startbtn"
-            android:layout_width="54dp"
-            android:layout_height="22dp"
-            android:layout_marginLeft="290dp"
-            android:layout_marginTop="140dp"
-            android:background="@drawable/frame2">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="시작하기"
-                android:textColor="@color/black"
-                android:textSize="10sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
