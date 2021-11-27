@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -15,18 +16,27 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.util.DisplayMetrics
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
+import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
 import com.skt.Tmap.TMapGpsManager.NETWORK_PROVIDER
 import com.skt.Tmap.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+
+
 
 class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallback {
 
@@ -48,12 +58,12 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
                         or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION), false
             )
-            window.statusBarColor = Color.TRANSPARENT
+            //window.statusBarColor = Color.TRANSPARENT
             window.navigationBarColor = Color.TRANSPARENT
 //            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
 //            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-//            window.statusBarColor = Color.parseColor("#00000000")
-//            window.navigationBarColor = Color.parseColor("#00000000")
+            window.statusBarColor = Color.parseColor("#00000000")
+            //window.navigationBarColor = Color.parseColor("#00000000")
         }
     }
 
@@ -79,6 +89,18 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     lateinit var currentPointGeo: TMapPoint
     lateinit var address:String
 
+    lateinit var toggle: ActionBarDrawerToggle
+    lateinit var main_total : Button
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if(toggle.onOptionsItemSelected(item)){
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,11 +109,46 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         transparentStatusAndNavigation()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
+
+        val drawerLayout : DrawerLayout = findViewById(R.id.main_draw)
+        val navView : NavigationView = findViewById(R.id.nav)
+
+
+
+        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        navView.setBackgroundColor(resources.getColor(R.color.white))
+
+        navView.setNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.mypage -> {
+                    //Toast.makeText(applicationContext, "mymy", Toast.LENGTH_SHORT).show()
+                    var intent = Intent(this, Mypage::class.java)
+                    startActivity(intent)
+                }
+                //R.id.mypage2 -> Toast.makeText(applicationContext, "mymy", Toast.LENGTH_SHORT).show()
+            }
+            true
+
+        }
+
         search_place = findViewById(R.id.search_place)
 
         val actionBar:ActionBar?
         actionBar=supportActionBar
-        actionBar?.hide()
+        actionBar!!.title = ""
+
+        actionBar.setBackgroundDrawable(ColorDrawable(Color.parseColor("#00000000")))
+        //actionBar.setStackedBackgroundDrawable(ColorDrawable(Color.parseColor("#00000000")))
+
+
+
+        //actionBar?.hide()
 
         //tmap 세팅
         tmapview = TMapView(this)
@@ -184,7 +241,8 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray,
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {

@@ -35,6 +35,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.skt.Tmap.TMapGpsManager
+import com.skt.Tmap.TMapPoint
 import com.skt.Tmap.TMapPolyLine
 import com.skt.Tmap.TMapView
 import kotlinx.android.synthetic.main.activity_community_main.*
@@ -524,6 +525,7 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                                 colindex = position
                                 showPlaces(communityData[position])
 
+
                                 //selectedPlace = listOf(communityData[position])
                                 //searchCategory(category_group_code, radius, sort)
 
@@ -540,6 +542,7 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             }
         })
     }
+
 
     private fun showPlaces(selectedPlace: Post) {
         Log.i("showPlaces", selectedPlace.title.toString())
@@ -562,6 +565,18 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                     Log.i("showPlacesSN", snapshot.value.toString())
 
                     nowSelectedPlace = selectedPlace
+
+//
+//                    for (coord in ResponsecoordList){
+//                        val latitude: Double = coord.lat!!.toDouble()
+//                        val longitude: Double = coord.lng!!.toDouble()
+//                        var point= TMapPoint(latitude, longitude)
+//                        polyline.addLinePoint(point)
+//                        tmapview!!.addTMapPolyLine("line", polyline)
+//                    }
+
+
+
                  }
 
                 }
