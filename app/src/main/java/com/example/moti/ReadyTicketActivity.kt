@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.activity_ready_ticket.*
 @Suppress("DEPRECATION")
 class ReadyTicketActivity: AppCompatActivity() {
 
-
     lateinit var departure: PoiItem
     lateinit var destination: PoiItem
     lateinit var layover : PoiItem
