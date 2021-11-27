@@ -2,20 +2,95 @@ package com.example.moti
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_ready.*
 import kotlinx.android.synthetic.main.activity_search_poi.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ReadyActivity: AppCompatActivity() {
+class ReadyAdapter(val context: Context, private val ReadyData: ArrayList<String>): RecyclerView.Adapter<ReadyAdapter.ViewHolder>() {
 
+
+        inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
+        val ready_txt = view!!.findViewById<TextView>(R.id.ready_num_text)
+
+
+        fun bind(ready : String, context: Context, position: Int) {
+            ready_txt!!.text = ready
+        }
+
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReadyAdapter.ViewHolder {
+        val view = LayoutInflater.from(context).inflate(R.layout.ready_item, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ReadyAdapter.ViewHolder, position: Int) {
+        holder.bind(ReadyData[position], context, position)
+    }
+
+    override fun getItemCount() = ReadyData.size
+
+}
+
+class ReadyActivity: AppCompatActivity() {
+    private fun transparentStatusAndNavigation() {
+        //make full transparent statusBar
+        if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
+            setWindowFlag(
+                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, true
+            )
+        }
+        if (Build.VERSION.SDK_INT >= 19) {
+            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
+        }
+        if (Build.VERSION.SDK_INT >= 21) {
+            setWindowFlag(
+                (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION), false
+            )
+            window.statusBarColor = Color.TRANSPARENT
+            window.navigationBarColor = Color.TRANSPARENT
+//            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+//            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            //window.statusBarColor = Color.parseColor("#0CE795")
+            //window.navigationBarColor = Color.TRANSPARENT
+        }
+    }
+
+    private fun setWindowFlag(bits: Int, on: Boolean) {
+        val win = window
+        val winParams = win.attributes
+        if (on) {
+            winParams.flags = winParams.flags or bits
+        } else {
+            winParams.flags = winParams.flags and bits.inv()
+        }
+        win.attributes = winParams
+    }
+
+    lateinit var readyRecyclerView: RecyclerView
+    lateinit var readyAdapter: ReadyAdapter
 
     lateinit var departure: PoiItem
     lateinit var destination: PoiItem
@@ -30,14 +105,21 @@ class ReadyActivity: AppCompatActivity() {
     //리사이클러뷰에 들어갈 데이터
     var placeNameList = ArrayList<String>()
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ready)
-
+        transparentStatusAndNavigation()
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         //action bar 숨기기
         var actionBar: ActionBar?
         actionBar=supportActionBar
         actionBar?.hide()
+
+        readyRecyclerView = findViewById(R.id.ready_name_layout)
+//        readyAdapter = ReadyAdapter(this, placeNameList)
+//        readyRecyclerView.adapter = readyAdapter
 
         // 인텐트 값 가져오기
         val intent: Intent = getIntent()
@@ -61,6 +143,9 @@ class ReadyActivity: AppCompatActivity() {
             placeNameList.add(departure.name)
             placeNameList.add(destination.name)
             placeNameList.add(layover.name)
+
+            readyAdapter = ReadyAdapter(this, placeNameList)
+            readyRecyclerView.adapter = readyAdapter
 
         }
 

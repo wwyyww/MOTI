@@ -138,6 +138,12 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         }
 
         search_place = findViewById(R.id.search_place)
+        main_total = findViewById(R.id.main_total)
+
+        main_total.setOnClickListener {
+            var intent = Intent(this, CommunityMain::class.java)
+            startActivity(intent)
+        }
 
         val actionBar:ActionBar?
         actionBar=supportActionBar
