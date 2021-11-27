@@ -17,6 +17,20 @@ class Post(
     var title: String ?= "", // 글 제목
     var photoUrl: String ?= "", // 사진 저장 경로
 
+
+    var dstName : String ?= "",
+    var dstLat : String ?= "",
+    var dstLon : String ?= "",
+
+    var layoverName : String ?= "",
+    var layoverLat : String ?= "",
+    var layoverLon : String ?= "",
+
+    var startName : String ?= "",
+    var startLat : String ?= "",
+    var startLon : String ?= "",
+
+
 ): Parcelable
 {
     @Exclude
@@ -31,6 +45,15 @@ class Post(
             "title" to title,
             "photoUrl" to photoUrl,
             "date" to date,
+            "dstName" to dstName,
+            "dstLat" to dstLat,
+            "dstLon" to dstLon,
+            "layoverName" to layoverName,
+            "layoverLat" to layoverLat,
+            "layoverLon" to layoverLon,
+            "startName" to startName,
+            "startLat" to startLat,
+            "startLon" to startLon,
         )
     }
 }
