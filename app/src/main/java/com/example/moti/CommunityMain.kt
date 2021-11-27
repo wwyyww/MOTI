@@ -23,8 +23,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
@@ -35,15 +35,12 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.skt.Tmap.TMapGpsManager
-import com.skt.Tmap.TMapPoint
 import com.skt.Tmap.TMapPolyLine
 import com.skt.Tmap.TMapView
 import kotlinx.android.synthetic.main.activity_community_main.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.main_tmaplayout2
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallback {
@@ -129,8 +126,35 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     }
 
 
+    class SubHashtagAdapter(private val context: Context, private val arrayList: ArrayList<String>) : RecyclerView.Adapter<SubHashtagAdapter.ViewHolder>() {
+
+
+        inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
+            val hashtag = view!!.findViewById<TextView>(R.id.textV_hashtag2)
+
+            fun bind(context: Context, position: Int) {
+                hashtag!!.text = arrayList[position]
+            }
+        }
+
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int,
+        ): SubHashtagAdapter.ViewHolder {
+            val view = LayoutInflater.from(context).inflate(R.layout.item_hashtag2, parent, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: SubHashtagAdapter.ViewHolder, position: Int) {
+            holder.bind( context, position)
+        }
+
+        override fun getItemCount() = arrayList.size
+
+    }
+
     class CommunityAdapter(private val context: Context, private val CommunityData: ArrayList<Post>) : RecyclerView.Adapter<CommunityAdapter.ViewHolder>() {
-        var arrayOfListView = ArrayList<String>()
+        //var arrayOfListView = ArrayList<String>()
 
         var colindex  = 0
 
@@ -139,8 +163,8 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
             val title = view!!.findViewById<TextView>(R.id.txtV_title)
             //val imgV_image = itemView.findViewById<ImageView>(R.id.imgV_image)
-            val list_hashtag = itemView.findViewById<ListView>(R.id.list_hashtag)
-            val constL_startbtn = itemView.findViewById<ConstraintLayout>(R.id.constL_startbtn)
+            val list_hashtag = itemView.findViewById<RecyclerView>(R.id.list_hashtag)
+            //val constL_startbtn = itemView.findViewById<ConstraintLayout>(R.id.constL_startbtn)
 
 
             fun bind(community : Post, context: Context, position: Int) {
@@ -148,8 +172,15 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
                 var al: List<String> = ArrayList<String>(community.hashtag.values)
                 Log.d("al", al.toString())
-                var adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, al)
+                var adapter = SubHashtagAdapter(context, al as ArrayList<String>)
                 list_hashtag.adapter = adapter
+
+/*
+                val layoutManager = LinearLayoutManager(context)
+                layoutManager.orientation = LinearLayoutManager.VERTICAL
+                list_hashtag.adapter.setLayoutManager(layoutManager)
+
+ */
 
                 /*
                 var arrayOfListView = ArrayList<String>()
@@ -194,7 +225,6 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
 
     }
-
 
 
 
@@ -358,7 +388,7 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 if (this::nowSelectedPlace.isInitialized )
                 {
                     val intent = Intent(this, SelectPlace::class.java)
-                    intent.putExtra("reriding", nowSelectedPlace)
+                    intent.putExtra("sharing", nowSelectedPlace)
                     startActivity(intent)
                 }
         }
@@ -382,7 +412,8 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray,
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
@@ -457,6 +488,7 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         dialog.show()
     }
 
+
     fun searchPlaces(selectedHashTag: String) {
         Log.i("ttt", "dddd")
 
@@ -495,17 +527,11 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                                 //selectedPlace = listOf(communityData[position])
                                 //searchCategory(category_group_code, radius, sort)
 
-
-
                                 //  start 버튼 누르면
                                 floatingActionButton.visibility = View.VISIBLE
-
-
                             }
                         })
                         //Log.d("firebaseM0",mutableData.toString())
-
-
                     }
                 }
             }
@@ -532,7 +558,6 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         postRef.child("Ru1rsTPKgKctYN2mY1OfEW89hnn1/course/date/${date?.get(0)}/${date?.get(1)}/${date?.get(2)}/${recordId}").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 
-
                 if (snapshot.exists()) {
                     Log.i("showPlacesSN", snapshot.value.toString())
 
@@ -548,7 +573,11 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     }
 
 
-}
+
+    }
+
+
+
 
 
 

@@ -286,11 +286,12 @@ class SelectPlace : AppCompatActivity() {
         //selectAdapter = SelectAdapter(this, selectData)
         //selectRecyclerView.adapter = selectAdapter
 
-        // 인텐트 값 가져오기
 
-      //  val intent: Intent = getIntent()
-     //   var placePoiItem = intent.getParcelableExtra<PoiItem>("placePoiItem")
-      //  Log.d("successM", "getIntent : ${placePoiItem}")
+        // shared 된 인텐트 값 가져오기
+        val intent: Intent = getIntent()
+        var sharedPlaces = intent.getParcelableExtra<PoiItem>("sharing")
+        Log.d("sharing", "getIntent : ${sharedPlaces}")
+
 
 
         textV_departure = findViewById(R.id.textV_departure)

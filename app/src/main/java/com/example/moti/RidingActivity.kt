@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
@@ -121,7 +122,6 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         setContentView(R.layout.activity_riding)
         riding_course_textview.bringToFront()
         riding_gps_textview.bringToFront()
-        riding_button.bringToFront()
         riding_guide_layout.bringToFront()
         riding_bottom_layout.bringToFront()
 
@@ -159,6 +159,8 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 Log.d("tmap", "성공 : ${response.body()!!.features}")
 //                Log.d("tmap", "성공 : ${response.headers()}")
                 responseFeatureList= response.body()!!.features as ArrayList<response_features>
+//                Log.d("tmap", "oncreate responsefeature list[i+1] : ${responseFeatureList[1].geometry}")
+
 //                Log.d("tmap", "list : ${responseFeatureList[0].properties.turnType}")
 //                Log.d("tmap", "list : ${responseFeatureList[1].properties.distance}")
 
@@ -217,8 +219,82 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         timerIsRunning = !timerIsRunning
         if (timerIsRunning) startTimer()
 
-        riding_button.setOnClickListener{
-            //getCoordinates()
+        Handler().postDelayed({
+
+
+
+
+            if (responseFeatureList.size>0){
+                var setdistance=responseFeatureList[i+1].properties.distance
+                var setaddr=responseFeatureList[i+1].properties.name
+                riding_mainGuide_textview.text="${setdistance}m"
+                riding_mainAddr_textview.text="${setaddr}"
+                if (i<responseFeatureList.size){
+                    i += 2
+                    if(i<responseFeatureList.size){
+                        var subdistance=responseFeatureList[i+1].properties.distance
+                        riding_subGuide_textview.text="${subdistance}m"
+                    }
+                }
+            }else{
+                Log.d("tmap", "postdelayed : no response feature list")
+
+            }
+
+        }, 500)
+
+        riding_stop_imgview.setOnClickListener{
+            pauseTimer()
+            timerStart = !timerStart
+
+            if (timerStart){
+                riding_stop_imgview.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_pause_circle_filled_24))
+                startTimer()
+            }else{
+                riding_stop_imgview.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_play_circle_filled_24))
+            }
+
+        }
+
+        riding_end_imgview.setOnClickListener {
+            pauseTimer()
+            pushRef.child("Record/distance").setValue("10")
+            pushRef.child("Record/time").setValue(riding_timer_textview.text)
+            pushRef.child("Record/date").setValue(todayDate)
+            pushRef.child("Record/startLat").setValue(departure.frontLat)
+            pushRef.child("Record/startLon").setValue(departure.frontLon)
+            pushRef.child("Record/dstLat").setValue(destination.frontLat)
+            pushRef.child("Record/dstLon").setValue(destination.frontLon)
+            pushRef.child("Record/layoverLat").setValue(layover.frontLat)
+            pushRef.child("Record/layoverLon").setValue(layover.frontLon)
+            pushRef.child("Record/text").setValue("사용자가 생각 쓰는 부분")
+            pushRef.child("Record/title").setValue("해 지는 오후")
+            pushRef.child("Photo/${photoCount}").setValue("photo url")
+
+            //save coordinate
+            courseCount=0
+            for (coord in ResponsecoordList){
+                val latitude: String? = coord.lat
+                val longitude: String? = coord.lng
+                pushRef.child("Coordinates/$courseCount/lat").setValue(latitude)
+                pushRef.child("Coordinates/$courseCount/lng").setValue(longitude)
+                courseCount+=1
+            }
+
+            val intent = Intent(this, AfterRidingActivity::class.java).apply {
+                putExtra("time", riding_timer_textview.text)
+                putExtra("pushKey", pushRef.key)
+
+            }.run {startActivity(this) }
+
+//            intent.putExtra("type", "departure")
+//            Log.d("tmap", "list[i+1] : ${responseFeatureList[i+1].geometry}")
+
+
+        }
+
+        riding_guide_layout.setOnClickListener {
+//            Log.d("tmap", "click check")
 //            Log.d("tmap","잘 넘어왔는지 확인. departure : ${departure}")
 //            Log.d("tmap","잘 넘어왔는지 확인. destination : ${destination}")
 //            Log.d("tmap","잘 넘어왔는지 확인. layover : ${layover}")
@@ -242,9 +318,11 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 }
             }
 
+            //코스 경로 지도에 세팅
             getCoordinates()
 
-            Log.d("tmap", "list[i+1] : ${responseFeatureList[i+1].geometry}")
+            //길 안내 세팅
+//            Log.d("tmap", "list[i+1] : ${responseFeatureList[i+1].geometry}")
             var distance=responseFeatureList[i+1].properties.distance
             var addr=responseFeatureList[i+1].properties.name
             riding_mainGuide_textview.text="${distance}m"
@@ -256,60 +334,6 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                     riding_subGuide_textview.text="${subdistance}m"
                 }
             }
-
-//            for (res in responseFeatureList){
-//                if (res.geometry.coordinate.size > 1){
-//                    var tmpCoordList=res.geometry.coordinate
-//                    for (coord in tmpCoordList){
-//                        responseCoordList.add(coord)
-//                    }
-//                }else{
-//                    responseCoordList.add(res.geometry.coordinate)
-//
-//                }
-//
-//            }
-        }
-
-        riding_stop_imgview.setOnClickListener{
-            pauseTimer()
-            timerStart = !timerStart
-
-            if (timerStart){
-                riding_stop_imgview.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_pause_circle_filled_24))
-                startTimer()
-            }else{
-                riding_stop_imgview.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_play_circle_filled_24))
-            }
-
-        }
-
-        riding_end_imgview.setOnClickListener {
-            pauseTimer()
-
-            pushRef.child("Record/distance").setValue("10")
-            pushRef.child("Record/time").setValue("00:11:11")
-            pushRef.child("Record/date").setValue("2021/11/25")
-            pushRef.child("Record/start").setValue("출발지")
-            pushRef.child("Record/arrive").setValue("도착지")
-            pushRef.child("Record/layover").setValue("경유지")
-            pushRef.child("Record/text").setValue("사용자가 생각 쓰는 부분")
-            pushRef.child("Hashtag/${hashtagCount}").setValue("해시태그")
-            pushRef.child("Photo/${photoCount}").setValue("photo url")
-
-
-
-            val intent = Intent(this, AfterRidingActivity::class.java).apply {
-                putExtra("time", riding_timer_textview.text)
-                putExtra("pushKey", pushRef.key)
-
-
-
-            }.run {startActivity(this) }
-
-//            intent.putExtra("type", "departure")
-
-
         }
 
 
@@ -517,9 +541,9 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         var point=TMapPoint(lat, long)
 
         //save coordinate
-        pushRef.child("Coordinates/$courseCount/lat").setValue("$lat")
-        pushRef.child("Coordinates/$courseCount/lng").setValue("$long")
-        courseCount+=1
+//        pushRef.child("Coordinates/$courseCount/lat").setValue("$lat")
+//        pushRef.child("Coordinates/$courseCount/lng").setValue("$long")
+//        courseCount+=1
 
         polyline.addLinePoint(point)
         tmapview!!.addTMapPolyLine("line", polyline)
