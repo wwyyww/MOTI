@@ -32,7 +32,7 @@
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_onboard.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_ready.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_ready_ticket.xml" value="0.25364583333333335" />
-        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_riding.xml" value="0.25364583333333335" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_riding.xml" value="0.42311033883579496" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_search_place.xml" value="0.176" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_search_poi.xml" value="0.2" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_search_road.xml" value="0.13854166666666667" />
@@ -45,7 +45,7 @@
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/imsi.xml" value="0.1" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_hashtag.xml" value="0.4" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_placeinfo.xml" value="0.264" />
-        <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_poi_info.xml" value="0.264" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_poi_info.xml" value="0.6" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_poi_info2.xml" value="0.264" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/login.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/onboard_item.xml" value="0.25364583333333335" />

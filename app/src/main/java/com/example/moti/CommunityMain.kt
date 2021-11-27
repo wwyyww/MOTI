@@ -28,6 +28,16 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class CommunityMain: AppCompatActivity() {
+    /*
+                 var arrayOfListView = ArrayList<String>()
+                 arrayOfListView = community.hashtag as ArrayList<String>
+                 val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayOfListView)
+                 list_hashtag.adapter = adapter
+
+
+                  */
+    //var arrayOfListView = ArrayList<String>()
+   // lateinit var adapter1 : ArrayList<String>
 
     lateinit var edit_searchBar: EditText
     var tmapview: TMapView? = null
@@ -101,6 +111,7 @@ class CommunityMain: AppCompatActivity() {
 
 
     class CommunityAdapter(private val context: Context, private val CommunityData: ArrayList<Post>) : RecyclerView.Adapter<CommunityAdapter.ViewHolder>() {
+        var arrayOfListView = ArrayList<String>()
 
         var colindex  = 0
 
@@ -116,13 +127,21 @@ class CommunityMain: AppCompatActivity() {
             fun bind(community : Post, context: Context, position: Int) {
                 title!!.text = community.title
 
+                var al: List<String> = ArrayList<String>(community.hashtag.values)
+                Log.d("al", al.toString())
+                var adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, al)
+                list_hashtag.adapter = adapter
+
                 /*
                 var arrayOfListView = ArrayList<String>()
                 arrayOfListView = community.hashtag as ArrayList<String>
-                val adapter = ArrayAdapter(this@CommunityAdapter, android.R.layout.activity_list_item, arrayOfListView)
+                val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayOfListView)
                 list_hashtag.adapter = adapter
 
+
                  */
+
+
             }
 
         }
@@ -339,6 +358,12 @@ class CommunityMain: AppCompatActivity() {
 
                         communityAdapter = CommunityAdapter(applicationContext, communityData)
                         communityRecyclerView.adapter = communityAdapter
+
+//                        var arrayOfListView = ArrayList<String>()
+//                        arrayOfListView = = hashtag as ArrayList<String>
+//                        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayOfListView)
+//
+
 
                         communityAdapter.setItemClickListener(object : CommunityAdapter.OnItemClickListener{
                             override fun onClick(v: View, position: Int) {

@@ -15,6 +15,7 @@ import android.provider.Settings
 import android.util.Log
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -73,6 +74,12 @@ class SearchPoi : AppCompatActivity(), TMapGpsManager.onLocationChangedCallback{
 
         val intent: Intent = getIntent()
         var type : String? = intent.getStringExtra("type")
+
+
+        //action bar 숨기기
+        var actionBar: ActionBar?
+        actionBar=supportActionBar
+        actionBar?.hide()
 
 
         // Retrofit & tmapAPI 불러오기

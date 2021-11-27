@@ -12,6 +12,8 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
@@ -20,7 +22,10 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.skt.Tmap.TMapGpsManager.GPS_PROVIDER
 import com.skt.Tmap.TMapGpsManager.NETWORK_PROVIDER
 import kotlinx.android.synthetic.main.activity_riding.*
@@ -29,6 +34,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.skt.Tmap.*
 import java.util.*
 import retrofit2.Call
@@ -36,6 +42,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
 
@@ -95,6 +104,14 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     var photoCount = 0
     var hashtagCount = 0
+
+
+    // 카메라 변수
+    lateinit var riding_camera_imgview : ConstraintLayout
+    lateinit var photoURI : Uri
+    val REQUEST_TAKE_PHOTO = 1
+    lateinit var currentPhotoPath: String // 사진 경로
+    lateinit var fileName : String
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -277,9 +294,8 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             pushRef.child("Record/arrive").setValue("도착지")
             pushRef.child("Record/layover").setValue("경유지")
             pushRef.child("Record/text").setValue("사용자가 생각 쓰는 부분")
-            pushRef.child("Photo/${photoCount}").setValue("photo url")
             pushRef.child("Hashtag/${hashtagCount}").setValue("해시태그")
-
+            pushRef.child("Photo/${photoCount}").setValue("photo url")
 
 
 
@@ -298,8 +314,108 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
 
 
+        // 카메라 연결
+        riding_camera_imgview = findViewById(R.id.riding_camera_imgview)
+        riding_camera_imgview.setOnClickListener{
+            
+            Log.d("CameraClick", "touch됨")
+            val cameraPermissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+            if (cameraPermissionCheck != PackageManager.PERMISSION_GRANTED) { // 권한이 없는 경우
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), 1000)
+            } else { //권한이 있는 경우
+                val REQUEST_IMAGE_CAPTURE = 1
+                Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                    takePictureIntent.resolveActivity(packageManager)?.also {
+                        dispatchTakePictureIntent()
+                        uploadImage(photoURI) // 이미지 firestore에 업로드
+                    }
+                }
+            }
+        }
+
+
+    } //onCreate 함수 종료 지점
+
+
+
+    // 카메라 권한 없을 때
+/*
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == 1000) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+*/
+    // 카메라 관련 : 이미지 firestore에 업로드
+    private fun uploadImage(uri : Uri) {
+
+        var storage : FirebaseStorage ?= FirebaseStorage.getInstance()
+        var uid = FirebaseAuth.getInstance().currentUser?.uid
+
+        // 파일 이름 설정
+        fileName = "IMAGE_${uid}_${SimpleDateFormat("yyyymmdd_HHmmss").format(Date())}_.png"
+
+        // 클라우드 파일을 가리키는 포인터
+        var imageRef = storage!!.reference.child("community").child(fileName)
+
+        // 이미지 파일 업로드
+        imageRef.putFile(uri!!).addOnSuccessListener {
+            Toast.makeText(this, " 업로드 성공" + imageRef.toString() , Toast.LENGTH_SHORT).show()
+        }.addOnFailureListener{
+            Toast.makeText(this, " 업로드 실패" , Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    // 카메라 관련
+    private fun dispatchTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    photoURI = FileProvider.getUriForFile(
+                        this,"com.cookandroid.weplog.fileprovider", it   // 수정해야 됨
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
+                }
+            }
+        }
+    }
+
+
+    // 카메라 관련
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File ?= getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
 
     }
+
+
+
 
     private fun startTimer(){
         timerTask=kotlin.concurrent.timer(period = 10){
