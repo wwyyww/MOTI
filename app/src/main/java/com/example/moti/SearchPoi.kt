@@ -2,6 +2,7 @@ package com.example.moti
 
 import android.Manifest
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moti.RidingActivity.Companion.PERMISSION_REQUEST_CODE
 import com.skt.Tmap.TMapGpsManager
 import com.skt.Tmap.TMapPoint
+import kotlinx.android.synthetic.main.activity_search_poi.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -244,10 +246,40 @@ class SearchPoi : AppCompatActivity(), TMapGpsManager.onLocationChangedCallback{
         latitude = location.latitude.toString()
         longitude = location.longitude.toString()
 
+        textView11.text = getCompleteAddressString(this, location.latitude, location.longitude)
+
         Log.d("SUCCESSM", "Raw: ${latitude.toString()}")
         Log.d("SUCCESSM", "Raw: ${longitude.toString()}")
 
 
+    }
+
+
+    //주소 좌표를 한글 주소로 반환
+    private fun getCompleteAddressString(context: Context?, LATITUDE: Double, LONGITUDE: Double): String {
+        var strAdd = ""
+        val geocoder = Geocoder(context, Locale.getDefault())
+        try {
+            val addresses: List<Address>? = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1)
+            if (addresses != null) {
+                val returnedAddress: Address = addresses[0]
+                val strReturnedAddress = StringBuilder("")
+                for (i in 0..returnedAddress.getMaxAddressLineIndex()) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n")
+                }
+                strAdd = strReturnedAddress.toString()
+                Log.w("MyCurrentloctionaddress", strReturnedAddress.toString())
+            } else {
+                Log.w("MyCurrentloctionaddress", "No Address returned!")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.w("MyCurrentloctionaddress", "Canont get Address!")
+        }
+
+        // "대한민국 " 글자 지워버림
+        strAdd = strAdd.substring(5)
+        return strAdd
     }
 
 
