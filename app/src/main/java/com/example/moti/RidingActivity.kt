@@ -294,7 +294,7 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             pushRef.child("Record/arrive").setValue("도착지")
             pushRef.child("Record/layover").setValue("경유지")
             pushRef.child("Record/text").setValue("사용자가 생각 쓰는 부분")
-            pushRef.child("Hashtag/${hashtagCount}").setValue("해시태그")
+            //pushRef.child("Hashtag/${hashtagCount}").setValue("해시태그")
             pushRef.child("Photo/${photoCount}").setValue("photo url")
 
 

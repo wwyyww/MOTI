@@ -45,12 +45,15 @@
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_hashtag"
             android:layout_width="181dp"
-            android:layout_height="29dp"
+            android:layout_height="30dp"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="135dp"></ListView>
+            android:layout_marginTop="135dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+        </androidx.recyclerview.widget.RecyclerView>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
