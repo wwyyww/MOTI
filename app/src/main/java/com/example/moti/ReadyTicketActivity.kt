@@ -56,8 +56,8 @@ class ReadyTicketActivity: AppCompatActivity() {
         //시간 세팅 & 시간 형식 : 10:30 12/11/2021
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy")
-        val formatted = current.format(formatter)
-        Log.d("readyTicket", "today datetime check ${formatted}")
+        val formattedDate = current.format(formatter)
+        Log.d("readyTicket", "today datetime check ${formattedDate}")
 //        todayDate = (mCalendar.get(Calendar.YEAR)).toString() + "/" + (mCalendar.get(Calendar.MONTH) + 1).toString() +
 //                "/" + (mCalendar.get(Calendar.DAY_OF_MONTH)).toString()
 
@@ -79,7 +79,12 @@ class ReadyTicketActivity: AppCompatActivity() {
 
         ready_ticket_depart_txtview.text = departaddress
         ready_ticket_arrive_txtview.text = arriveaddress
-        ready_ticket_name_txtview.text = database.child("users/${uid}/nickname").get().toString()
+        ready_ticket_date_txtview.text = formattedDate
+
+        database.child("users/${uid}/nickname").get().addOnSuccessListener {
+            Log.d("readyTicket", "nickname check ${it.value}")
+            ready_ticket_name_txtview.text = it.value.toString()
+        }
 
         Handler().postDelayed({
             val nextintent = Intent(this, RidingActivity::class.java).apply {
@@ -87,9 +92,7 @@ class ReadyTicketActivity: AppCompatActivity() {
                 putExtra("destination", destination)
                 putExtra("layover", layover)
             }.run {startActivity(this) }
-        }, 10000)
-
-
+        }, 4000)
 
 
 
