@@ -1,20 +1,32 @@
 package com.example.moti
 
+import android.Manifest
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -22,16 +34,25 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.skt.Tmap.TMapGpsManager
+import com.skt.Tmap.TMapPoint
+import com.skt.Tmap.TMapPolyLine
 import com.skt.Tmap.TMapView
+import kotlinx.android.synthetic.main.activity_community_main.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.main_tmaplayout2
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
-class CommunityMain: AppCompatActivity() {
+class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallback {
 
     lateinit var edit_searchBar: EditText
     var tmapview: TMapView? = null
     lateinit var searchPlace: PoiItem
 
+    lateinit var floatingActionButton : FloatingActionButton
 
     lateinit var hashtagRecyclerView: RecyclerView
     lateinit var hashTagAdapter : HashTagAdapter
@@ -44,7 +65,18 @@ class CommunityMain: AppCompatActivity() {
     lateinit var communityAdapter: CommunityAdapter
     var communityData = ArrayList<Post>()
 
-    //lateinit var selectedData :  MutableList<Post>
+    lateinit var nowSelectedPlace : Post
+
+    //gps 관련
+    var tMapGPS: TMapGpsManager? = null
+    lateinit var polyline : TMapPolyLine
+    lateinit var address:String
+
+
+    companion object {
+        const val PERMISSION_REQUEST_CODE = 1001
+    }
+
 
     class HashTagAdapter(val context: Context, private val HashTagData: ArrayList<String>): RecyclerView.Adapter<HashTagAdapter.ViewHolder>() {
 
@@ -98,6 +130,7 @@ class CommunityMain: AppCompatActivity() {
 
 
     class CommunityAdapter(private val context: Context, private val CommunityData: ArrayList<Post>) : RecyclerView.Adapter<CommunityAdapter.ViewHolder>() {
+        var arrayOfListView = ArrayList<String>()
 
         var colindex  = 0
 
@@ -106,12 +139,17 @@ class CommunityMain: AppCompatActivity() {
         inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
             val title = view!!.findViewById<TextView>(R.id.txtV_title)
             //val imgV_image = itemView.findViewById<ImageView>(R.id.imgV_image)
-            val list_hashtag = itemView.findViewById<RecyclerView>(R.id.list_hashtag)
+            val list_hashtag = itemView.findViewById<ListView>(R.id.list_hashtag)
             val constL_startbtn = itemView.findViewById<ConstraintLayout>(R.id.constL_startbtn)
 
 
             fun bind(community : Post, context: Context, position: Int) {
                 title!!.text = community.title
+
+                var al: List<String> = ArrayList<String>(community.hashtag.values)
+                Log.d("al", al.toString())
+                var adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, al)
+                list_hashtag.adapter = adapter
 
                 /*
                 var arrayOfListView = ArrayList<String>()
@@ -138,12 +176,13 @@ class CommunityMain: AppCompatActivity() {
                 notifyDataSetChanged()
             }
 
-            //holder.item
+
         }
 
         interface OnItemClickListener {
             fun onClick(v: View, position: Int)
         }
+
         // (3) 외부에서 클릭 시 이벤트 설정
         fun setItemClickListener(onItemClickListener: OnItemClickListener) {
             this.itemClickListener = onItemClickListener
@@ -159,6 +198,7 @@ class CommunityMain: AppCompatActivity() {
 
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_community_main)
@@ -168,8 +208,9 @@ class CommunityMain: AppCompatActivity() {
 
         communityRecyclerView = findViewById(R.id.community_main_contents)
         edit_searchBar = findViewById(R.id.edit_searchBar)
+        floatingActionButton = findViewById(R.id.floatingActionButton)
 
-
+        floatingActionButton.visibility = View.GONE
 
 
         // 검색 결과 가져오기
@@ -284,6 +325,26 @@ class CommunityMain: AppCompatActivity() {
         tmapview!!.setTrackingMode(true)
         main_tmaplayout2.addView(tmapview)
 
+        //위치 권한 확인
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "권한 승인", Toast.LENGTH_SHORT).show()
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), // 1
+                RidingActivity.PERMISSION_REQUEST_CODE) // 2
+        }
+
+        // GPS using T Map
+        tMapGPS = TMapGpsManager(this)
+
+        // Initial Setting
+        // Initial Setting
+        tMapGPS!!.minTime=1000
+        tMapGPS!!.minDistance= 10F
+        tMapGPS!!.provider= TMapGpsManager.NETWORK_PROVIDER
+
+        tMapGPS!!.OpenGps()
+
 
         // 검색바
         edit_searchBar.setOnClickListener {
@@ -292,11 +353,108 @@ class CommunityMain: AppCompatActivity() {
             resultLauncher.launch(intent)
         }
 
+        // start 버튼 누르면
+        floatingActionButton.setOnClickListener {
+                if (this::nowSelectedPlace.isInitialized )
+                {
+                    val intent = Intent(this, SelectPlace::class.java)
+                    intent.putExtra("reriding", nowSelectedPlace)
+                    startActivity(intent)
+                }
+        }
 
 
 
 
+    }
 
+
+    override fun onLocationChange(location: Location) {
+        tmapview!!.setLocationPoint(location.longitude, location.latitude)
+        tmapview!!.setCenterPoint(location.longitude, location.latitude)
+        this.address = getCompleteAddressString(this, location.latitude, location.longitude)
+        textV_nowPlace.text=getCompleteAddressString(this, location.latitude, location.longitude)
+
+
+    }
+
+
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            RidingActivity.PERMISSION_REQUEST_CODE -> {  // 1
+                if (grantResults.isEmpty()) {  // 2
+                    throw RuntimeException("Empty permission result")
+                }
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {  // 3
+                    Toast.makeText(this, "권한 승인", Toast.LENGTH_SHORT).show()
+                } else {
+                    if (shouldShowRequestPermissionRationale(
+                            Manifest.permission.ACCESS_FINE_LOCATION)) { // 4
+                        Log.d(ContentValues.TAG, "User declined, but i can still ask for more")
+                        requestPermissions(
+                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                            RidingActivity.PERMISSION_REQUEST_CODE)
+                    } else {
+                        Log.d(ContentValues.TAG, "User declined and i can't ask")
+                        showDialogToGetPermission()   // 5
+                    }
+                }
+            }
+        }
+    }
+
+
+    //주소 좌표를 한글 주소로 반환
+    private fun getCompleteAddressString(context: Context?, LATITUDE: Double, LONGITUDE: Double): String {
+        var strAdd = ""
+        val geocoder = Geocoder(context, Locale.getDefault())
+        try {
+            val addresses: List<Address>? = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1)
+            if (addresses != null) {
+                val returnedAddress: Address = addresses[0]
+                val strReturnedAddress = StringBuilder("")
+                for (i in 0..returnedAddress.getMaxAddressLineIndex()) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n")
+                }
+                strAdd = strReturnedAddress.toString()
+                Log.w("MyCurrentloctionaddress", strReturnedAddress.toString())
+            } else {
+                Log.w("MyCurrentloctionaddress", "No Address returned!")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.w("MyCurrentloctionaddress", "Canont get Address!")
+        }
+
+        // "대한민국 " 글자 지워버림
+        strAdd = strAdd.substring(5)
+        return strAdd
+    }
+
+
+    private fun showDialogToGetPermission() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Permisisons request")
+            .setMessage("We need the location permission for some reason. " +
+                    "You need to move on Settings to grant some permissions")
+
+        builder.setPositiveButton("OK") { dialogInterface, i ->
+            val intent = Intent(
+                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                Uri.fromParts("package", packageName, null))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)   // 6
+        }
+        builder.setNegativeButton("Later") { dialogInterface, i ->
+            // ignore
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     fun searchPlaces(selectedHashTag: String) {
@@ -333,7 +491,16 @@ class CommunityMain: AppCompatActivity() {
                                 Log.d("CommunityAdapter", "클릭됨")
                                 colindex = position
                                 showPlaces(communityData[position])
+
+                                //selectedPlace = listOf(communityData[position])
                                 //searchCategory(category_group_code, radius, sort)
+
+
+
+                                //  start 버튼 누르면
+                                floatingActionButton.visibility = View.VISIBLE
+
+
                             }
                         })
                         //Log.d("firebaseM0",mutableData.toString())
@@ -368,6 +535,8 @@ class CommunityMain: AppCompatActivity() {
 
                 if (snapshot.exists()) {
                     Log.i("showPlacesSN", snapshot.value.toString())
+
+                    nowSelectedPlace = selectedPlace
                  }
 
                 }

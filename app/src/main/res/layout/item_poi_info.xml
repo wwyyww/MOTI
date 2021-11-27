@@ -25,11 +25,12 @@
             android:id="@+id/textV_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:text="서울여자대학교"
             android:textColor="#000000"
             android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.054"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,11 +38,11 @@
             android:id="@+id/textV_lowerBizName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:text="대학교"
             android:textSize="11sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintHorizontal_bias="0.934"
             app:layout_constraintStart_toEndOf="@+id/textV_name"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,47 +52,33 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:text="500.2 km"
-            android:textColor="#3C3C3C"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.046"
+            app:layout_constraintHorizontal_bias="0.953"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textV_name"
-            app:layout_constraintVertical_bias="0.333" />
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="|"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.198"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textV_name"
-            app:layout_constraintVertical_bias="0.277" />
+            app:layout_constraintVertical_bias="0.285" />
 
         <TextView
             android:id="@+id/textV_fullAddressRoad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="92dp"
+            android:layout_marginStart="16dp"
             android:text="서울 노원구 화랑로 621"
             android:textColor="#606060"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textV_name"
-            app:layout_constraintVertical_bias="0.409" />
+            app:layout_constraintVertical_bias="0.37" />
 
         <TextView
             android:id="@+id/textV_lowerAddrName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="(공릉동)"
+            android:text="공릉동"
             android:textColor="#606060"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -99,20 +86,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textV_fullAddressRoad"
             app:layout_constraintTop_toBottomOf="@+id/textV_name"
-            app:layout_constraintVertical_bias="0.409" />
-
-        <ImageView
-            android:id="@+id/img_mapIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="28dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.476"
-            app:srcCompat="@android:drawable/ic_dialog_map"
-            app:tint="#009688" />
+            app:layout_constraintVertical_bias="0.41000003" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

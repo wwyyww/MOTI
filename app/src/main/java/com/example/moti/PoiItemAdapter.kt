@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -34,7 +35,7 @@ class PoiItemAdapter(private val context : Context, var type : String) : Recycle
         holder.textV_fullAddressRoad.text = poiItemList.get(position).newAddressList.newAddress[0].fullAddressRoad
         holder.textV_lowerAddrName.text = poiItemList.get(position).lowerAddrName
 
-        holder.img_mapIcon.setOnClickListener {
+        holder.constL_poiInfo.setOnClickListener {
 
             var placePoiItem : PoiItem = PoiItem(
                 type= type,
@@ -69,7 +70,7 @@ class PoiItemAdapter(private val context : Context, var type : String) : Recycle
         var textV_lowerBizName = itemView.findViewById<TextView>(R.id.textV_lowerBizName)
         var textV_fullAddressRoad = itemView.findViewById<TextView>(R.id.textV_fullAddressRoad)
         var textV_lowerAddrName = itemView.findViewById<TextView>(R.id.textV_lowerAddrName)
-        var img_mapIcon = itemView.findViewById<ImageView>(R.id.img_mapIcon)
+        var constL_poiInfo = itemView.findViewById<ConstraintLayout>(R.id.constL_poiInfo)
     }
 
 }
