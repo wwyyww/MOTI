@@ -75,7 +75,6 @@ class AfterRidingActivity: AppCompatActivity() {
         ridingKey= intent.getStringExtra("pushKey")!!
         Log.d("intent", "check pushKey ${ridingKey}")
 
-        after_departure_textview
 
         database.child("users/${uid}/nickname").get().addOnSuccessListener {
             Log.d("readyTicket", "nickname check ${it.value}")
@@ -83,8 +82,8 @@ class AfterRidingActivity: AppCompatActivity() {
         }
 
 
-        departaddress = departure.fullAddressRoad.split(" ")[2]
-        arriveaddress = destination.fullAddressRoad.split(" ")[2]
+        after_departure_textview.text = departure.fullAddressRoad.split(" ")[2]
+        after_arrival_textview.text = destination.fullAddressRoad.split(" ")[2]
 
 
 
