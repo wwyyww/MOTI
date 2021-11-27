@@ -100,6 +100,30 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:background="@drawable/ic_gps_icon" />
 
+            <TextView
+                android:id="@+id/main_city_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="25dp"
+                android:text="공릉 2동"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/main_fulladdr_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="2dp"
+                android:text="서울시 노원구 화랑로"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/main_city_textview" />
 
 
             <Button
@@ -133,7 +157,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="15dp"
                     android:text="밤하늘을 수 놓은 별 코스"
                     android:textColor="#10111A"
                     android:textSize="17sp"
@@ -146,17 +170,17 @@
                     android:layout_width="19dp"
                     android:layout_height="19dp"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="10dp"
                     android:src="@drawable/maincourse"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/activity_main_course_textview" />
 
                 <TextView
-                    android:id="@+id/activity_main_time_textview"
+                    android:id="@+id/activity_main_depart_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="45dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="9dp"
                     android:text="화랑대"
                     android:textColor="@color/black"
                     android:textSize="15sp"
@@ -166,20 +190,20 @@
 
                 <ImageView
                     android:id="@+id/v"
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:layout_marginStart="20dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/mainvector"
-                    app:layout_constraintLeft_toRightOf="@id/activity_main_time_textview"
+                    android:src="@drawable/ic_baseline_arrow_right_alt_24"
+                    app:layout_constraintLeft_toRightOf="@id/activity_main_depart_textview"
                     app:layout_constraintTop_toBottomOf="@+id/activity_main_course_textview" />
 
                 <TextView
-                    android:id="@+id/activity_main_time_textview2"
+                    android:id="@+id/activity_main_arrival_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="9dp"
                     android:text="북서울 꿈의 숲"
                     android:textColor="@color/black"
                     android:textSize="15sp"
@@ -191,27 +215,27 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:src="@drawable/main_time"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginStart="20dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/activity_main_time_textview"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_main_depart_textview"
                     app:layout_constraintRight_toLeftOf="@id/activity_main_see_textview"/>
 
                 <TextView
                     android:id="@+id/activity_main_see_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginStart="45dp"
                     android:text="1시간 30분"
                     android:textSize="13sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/activity_main_time_textview" />
+                    app:layout_constraintTop_toBottomOf="@+id/activity_main_depart_textview" />
 
                 <ImageView
                     android:id="@+id/activity_main_arrow_imageview"
-                    android:layout_width="70dp"
-                    android:layout_height="80dp"
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="25dp"
                     app:layout_constraintEnd_toEndOf="parent"

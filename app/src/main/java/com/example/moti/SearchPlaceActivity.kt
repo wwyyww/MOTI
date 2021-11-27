@@ -4,14 +4,14 @@ import KaKaoAPI_category
 import ResultCategoryKeyword
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -77,10 +77,50 @@ class SearchPlaceActivity : AppCompatActivity() {
         }
 
     }
+    private fun transparentStatusAndNavigation() {
+        //make full transparent statusBar
+        if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
+            setWindowFlag(
+                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, true
+            )
+        }
+        if (Build.VERSION.SDK_INT >= 19) {
+            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
+        }
+        if (Build.VERSION.SDK_INT >= 21) {
+            setWindowFlag(
+                (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION), false
+            )
+            window.statusBarColor = Color.TRANSPARENT
+            window.navigationBarColor = Color.TRANSPARENT
+//            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+//            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            //window.statusBarColor = Color.parseColor("#0CE795")
+            //window.navigationBarColor = Color.TRANSPARENT
+        }
+    }
+
+    private fun setWindowFlag(bits: Int, on: Boolean) {
+        val win = window
+        val winParams = win.attributes
+        if (on) {
+            winParams.flags = winParams.flags or bits
+        } else {
+            winParams.flags = winParams.flags and bits.inv()
+        }
+        win.attributes = winParams
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_place)
+        transparentStatusAndNavigation()
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         radius = 10000
         sort = "accuracy"
         category_group_code = "CE7"
@@ -115,13 +155,13 @@ class SearchPlaceActivity : AppCompatActivity() {
             pop.show()
         }
 
-        categoryData.add(Category_Menu("카페", R.drawable.ic_baseline_star_24))
-        categoryData.add(Category_Menu("음식점", R.drawable.ic_baseline_star_24))
-        categoryData.add(Category_Menu("편의점", R.drawable.ic_baseline_star_24))
-        categoryData.add(Category_Menu("마트", R.drawable.ic_baseline_star_24))
-        categoryData.add(Category_Menu("관광명소", R.drawable.ic_baseline_star_24))
-        categoryData.add(Category_Menu("문화시설", R.drawable.ic_baseline_star_24))
-        categoryData.add(Category_Menu("숙박", R.drawable.ic_baseline_star_24))
+        categoryData.add(Category_Menu("카페", R.drawable.coffee_cup))
+        categoryData.add(Category_Menu("음식점", R.drawable.knife))
+        categoryData.add(Category_Menu("편의점", R.drawable.store))
+        categoryData.add(Category_Menu("마트", R.drawable.mart))
+        categoryData.add(Category_Menu("관광명소", R.drawable.destination))
+        categoryData.add(Category_Menu("문화시설", R.drawable.group))
+        categoryData.add(Category_Menu("숙박", R.drawable.accommodation))
 
         val actionBar: ActionBar?
         actionBar=supportActionBar
@@ -319,6 +359,22 @@ class CategoryAdapter(val context: Context, private val CategoryData: ArrayList<
                 menu!!.setTextColor(ContextCompat.getColor(context, R.color.black))
             } else {
                 menu!!.setTextColor(ContextCompat.getColor(context, R.color.gray))
+                if(position == 0){
+                    icon!!.setImageResource(R.drawable.coffeecup)
+                } else if (position == 1){
+                    icon!!.setImageResource(R.drawable.knife2)
+                } else if (position == 2){
+                    icon!!.setImageResource(R.drawable.store2)
+                } else if (position == 3){
+                    icon!!.setImageResource(R.drawable.mart2)
+                } else if (position == 4){
+                    icon!!.setImageResource(R.drawable.destination2)
+                } else if (position == 5){
+                    icon!!.setImageResource(R.drawable.group2)
+                } else {
+                    icon!!.setImageResource(R.drawable.accommodation2)
+                }
+
             }
         }
 
