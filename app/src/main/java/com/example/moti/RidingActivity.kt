@@ -215,6 +215,9 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
         tMapGPS!!.OpenGps()
         polyline= TMapPolyLine()
+        polyline.lineWidth = 4F
+        polyline.lineColor = Color.parseColor("#0BE795")
+        polyline.outLineColor = Color.parseColor("#0BE795")
 
         timerIsRunning = !timerIsRunning
         if (timerIsRunning) startTimer()
@@ -261,10 +264,13 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             pushRef.child("Record/distance").setValue("10")
             pushRef.child("Record/time").setValue(riding_timer_textview.text)
             pushRef.child("Record/date").setValue(todayDate)
+            pushRef.child("Record/startName").setValue(departure.name)
             pushRef.child("Record/startLat").setValue(departure.frontLat)
             pushRef.child("Record/startLon").setValue(departure.frontLon)
+            pushRef.child("Record/dstName").setValue(destination.name)
             pushRef.child("Record/dstLat").setValue(destination.frontLat)
             pushRef.child("Record/dstLon").setValue(destination.frontLon)
+            pushRef.child("Record/layoverName").setValue(layover.name)
             pushRef.child("Record/layoverLat").setValue(layover.frontLat)
             pushRef.child("Record/layoverLon").setValue(layover.frontLon)
             pushRef.child("Record/text").setValue("사용자가 생각 쓰는 부분")

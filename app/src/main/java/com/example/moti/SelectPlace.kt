@@ -5,6 +5,8 @@ import ResultCategoryKeyword
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -252,7 +254,7 @@ class SelectPlace : AppCompatActivity() {
 
 
         transparentStatusAndNavigation()
-
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         radius = 10000
         sort = "accuracy"
         category_group_code = "CE7"

@@ -5,6 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/riding_gps_imgview"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/riding_bottom_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_gps_icon"
+        tools:ignore="VectorDrawableCompat" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/riding_guide_layout"
@@ -29,28 +39,18 @@
 
             <View
                 android:id="@+id/vector_114"
-                android:layout_width="20dp"
+                android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/vector_114"
+                android:backgroundTint="@color/white"
+                android:background="@drawable/ic_arrowline_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:id="@+id/view1"
-                android:layout_width="50dp"
-                android:layout_height="40dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/vector_114"
-                android:backgroundTint="#0CE795"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+
 
             <View
                 android:id="@+id/polygon_6"
@@ -59,7 +59,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="35dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="18dp"
                 android:background="@drawable/polygon_6"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

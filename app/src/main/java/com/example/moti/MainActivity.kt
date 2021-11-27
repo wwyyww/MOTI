@@ -34,6 +34,8 @@ import com.google.android.material.navigation.NavigationView
 import com.skt.Tmap.TMapGpsManager.NETWORK_PROVIDER
 import com.skt.Tmap.*
 import kotlinx.android.synthetic.main.activity_main.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -138,6 +140,12 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         }
 
         search_place = findViewById(R.id.search_place)
+        main_total = findViewById(R.id.main_total)
+
+        main_total.setOnClickListener {
+            var intent = Intent(this, CommunityMain::class.java)
+            startActivity(intent)
+        }
 
         val actionBar:ActionBar?
         actionBar=supportActionBar
@@ -146,7 +154,16 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         actionBar.setBackgroundDrawable(ColorDrawable(Color.parseColor("#00000000")))
         //actionBar.setStackedBackgroundDrawable(ColorDrawable(Color.parseColor("#00000000")))
 
+        val current = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDateTime.now()
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
+//        val formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy")
+        val formatter = DateTimeFormatter.ofPattern("MM.dd EE a hh:mm ")
+        val formattedDate = current.format(formatter)
 
+        activity_main_date_textview.text=formattedDate
 
         //actionBar?.hide()
 
