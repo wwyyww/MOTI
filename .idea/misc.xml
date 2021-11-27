@@ -43,16 +43,17 @@
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_test_kakao.xml" value="0.13333333333333333" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_upload_course.xml" value="0.2390625" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/course_item_recycler.xml" value="0.176" />
-        <entry key="..\:/Project/MOTI/app/src/main/res/layout/imsi.xml" value="0.1" />
-        <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_hashtag.xml" value="0.4" />
-        <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_hashtag2.xml" value="1.6" />
-        <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_placeinfo.xml" value="0.264" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/imsi.xml" value="0.24413553431798435" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_hashtag.xml" value="0.72" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_hashtag2.xml" value="0.536" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_placeinfo.xml" value="0.2" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_poi_info.xml" value="0.6" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_poi_info2.xml" value="0.264" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/login.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/onboard_item.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/searchplace_category_item.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/test.xml" value="0.25364583333333335" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/xml/file_paths.xml" value="0.1" />
       </map>
     </option>
   </component>
