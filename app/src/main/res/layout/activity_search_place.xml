@@ -101,7 +101,7 @@
             <LinearLayout
                 android:layout_marginLeft="10dp"
                 android:layout_width="100dp"
-                android:background="@drawable/hashtag"
+                android:background="@drawable/hashtag2"
                 android:layout_height="30dp"
                 android:layout_gravity="center">
 
@@ -125,7 +125,7 @@
             <LinearLayout
                 android:layout_marginLeft="10dp"
                 android:layout_width="100dp"
-                android:background="@drawable/hashtag"
+                android:background="@drawable/hashtag2"
                 android:layout_height="30dp"
                 android:layout_gravity="center">
 
