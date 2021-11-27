@@ -33,6 +33,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.skt.Tmap.TMapGpsManager
 import com.skt.Tmap.TMapPoint
@@ -42,6 +43,7 @@ import kotlinx.android.synthetic.main.activity_community_main.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.main_tmaplayout2
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallback {
@@ -70,6 +72,9 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     lateinit var polyline : TMapPolyLine
     lateinit var address:String
 
+    //db용
+    private val CurrentUser = FirebaseAuth.getInstance().currentUser
+    val uid = CurrentUser?.uid
 
     companion object {
         const val PERMISSION_REQUEST_CODE = 1001
@@ -558,22 +563,32 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
         //  TODO("${riderId}/course/date로 바꿔야함 ")
 
-        postRef.child("Ru1rsTPKgKctYN2mY1OfEW89hnn1/course/date/${date?.get(0)}/${date?.get(1)}/${date?.get(2)}/${recordId}").addValueEventListener(object : ValueEventListener {
+
+
+        postRef.child("$uid/course/date/${date?.get(0)}/${date?.get(1)}/${date?.get(2)}/${recordId}").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 if (snapshot.exists()) {
                     Log.i("showPlacesSN", snapshot.value.toString())
 
                     nowSelectedPlace = selectedPlace
+                    Log.i("showPlacesSN", "nowselected key : ${nowSelectedPlace.recordId}")
 
-//
-//                    for (coord in ResponsecoordList){
-//                        val latitude: Double = coord.lat!!.toDouble()
-//                        val longitude: Double = coord.lng!!.toDouble()
-//                        var point= TMapPoint(latitude, longitude)
-//                        polyline.addLinePoint(point)
-//                        tmapview!!.addTMapPolyLine("line", polyline)
-//                    }
+                    postRef.child("$uid/course/date/${nowSelectedPlace.date}/${nowSelectedPlace.recordId}").get().addOnSuccessListener {
+
+                        var childlist = it.child("Coordinates").children
+                        polyline= TMapPolyLine()
+
+                        for (coord in childlist){
+                            val latitude = coord.child("lat").value.toString().toDouble()
+                            val longitude = coord.child("lng").value.toString().toDouble()
+                            var point= TMapPoint(latitude, longitude)
+                            polyline.addLinePoint(point)
+                            tmapview!!.addTMapPolyLine("line", polyline)
+                        }
+
+                    }
+
 
 
 
