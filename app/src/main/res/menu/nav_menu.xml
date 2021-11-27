@@ -3,13 +3,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
+    <item android:title="  내 코스">
 
-    <item
-        android:id="@+id/mypage"
-        android:title="마이페이지"/>
+        <menu>
+            <item android:title="   전체"
+                android:id="@+id/total"/>
+            <item android:title="   내 지역"
+                android:id="@+id/total2"/>
+            <item android:title="   테마별 코스"
+                android:id="@+id/total3"/>
+        </menu>
 
-    <item
-        android:id="@+id/mypage2"
-        android:title="마이페이지2"/>
+    </item>
+    <item android:title="  마이페이지">
+
+        <menu>
+            <item
+                android:id="@+id/mypage"
+                android:title="    내 컬렉션"/>
+            <item
+                android:id="@+id/mypage2"
+                android:title="    내 지도"/>
+        </menu>
+
+    </item>
+
+
+    <item android:title=" ">
+
+        <menu>
+            <item
+                android:title="    Notice"/>
+            <item
+                android:title="    Help"/>
+            <item
+                android:title="    Feedback"/>
+            <item
+                android:title="    Settings"/>
+
+        </menu>
+
+    </item>
+
 
 </menu>
