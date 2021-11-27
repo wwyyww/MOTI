@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_ready.*
 import kotlinx.android.synthetic.main.activity_search_poi.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ReadyActivity: AppCompatActivity() {
@@ -25,6 +26,9 @@ class ReadyActivity: AppCompatActivity() {
 
     var departaddress=String()
     var arriveaddress=String()
+
+    //리사이클러뷰에 들어갈 데이터
+    var placeNameList = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +58,9 @@ class ReadyActivity: AppCompatActivity() {
             departaddress = departFulladdress.split(" ")[2]
             arriveaddress = arriveFulladdress.split(" ")[2]
 
-
+            placeNameList.add(departure.name)
+            placeNameList.add(destination.name)
+            placeNameList.add(layover.name)
 
         }
 
