@@ -314,12 +314,6 @@ class CommunityMain: AppCompatActivity() {
     fun searchPlaces(selectedHashTag: String) {
         Log.i("ttt", "dddd")
 
-
-
-
-
-
-
         var mutableData: MutableList<Post> = mutableListOf<Post>()
         val postRef = Firebase.database.getReference("community")
 
@@ -397,7 +391,6 @@ class CommunityMain: AppCompatActivity() {
                     Log.i("showPlacesSN", snapshot.value.toString())
 
                     nowSelectedPlace = selectedPlace
-
                  }
 
                 }
