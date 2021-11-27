@@ -140,9 +140,14 @@ class ReadyActivity: AppCompatActivity() {
             departaddress = departFulladdress.split(" ")[2]
             arriveaddress = arriveFulladdress.split(" ")[2]
 
-            placeNameList.add(departure.name)
-            placeNameList.add(destination.name)
-            placeNameList.add(layover.name)
+//            placeNameList.add(departure.name)
+//            placeNameList.add(destination.name)
+//            placeNameList.add(layover.name)
+
+            placeNameList.add("롯데월드 잠실점")
+            placeNameList.add("성수역[2호선]")
+            placeNameList.add("잠실역[2호선]")
+
 
             readyAdapter = ReadyAdapter(this, placeNameList)
             readyRecyclerView.adapter = readyAdapter
