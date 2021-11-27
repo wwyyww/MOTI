@@ -66,5 +66,7 @@ dependencies {
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
 
     implementation 'de.hdodenhof:circleimageview:3.1.0' //Circle ImageView
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0' // DrawerLayout
+    implementation 'com.google.android.material:material:1.0.0' // NavigationView
 
 }
