@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -28,11 +29,13 @@ class ReadyAdapter(val context: Context, private val ReadyData: ArrayList<String
 
 
         inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
-        val ready_txt = view!!.findViewById<TextView>(R.id.ready_num_text)
+            val ready_txt = view!!.findViewById<TextView>(R.id.ready_num_text)
+            val ready_img = view!!.findViewById<ImageView>(R.id.ready_num_imageview)
 
 
         fun bind(ready : String, context: Context, position: Int) {
             ready_txt!!.text = ready
+            ready_img!!.setImageResource(R.drawable.ic_baseline_check_circle_24)
         }
 
     }
@@ -156,7 +159,7 @@ class ReadyActivity: AppCompatActivity() {
         placeNameList.add("성수역[2호선]")
         placeNameList.add("잠실역[2호선]")
 
-        readyAdapter = ReadyAdapter(this, placeNameList)
+        readyAdapter = ReadyAdapter(applicationContext, placeNameList)
         readyRecyclerView.adapter = readyAdapter
 
         ready_start_btn.setOnClickListener {
