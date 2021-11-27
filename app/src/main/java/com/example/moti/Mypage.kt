@@ -1,5 +1,6 @@
 package com.example.moti
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -26,12 +27,12 @@ class Mypage : AppCompatActivity() {
     lateinit var hashTagAdapter : CommunityMain.HashTagAdapter
     var hashtagList =  ArrayList<String>()
 
-
+    var colindex : Int = 0
     var rowindex : Int = 0
 
     lateinit var communityRecyclerView: RecyclerView
     lateinit var communityAdapter: CommunityMain.CommunityAdapter
-    var communityData = ArrayList<Post>()
+    //var communityData = ArrayList<Post>()
 
 
 
@@ -126,14 +127,17 @@ class Mypage : AppCompatActivity() {
 
 
                                         var ticket: Post = Post(
-                                                postId = ridings.key,
+                                                recordId = ridings.key,
                                                 riderId = CurrentUser?.uid.toString(),
                                                // hashtag = ridings.child("Record/Hashtag").value as MutableMap<String, String>,
-                                                hashtag = ridings.child("Hashtag").value as MutableMap<String, String>,
                                                 date = ridings.child("Record/date").toString(),
                                                 title = ridings.child("Record/title").value.toString(),
                                                 photoUrl = "imsi"
                                             )
+
+                                        if (ridings!!.child("Hashtag").value != null){
+                                            ticket.hashtag = ridings!!.child("Hashtag").value as MutableMap<String, String>
+                                        }
 
                                             tickets.add(ticket)
 
@@ -144,6 +148,16 @@ class Mypage : AppCompatActivity() {
                                     communityAdapter = CommunityMain.CommunityAdapter(applicationContext, tickets)
                                     communityRecyclerView.adapter = communityAdapter
 
+                                    communityAdapter.setItemClickListener(object : CommunityMain.CommunityAdapter.OnItemClickListener{
+                                        override fun onClick(v: View, position: Int) {
+                                            Log.d("CommunityAdapter", "클릭됨")
+                                            colindex = position
+                                            showPlaces(tickets[position])
+
+                                            //selectedPlace = listOf(communityData[position])
+                                            //searchCategory(category_group_code, radius, sort)
+                                        }
+                                    })
 
                                 }
                             }
@@ -159,9 +173,47 @@ class Mypage : AppCompatActivity() {
         })
     }
 
-}
+    private fun showPlaces(selectedPlace: Post) {
+        Log.i("showPlaces", selectedPlace.title.toString())
 
-class HashTag (
-    var key : String ?= "",
-    var value : String ?= "",
-)
+        var riderId = selectedPlace.riderId
+        var date = selectedPlace.date?.split("/")
+
+
+        Log.i("selectedPlace1", date.toString())
+        Log.i("selectedPlace3", selectedPlace.title.toString())
+        Log.i("selectedPlace4", selectedPlace.postId.toString())
+        Log.i("selectedPlace5", selectedPlace.recordId.toString()) //
+
+        Log.i("selectedPlace6", selectedPlace.riderId.toString())
+
+
+        val intent = Intent(this, AfterRidingActivity::class.java)
+        intent.putExtra("selectedPlace", selectedPlace)
+        startActivity(intent)
+
+        /*
+        // 사용자 티켓 정보 가져오기
+        val postRef = Firebase.database.getReference("user")
+
+        //  TODO("${riderId}/course/date로 바꿔야함 ")
+
+        postRef.child("Ru1rsTPKgKctYN2mY1OfEW89hnn1/course/date/${date?.get(0)}/${date?.get(1)}/${date?.get(2)}/${recordId}").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if (snapshot.exists()) {
+                    Log.i("showPlacesSN", snapshot.value.toString())
+
+                    nowSelectedPlace = selectedPlace
+                }
+
+            }
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+
+         */
+
+    }
+}
