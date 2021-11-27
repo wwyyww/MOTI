@@ -579,7 +579,7 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
                         var childlist = it.child("Coordinates").children
                         polyline= TMapPolyLine()
-                        polyline.lineWidth = 2F
+                        polyline.lineWidth = 4F
                         polyline.lineColor = Color.parseColor("#0BE795")
                         polyline.outLineColor = Color.parseColor("#0BE795")
 
