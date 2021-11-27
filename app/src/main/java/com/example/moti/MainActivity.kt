@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main2)
         transparentStatusAndNavigation()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 

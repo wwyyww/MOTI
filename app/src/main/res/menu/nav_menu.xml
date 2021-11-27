@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+
+    <item
+        android:id="@+id/mypage"
+        android:title="마이페이지"/>
+
+    <item
+        android:id="@+id/mypage2"
+        android:title="마이페이지2"/>
+
+</menu>
