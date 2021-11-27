@@ -207,7 +207,7 @@
             android:id="@+id/riding_end_imgview"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginStart="65dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             app:layout_constraintStart_toEndOf="@+id/riding_course_textview"
             app:layout_constraintTop_toBottomOf="@+id/textView10"
