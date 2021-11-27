@@ -130,6 +130,8 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         var departureIntent = intent.getParcelableExtra<PoiItem>("departure")
         var destinationIntent = intent.getParcelableExtra<PoiItem>("destination")
         var layoverIntent = intent.getParcelableExtra<PoiItem>("layover")
+        var sharedPlaces = intent.getParcelableExtra<Post>("sharing")
+
 
         if (departureIntent != null && destinationIntent != null) {
 
@@ -274,7 +276,7 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             pushRef.child("Record/layoverLat").setValue(layover.frontLat)
             pushRef.child("Record/layoverLon").setValue(layover.frontLon)
             pushRef.child("Record/text").setValue("사용자가 생각 쓰는 부분")
-            pushRef.child("Record/title").setValue("해 지는 오후")
+            pushRef.child("Record/title").setValue(sharedPlaces!!.title)
             pushRef.child("Photo/${photoCount}").setValue("photo url")
 
             //save coordinate
@@ -287,9 +289,14 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 courseCount+=1
             }
 
+
             val intent = Intent(this, AfterRidingActivity::class.java).apply {
                 putExtra("time", riding_timer_textview.text)
                 putExtra("pushKey", pushRef.key)
+                putExtra("departure", departure)
+                putExtra("destination", destination)
+                putExtra("layover", layover)
+                putExtra("sharing", sharedPlaces)
 
             }.run {startActivity(this) }
 

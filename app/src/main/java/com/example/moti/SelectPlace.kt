@@ -24,6 +24,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -67,6 +72,11 @@ class SelectPlace : AppCompatActivity() {
     lateinit var departure: PoiItem
     lateinit var destination: PoiItem
     lateinit var layover1 :PoiItem
+
+    lateinit var retrofit: Retrofit
+    lateinit var tmapApi :TmapAPI
+
+    var poiItemList = mutableListOf<Poi>()
 
     private fun transparentStatusAndNavigation() {
         //make full transparent statusBar
@@ -232,6 +242,17 @@ class SelectPlace : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_place)
+
+
+        textV_departure = findViewById(R.id.textV_departure)
+        textV_destination = findViewById(R.id.textV_destination)
+        textV_layover1 = findViewById(R.id.textV_layover1)
+        btn_next = findViewById(R.id.btn_next)
+        v_departure = findViewById(R.id.v_departure)
+        v_layover1 = findViewById(R.id.v_layover1)
+        v_destination = findViewById(R.id.v_destination)
+
+
         transparentStatusAndNavigation()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         radius = 10000
@@ -290,18 +311,61 @@ class SelectPlace : AppCompatActivity() {
 
         // shared 된 인텐트 값 가져오기
         val intent: Intent = getIntent()
-        var sharedPlaces = intent.getParcelableExtra<PoiItem>("sharing")
+        var sharedPlaces = intent.getParcelableExtra<Post>("sharing")
         Log.d("sharing", "getIntent : ${sharedPlaces}")
 
 
 
-        textV_departure = findViewById(R.id.textV_departure)
-        textV_destination = findViewById(R.id.textV_destination)
-        textV_layover1 = findViewById(R.id.textV_layover1)
-        btn_next = findViewById(R.id.btn_next)
-        v_departure = findViewById(R.id.v_departure)
-        v_layover1 = findViewById(R.id.v_layover1)
-        v_destination = findViewById(R.id.v_destination)
+
+        // shared 인텐트 값이 있다면 poi api 함수 호출
+        if(sharedPlaces != null) {
+            var riderId = sharedPlaces.riderId
+            var date = sharedPlaces.date?.split("/")
+            var recordId = sharedPlaces.recordId
+
+            // 사용자 티켓 정보 가져오기
+            val postRef = Firebase.database.getReference("user")
+
+            //  TODO("${riderId}/course/date로 바꿔야함 ")
+            postRef.child("Ru1rsTPKgKctYN2mY1OfEW89hnn1/course/date/${date?.get(0)}/${date?.get(1)}/${
+                date?.get(2)
+            }/${recordId}/Record").addValueEventListener(object :
+                ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    if (snapshot.exists()) {
+                        Log.i("showPlacesSN", snapshot.value.toString())
+
+                        getPoiInfo("destination",
+                            snapshot.child("dstName").value.toString(),
+                            snapshot.child("dstLat").value.toString(),
+                            snapshot.child("dstLon").value.toString())
+
+                        getPoiInfo("layover1",
+                            snapshot.child("layoverName").value.toString(),
+                            snapshot.child("layoverLat").value.toString(),
+                            snapshot.child("layoverLon").value.toString())
+
+                        getPoiInfo("departure",
+                            snapshot.child("startName").value.toString(),
+                            snapshot.child("startLat").value.toString(),
+                            snapshot.child("startLon").value.toString())
+
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+
+
+        }
+
+
+
+
+
 
 
 
@@ -315,7 +379,7 @@ class SelectPlace : AppCompatActivity() {
                     departure = placePoiItem
 //                    placePoiItemList.add(0,placePoiItem )
                     Log.d("successM", "final : ${placePoiItem}")
-                    textV_departure.text = placePoiItem.name
+                    textV_departure.text = departure.name
                     textV_departure.setTextColor(Color.BLACK)
 
                 }else if (placePoiItem?.type =="destination"){
@@ -380,11 +444,96 @@ class SelectPlace : AppCompatActivity() {
                 putExtra("departure", departure)
                 putExtra("destination", destination)
                 putExtra("layover", layover1)
+                putExtra("sharing", sharedPlaces)
+
             }.run {startActivity(this) }
 
         }
 
     }
+
+    // shared 된 경우 getPoiInfo 처리함
+    fun getPoiInfo(type: String, keyword : String, latitude : String, longitude: String) {
+
+        Log.d("getPoiInfo", "[Poi] 성공1")
+        var placePoiItem: PoiItem
+
+        // Retrofit & tmapAPI 불러오기
+        retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL_TMAP_API)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        tmapApi = retrofit.create(TmapAPI::class.java)
+
+        // 1. 명칭(POI) 검색 api 호출
+        val callSearchPoi =
+            tmapApi.searchPoi(version = "1", searchKeyword = keyword, appKey = APPKEY)
+
+        callSearchPoi.enqueue(object : Callback<PoiParamRspns> {
+
+            override fun onResponse(
+                call: Call<PoiParamRspns>,
+                response: Response<PoiParamRspns>,
+            ) {
+                Log.d("successM", "[Poi] 성공1: ${response.raw()}")
+                Log.d("successM", "[Poi] 성공2 : ${response.body()?.searchPoiInfo?.pois?.poi}")
+                // Log.d("successM", "성공 : ${response.body()}")
+                Log.d("successM", "[Poi] 성공3 : ${response.headers()}")
+
+                if (response.body() != null) {
+                    //Toast.makeText(this@SearchPoi, response.body().toString(), Toast.LENGTH_SHORT).show()
+
+                    poiItemList.apply {
+                        poiItemList = response.body()!!.searchPoiInfo.pois.poi as MutableList<Poi>
+                    }
+
+                    // 2. 맞는 POI 정보 불러오기
+                    for (tmpPoi in poiItemList) {
+                        if (tmpPoi.frontLat == latitude && tmpPoi.frontLon == longitude) {
+
+                            placePoiItem = PoiItem(
+                                type = type,
+                                name = tmpPoi.name.toString(),
+                                radius = tmpPoi.radius.toString(),
+                                lowerBizName = tmpPoi.lowerBizName.toString(),
+                                lowerAddrName = tmpPoi.lowerAddrName.toString(),
+                                frontLat = tmpPoi.frontLat.toString(),
+                                frontLon = tmpPoi.frontLon.toString(),
+                                fullAddressRoad = tmpPoi.newAddressList.newAddress[0].fullAddressRoad,
+                            )
+
+                            Log.d("getPoiInfo", "type : ${type} ${placePoiItem}")
+                            if (type == "destination") {
+                                destination = placePoiItem
+                                textV_destination.text = destination.name
+                                textV_destination.setTextColor(Color.BLACK)
+
+                            } else if (type == "departure") {
+                                departure = placePoiItem
+                                textV_departure.text = departure.name
+                                textV_departure.setTextColor(Color.BLACK)
+                            } else if (type == "layover1") {
+
+                                layover1 = placePoiItem
+                                textV_layover1.text = layover1.name
+                                textV_layover1.setTextColor(Color.BLACK)
+                            }
+
+
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<PoiParamRspns>, t: Throwable) {
+                Log.d("errorM", t.message.toString())
+
+            }
+        })
+    }
+
+
 
     // 카테고리 검색 함
     private fun searchCategory(category_group_code: String, radius: Int, sort: String) {

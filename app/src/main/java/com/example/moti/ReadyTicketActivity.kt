@@ -68,6 +68,8 @@ class ReadyTicketActivity: AppCompatActivity() {
         var layoverIntent = intent.getParcelableExtra<PoiItem>("layover")
         departaddress = intent.getStringExtra("departaddress")!!
         arriveaddress = intent.getStringExtra("arriveaddress")!!
+        var sharedPlaces = intent.getParcelableExtra<Post>("sharing")
+
 
         if (departureIntent != null && destinationIntent != null) {
 
@@ -81,6 +83,9 @@ class ReadyTicketActivity: AppCompatActivity() {
         ready_ticket_arrive_txtview.text = arriveaddress
         ready_ticket_date_txtview.text = formattedDate
 
+
+        ready_ticket_title_textview.text = sharedPlaces!!.title
+
         database.child("users/${uid}/nickname").get().addOnSuccessListener {
             Log.d("readyTicket", "nickname check ${it.value}")
             ready_ticket_name_txtview.text = it.value.toString()
@@ -91,6 +96,8 @@ class ReadyTicketActivity: AppCompatActivity() {
                 putExtra("departure", departure)
                 putExtra("destination", destination)
                 putExtra("layover", layover)
+                putExtra("sharing", sharedPlaces)
+
             }.run {startActivity(this) }
         }, 4000)
 

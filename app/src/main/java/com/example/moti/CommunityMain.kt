@@ -42,7 +42,6 @@ import com.skt.Tmap.TMapPolyLine
 import com.skt.Tmap.TMapView
 import kotlinx.android.synthetic.main.activity_community_main.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.main_tmaplayout2
 import java.util.*
 import kotlin.collections.ArrayList
 

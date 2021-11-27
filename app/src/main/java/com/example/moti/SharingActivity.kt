@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -24,6 +26,8 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_hashtag.*
 import kotlinx.android.synthetic.main.activity_sharing.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -39,7 +43,6 @@ class SharingActivity: AppCompatActivity() {
     val uid = CurrentUser?.uid
     private lateinit var pushRef:DatabaseReference
 
-    var pushKey=String()
     var selectList=ArrayList<String>()
     var postHashList= hashMapOf<String, String>()
 
@@ -53,6 +56,7 @@ class SharingActivity: AppCompatActivity() {
     var mCalendar = Calendar.getInstance()
     lateinit var todayDate:String
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sharing)
@@ -66,10 +70,15 @@ class SharingActivity: AppCompatActivity() {
         database = Firebase.database.reference
         todayDate = (mCalendar.get(Calendar.YEAR)).toString() + "/" + (mCalendar.get(Calendar.MONTH) + 1).toString() +
                 "/" + (mCalendar.get(Calendar.DAY_OF_MONTH)).toString()
-//        pushKey= intent.getStringExtra("pushKey")!!
-        recordKey="abcdefg"
+        recordKey= intent.getStringExtra("pushKey")!!
         myPost.recordId=recordKey
 
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 EE요일")
+        val formattedDate = current.format(formatter)
+
+        //2021년 11월 26일 금요일
+        sharing_date_textview.text=formattedDate
 
         sharingtagAdapter= SharingTagAdapter(this, selectList)
         sharing_recyclerview.adapter=sharingtagAdapter
@@ -92,7 +101,7 @@ class SharingActivity: AppCompatActivity() {
             pushRef.child("postId").setValue("${pushRef.key}")
             pushRef.child("sharedNum").setValue(0)
             pushRef.child("recordId").setValue(recordKey)
-            pushRef.child("title").setValue(sharing_course_textview.text)
+            pushRef.child("title").setValue(sharing_course_textview.text.toString())
             pushRef.child("riderId").setValue(uid)
             pushRef.child("photoUrl").setValue("imsiurl")
             pushRef.child("content").setValue(sharing_post_textview.text.toString())
@@ -155,6 +164,7 @@ public class SelectHashtag : Activity() {
         setContentView(R.layout.activity_hashtag)
 
         setHashtag()
+
 
         hashtag_check_button.setOnClickListener{
             var myintent=Intent()

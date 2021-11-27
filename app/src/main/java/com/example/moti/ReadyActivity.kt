@@ -125,42 +125,45 @@ class ReadyActivity: AppCompatActivity() {
 //        readyRecyclerView.adapter = readyAdapter
 
         // 인텐트 값 가져오기
-//        val intent: Intent = getIntent()
-//        var departureIntent = intent.getParcelableExtra<PoiItem>("departure")
-//        var destinationIntent = intent.getParcelableExtra<PoiItem>("destination")
-//        var layoverIntent = intent.getParcelableExtra<PoiItem>("layover")
-//
-//
-//
-//        if (departureIntent != null && destinationIntent != null) {
-//
-//            departure = departureIntent
-//            destination = destinationIntent
-//            layover = layoverIntent!!
-//            departFulladdress = getCompleteAddressString(this, departure.frontLat.toDouble(), departure.frontLon.toDouble())
-//            arriveFulladdress = getCompleteAddressString(this, destination.frontLat.toDouble(), destination.frontLon.toDouble())
-//
-//            departaddress = departFulladdress.split(" ")[2]
-//            arriveaddress = arriveFulladdress.split(" ")[2]
-//
-//            placeNameList.add(departure.name)
-//            placeNameList.add(destination.name)
-//            placeNameList.add(layover.name)
-//
-//
-//
-//
+        val intent: Intent = getIntent()
+        var departureIntent = intent.getParcelableExtra<PoiItem>("departure")
+        var destinationIntent = intent.getParcelableExtra<PoiItem>("destination")
+        var layoverIntent = intent.getParcelableExtra<PoiItem>("layover")
+        var sharedPlaces = intent.getParcelableExtra<Post>("sharing")
+
+
+
+        if (departureIntent != null && destinationIntent != null) {
+
+            departure = departureIntent
+            destination = destinationIntent
+            layover = layoverIntent!!
+            departFulladdress = getCompleteAddressString(this, departure.frontLat.toDouble(), departure.frontLon.toDouble())
+            arriveFulladdress = getCompleteAddressString(this, destination.frontLat.toDouble(), destination.frontLon.toDouble())
+
+            departaddress = departFulladdress.split(" ")[2]
+            arriveaddress = arriveFulladdress.split(" ")[2]
+
+            placeNameList.add(departure.name)
+            placeNameList.add(destination.name)
+            placeNameList.add(layover.name)
+
+
+            readyAdapter = ReadyAdapter(applicationContext, placeNameList)
+            readyRecyclerView.adapter = readyAdapter
+
+
 //            readyAdapter = ReadyAdapter(this, placeNameList)
 //            readyRecyclerView.adapter = readyAdapter
-//
-//        }
 
-        placeNameList.add("롯데월드 잠실점")
-        placeNameList.add("성수역[2호선]")
-        placeNameList.add("잠실역[2호선]")
+        }
 
-        readyAdapter = ReadyAdapter(applicationContext, placeNameList)
-        readyRecyclerView.adapter = readyAdapter
+//        placeNameList.add("롯데월드 잠실점")
+//        placeNameList.add("성수역[2호선]")
+//        placeNameList.add("잠실역[2호선]")
+
+//        readyAdapter = ReadyAdapter(applicationContext, placeNameList)
+//        readyRecyclerView.adapter = readyAdapter
 
         ready_start_btn.setOnClickListener {
             val intent = Intent(this, ReadyTicketActivity::class.java).apply {
@@ -169,6 +172,8 @@ class ReadyActivity: AppCompatActivity() {
                 putExtra("layover", layover)
                 putExtra("departaddress", departaddress)
                 putExtra("arriveaddress", arriveaddress)
+                putExtra("sharing", sharedPlaces)
+
             }.run {startActivity(this) }
         }
 
