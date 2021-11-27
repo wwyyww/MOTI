@@ -6,6 +6,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -578,6 +579,9 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
                         var childlist = it.child("Coordinates").children
                         polyline= TMapPolyLine()
+                        polyline.lineWidth = 2F
+                        polyline.lineColor = Color.parseColor("#0BE795")
+                        polyline.outLineColor = Color.parseColor("#0BE795")
 
                         for (coord in childlist){
                             val latitude = coord.child("lat").value.toString().toDouble()
