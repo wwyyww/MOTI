@@ -444,6 +444,8 @@ class SelectPlace : AppCompatActivity() {
                 putExtra("departure", departure)
                 putExtra("destination", destination)
                 putExtra("layover", layover1)
+                putExtra("sharing", sharedPlaces)
+
             }.run {startActivity(this) }
 
         }

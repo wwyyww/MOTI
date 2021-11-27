@@ -129,6 +129,7 @@ class ReadyActivity: AppCompatActivity() {
         var departureIntent = intent.getParcelableExtra<PoiItem>("departure")
         var destinationIntent = intent.getParcelableExtra<PoiItem>("destination")
         var layoverIntent = intent.getParcelableExtra<PoiItem>("layover")
+        var sharedPlaces = intent.getParcelableExtra<Post>("sharing")
 
 
 
@@ -171,6 +172,8 @@ class ReadyActivity: AppCompatActivity() {
                 putExtra("layover", layover)
                 putExtra("departaddress", departaddress)
                 putExtra("arriveaddress", arriveaddress)
+                putExtra("sharing", sharedPlaces)
+
             }.run {startActivity(this) }
         }
 

@@ -59,6 +59,7 @@ class AfterRidingActivity: AppCompatActivity() {
         var departureIntent = intent.getParcelableExtra<PoiItem>("departure")
         var destinationIntent = intent.getParcelableExtra<PoiItem>("destination")
         var layoverIntent = intent.getParcelableExtra<PoiItem>("layover")
+        var sharedPlaces = intent.getParcelableExtra<Post>("sharing")
 
         if (departureIntent != null && destinationIntent != null) {
 
@@ -71,6 +72,8 @@ class AfterRidingActivity: AppCompatActivity() {
 
         after_time_txtview.text=intent.getStringExtra("time")
         after_date_txtview.text = formattedDate
+        after_maintxt_txtView.text = "${sharedPlaces!!.title}코스"
+        after_course_textview.text = sharedPlaces!!.title
 
         ridingKey= intent.getStringExtra("pushKey")!!
         Log.d("intent", "check pushKey ${ridingKey}")

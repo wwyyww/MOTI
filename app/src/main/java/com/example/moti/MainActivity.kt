@@ -31,11 +31,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.skt.Tmap.TMapGpsManager.NETWORK_PROVIDER
 import com.skt.Tmap.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.activity_main_date_textview
-import kotlinx.android.synthetic.main.activity_main.main_tmaplayout2
 import kotlinx.android.synthetic.main.activity_main2.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -44,8 +45,6 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallback {
-
-
 
     var tmapview: TMapView? = null
     lateinit var search_place: Button
@@ -60,6 +59,14 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     lateinit var toggle: ActionBarDrawerToggle
     lateinit var main_total : Button
+
+    //db용
+    private var auth : FirebaseAuth? = null
+    private lateinit var database: DatabaseReference
+    private val CurrentUser = FirebaseAuth.getInstance().currentUser
+    val uid = CurrentUser?.uid
+
+    var nowSelectedPlace = Post()
 
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -95,20 +102,41 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
         }
 
-        search_place = findViewById(R.id.search_place)
-        main_total = findViewById(R.id.main_total)
-
-        main_total.setOnClickListener {
-            var intent = Intent(this, CommunityMain::class.java)
-            startActivity(intent)
-        }
-
         val actionBar:ActionBar?
         actionBar=supportActionBar
         actionBar!!.title = ""
 
         actionBar.setBackgroundDrawable(ColorDrawable(Color.parseColor("#00000000")))
         //actionBar.setStackedBackgroundDrawable(ColorDrawable(Color.parseColor("#00000000")))
+
+
+        //db 세팅
+        auth = FirebaseAuth.getInstance()
+        database = Firebase.database.reference
+
+        search_place = findViewById(R.id.search_place)
+        main_total = findViewById(R.id.main_total)
+
+        database.child("community/-MpY8fK8ByYzUzpLkoEL").get().addOnSuccessListener {
+            activity_main_course_textview.text=it.child("title").value.toString()
+            var date=it.child("date").value.toString()
+            var recordId=it.child("recordId").value.toString()
+            nowSelectedPlace.date=date
+            nowSelectedPlace.recordId=recordId
+            nowSelectedPlace.riderId=uid
+            database.child("user/$uid/course/date/$date/$recordId/Record").get().addOnSuccessListener { itChild ->
+                activity_main_depart_textview.text=itChild.child("startName").value.toString()
+                activity_main_arrival_textview.text=itChild.child("dstName").value.toString()
+
+            }
+        }
+
+        main_total.setOnClickListener {
+            var intent = Intent(this, CommunityMain::class.java)
+            startActivity(intent)
+        }
+
+
 
         val current = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LocalDateTime.now()
@@ -163,6 +191,14 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             var comMainIntent = Intent(this, CommunityMain::class.java)
             startActivity(comMainIntent)
         }
+
+        activity_main_course_layout.setOnClickListener {
+            val intent = Intent(this, SelectPlace::class.java)
+            intent.putExtra("sharing", nowSelectedPlace)
+            startActivity(intent)
+        }
+
+
 
 //        activity_main_reload_textview.setOnClickListener {
 //            address = getCompleteAddressString(this, currentPointGeo.latitude, currentPointGeo.longitude)
