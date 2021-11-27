@@ -125,37 +125,6 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     }
 
-    /*
-    class SubHashtagAdapter (val context: Context, val hashtagList: ArrayList<String>) : BaseAdapter() {
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-
-            val view: View = LayoutInflater.from(context).inflate(R.layout.item_hashtag2, null)
-
-
-            val hastTag = view.findViewById<TextView>(R.id.textV_hashtag2)
-
-
-           // val hastTagList = hastTag[position]
-
-            hastTag.text = hashtagList[position]
-
-            return view
-        }
-
-        override fun getItem(position: Int): Any {
-            return hashtagList[position]
-        }
-
-        override fun getItemId(position: Int): Long {
-            return 0
-        }
-
-        override fun getCount(): Int {
-            return hashtagList.size
-        }
-    }
-*/
-
 
     class SubHashtagAdapter(private val context: Context, private val arrayList: ArrayList<String>) : RecyclerView.Adapter<SubHashtagAdapter.ViewHolder>() {
 
@@ -256,7 +225,6 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
 
     }
-
 
 
 
@@ -420,7 +388,7 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 if (this::nowSelectedPlace.isInitialized )
                 {
                     val intent = Intent(this, SelectPlace::class.java)
-                    intent.putExtra("reriding", nowSelectedPlace)
+                    intent.putExtra("sharing", nowSelectedPlace)
                     startActivity(intent)
                 }
         }
