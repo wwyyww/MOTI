@@ -34,6 +34,9 @@ import com.google.android.material.navigation.NavigationView
 import com.skt.Tmap.TMapGpsManager.NETWORK_PROVIDER
 import com.skt.Tmap.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.activity_main_date_textview
+import kotlinx.android.synthetic.main.activity_main.main_tmaplayout2
+import kotlinx.android.synthetic.main.activity_main2.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -160,7 +163,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             TODO("VERSION.SDK_INT < O")
         }
 //        val formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy")
-        val formatter = DateTimeFormatter.ofPattern("MM.dd EE a hh:mm ")
+        val formatter = DateTimeFormatter.ofPattern("MM.dd EE요일 a hh:mm ")
         val formattedDate = current.format(formatter)
 
         activity_main_date_textview.text=formattedDate
@@ -201,6 +204,12 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             intent.putExtra("long", this.long)
             intent.putExtra("address", this.address.toString())
             startActivity(intent)
+        }
+
+        main_total.setOnClickListener {
+            var comMainIntent = Intent(this, CommunityMain::class.java)
+            startActivity(comMainIntent)
+
         }
 
 //        activity_main_reload_textview.setOnClickListener {
@@ -248,6 +257,10 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         this.lat=location.latitude.toString()
         this.long=location.longitude.toString()
         this.address = getCompleteAddressString(this, location.latitude, location.longitude)
+        main_fulladdr_textview.text=getCompleteAddressString(this, location.latitude, location.longitude)
+        main_city_textview.text=address.split(" ")[2]
+        main_fulladdr_textview.bringToFront()
+        main_city_textview.bringToFront()
         Log.d("latitude", "Raw: ${lat.toString()}")
         Log.d("longitude", "Raw: ${long.toString()}")
 
@@ -305,6 +318,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         val dialog = builder.create()
         dialog.show()
     }
+
 
 
 

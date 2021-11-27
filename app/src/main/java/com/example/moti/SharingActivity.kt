@@ -39,7 +39,6 @@ class SharingActivity: AppCompatActivity() {
     val uid = CurrentUser?.uid
     private lateinit var pushRef:DatabaseReference
 
-    var pushKey=String()
     var selectList=ArrayList<String>()
     var postHashList= hashMapOf<String, String>()
 
@@ -66,8 +65,7 @@ class SharingActivity: AppCompatActivity() {
         database = Firebase.database.reference
         todayDate = (mCalendar.get(Calendar.YEAR)).toString() + "/" + (mCalendar.get(Calendar.MONTH) + 1).toString() +
                 "/" + (mCalendar.get(Calendar.DAY_OF_MONTH)).toString()
-//        pushKey= intent.getStringExtra("pushKey")!!
-        recordKey="abcdefg"
+        recordKey= intent.getStringExtra("pushKey")!!
         myPost.recordId=recordKey
 
 

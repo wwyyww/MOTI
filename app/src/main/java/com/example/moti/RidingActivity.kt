@@ -287,9 +287,13 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 courseCount+=1
             }
 
+
             val intent = Intent(this, AfterRidingActivity::class.java).apply {
                 putExtra("time", riding_timer_textview.text)
                 putExtra("pushKey", pushRef.key)
+                putExtra("departure", departure)
+                putExtra("destination", destination)
+                putExtra("layover", layover)
 
             }.run {startActivity(this) }
 
