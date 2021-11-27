@@ -25,10 +25,11 @@
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_community_main.xml" value="0.264" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_courselist.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_directions.xml" value="0.1125" />
-        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_mobility.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_music_recycler_item.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_mypage.xml" value="0.1" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_onboard.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_ready.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_ready_ticket.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/activity_riding.xml" value="0.25364583333333335" />
@@ -44,9 +45,10 @@
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/imsi.xml" value="0.1" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_hashtag.xml" value="0.4" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_placeinfo.xml" value="0.264" />
-        <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_poi_info.xml" value="0.536" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_poi_info.xml" value="0.264" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/item_poi_info2.xml" value="0.264" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/login.xml" value="0.25364583333333335" />
+        <entry key="..\:/Project/MOTI/app/src/main/res/layout/onboard_item.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/searchplace_category_item.xml" value="0.25364583333333335" />
         <entry key="..\:/Project/MOTI/app/src/main/res/layout/test.xml" value="0.25364583333333335" />
       </map>
