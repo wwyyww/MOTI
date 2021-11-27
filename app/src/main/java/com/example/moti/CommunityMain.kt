@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -32,6 +33,7 @@ class CommunityMain: AppCompatActivity() {
     var tmapview: TMapView? = null
     lateinit var searchPlace: PoiItem
 
+    lateinit var floatingActionButton : FloatingActionButton
 
     lateinit var hashtagRecyclerView: RecyclerView
     lateinit var hashTagAdapter : HashTagAdapter
@@ -44,7 +46,8 @@ class CommunityMain: AppCompatActivity() {
     lateinit var communityAdapter: CommunityAdapter
     var communityData = ArrayList<Post>()
 
-    //lateinit var selectedData :  MutableList<Post>
+    lateinit var nowSelectedPlace : Post
+
 
     class HashTagAdapter(val context: Context, private val HashTagData: ArrayList<String>): RecyclerView.Adapter<HashTagAdapter.ViewHolder>() {
 
@@ -106,7 +109,7 @@ class CommunityMain: AppCompatActivity() {
         inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
             val title = view!!.findViewById<TextView>(R.id.txtV_title)
             //val imgV_image = itemView.findViewById<ImageView>(R.id.imgV_image)
-            val list_hashtag = itemView.findViewById<RecyclerView>(R.id.list_hashtag)
+            val list_hashtag = itemView.findViewById<ListView>(R.id.list_hashtag)
             val constL_startbtn = itemView.findViewById<ConstraintLayout>(R.id.constL_startbtn)
 
 
@@ -138,12 +141,13 @@ class CommunityMain: AppCompatActivity() {
                 notifyDataSetChanged()
             }
 
-            //holder.item
+
         }
 
         interface OnItemClickListener {
             fun onClick(v: View, position: Int)
         }
+
         // (3) 외부에서 클릭 시 이벤트 설정
         fun setItemClickListener(onItemClickListener: OnItemClickListener) {
             this.itemClickListener = onItemClickListener
@@ -168,8 +172,9 @@ class CommunityMain: AppCompatActivity() {
 
         communityRecyclerView = findViewById(R.id.community_main_contents)
         edit_searchBar = findViewById(R.id.edit_searchBar)
+        floatingActionButton = findViewById(R.id.floatingActionButton)
 
-
+        floatingActionButton.visibility = View.GONE
 
 
         // 검색 결과 가져오기
@@ -292,8 +297,15 @@ class CommunityMain: AppCompatActivity() {
             resultLauncher.launch(intent)
         }
 
-
-
+        // start 버튼 누르면
+        floatingActionButton.setOnClickListener {
+                if (this::nowSelectedPlace.isInitialized )
+                {
+                    val intent = Intent(this, SelectPlace::class.java)
+                    intent.putExtra("reriding", nowSelectedPlace)
+                    startActivity(intent)
+                }
+        }
 
 
 
@@ -301,6 +313,12 @@ class CommunityMain: AppCompatActivity() {
 
     fun searchPlaces(selectedHashTag: String) {
         Log.i("ttt", "dddd")
+
+
+
+
+
+
 
         var mutableData: MutableList<Post> = mutableListOf<Post>()
         val postRef = Firebase.database.getReference("community")
@@ -333,7 +351,16 @@ class CommunityMain: AppCompatActivity() {
                                 Log.d("CommunityAdapter", "클릭됨")
                                 colindex = position
                                 showPlaces(communityData[position])
+
+                                //selectedPlace = listOf(communityData[position])
                                 //searchCategory(category_group_code, radius, sort)
+
+
+
+                                //  start 버튼 누르면
+                                floatingActionButton.visibility = View.VISIBLE
+
+
                             }
                         })
                         //Log.d("firebaseM0",mutableData.toString())
@@ -368,6 +395,9 @@ class CommunityMain: AppCompatActivity() {
 
                 if (snapshot.exists()) {
                     Log.i("showPlacesSN", snapshot.value.toString())
+
+                    nowSelectedPlace = selectedPlace
+
                  }
 
                 }

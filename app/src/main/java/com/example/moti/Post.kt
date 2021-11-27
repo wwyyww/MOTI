@@ -1,7 +1,10 @@
 package com.example.moti
 
+import android.os.Parcelable
 import com.google.firebase.database.Exclude
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 class Post(
     var postId: String ?= "", // 글 고유 id
     var riderId: String ?= "", // 작성자 id
@@ -13,7 +16,7 @@ class Post(
     var date: String ?= "", // 작성일
     var title: String ?= "", // 글 제목
     var photoUrl: String ?= "", // 사진 저장 경로
-)
+): Parcelable
 {
     @Exclude
     fun toMap() : Map<String, Any?>{

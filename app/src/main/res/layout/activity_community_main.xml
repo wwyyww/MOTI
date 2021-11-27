@@ -31,16 +31,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="412dp"
+                android:clickable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.913"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_play_circle_filled_24" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <EditText
             android:id="@+id/edit_searchBar"
             android:layout_width="326dp"
             android:layout_height="40dp"
             android:layout_marginTop="40dp"
-            android:background="@color/browser_actions_bg_grey"
+            android:background="@color/white"
             android:ems="10"
+            android:hint="검색어를 입력하세요"
             android:inputType="textPersonName"
+            android:textSize="14sp"
+            android:paddingLeft="38dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.494"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,16 +65,29 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="30dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="3dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="2dp"
             app:layout_constraintBottom_toBottomOf="@+id/edit_searchBar"
             app:layout_constraintEnd_toEndOf="@+id/edit_searchBar"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.97"
             app:layout_constraintStart_toStartOf="@+id/edit_searchBar"
             app:layout_constraintTop_toTopOf="@+id/edit_searchBar"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@android:drawable/ic_menu_search" />
+            app:layout_constraintVertical_bias="0.52"
+            app:srcCompat="@drawable/image50" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="539dp"
+            app:layout_constraintBottom_toBottomOf="@+id/main_tmaplayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.02"
+            app:layout_constraintStart_toStartOf="@+id/edit_searchBar"
+            app:layout_constraintTop_toTopOf="@+id/main_tmaplayout2"
+            app:srcCompat="@drawable/list3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
