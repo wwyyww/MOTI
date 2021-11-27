@@ -32,7 +32,7 @@ class Mypage : AppCompatActivity() {
 
     lateinit var communityRecyclerView: RecyclerView
     lateinit var communityAdapter: CommunityMain.CommunityAdapter
-    //var communityData = ArrayList<Post>()
+    var tickets = ArrayList<Post>()
 
 
 
@@ -68,8 +68,8 @@ class Mypage : AppCompatActivity() {
                     hashtagListM = snapshot.child("Ru1rsTPKgKctYN2mY1OfEW89hnn1").child("taste").value as MutableMap<String, String>
 
                     hashtagList = ArrayList<String>(hashtagListM.values)
-                    hashtagList.add(0,"많이 찾는")
-                    hashtagList.add(1,"핫스팟")
+                    hashtagList.add(0,"전체")
+                   // hashtagList.add(1,"핫스팟")
 
 
                     // 어댑터에 데이터 저장
@@ -80,6 +80,9 @@ class Mypage : AppCompatActivity() {
                         //hashTagAdapter.hashtagList = hashtagList
                         hashtagRecyclerView.adapter = hashTagAdapter
                         hashTagAdapter.notifyDataSetChanged()
+
+                        searchPlaces("전체")  // 디폴트 값
+
                         // 해시태그 클릭 리스너
                         hashTagAdapter.setItemClickListener(object : CommunityMain.HashTagAdapter.OnItemClickListener{
                             override fun onClick(v: View, position: Int) {
@@ -111,7 +114,7 @@ class Mypage : AppCompatActivity() {
         postRef.child("Ru1rsTPKgKctYN2mY1OfEW89hnn1/course/date").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 
-                var tickets = ArrayList<Post>()
+                tickets = ArrayList<Post>()
 
                 if (snapshot.exists()) {
                     for (years in snapshot.children) { // 년도 year
@@ -125,26 +128,65 @@ class Mypage : AppCompatActivity() {
                                         Log.d("saveTicket", ridings.value.toString())
                                         Log.d("saveTicket++",  ridings.child("Hashtag").value.toString())
 
-
-                                        var ticket: Post = Post(
+                                        if (selectedHashTag == "전체")  // '전체' 택한 경우
+                                        {
+                                            Log.d("전체", ridings.value.toString())
+                                            var ticket: Post = Post(
                                                 recordId = ridings.key,
                                                 riderId = CurrentUser?.uid.toString(),
-                                               // hashtag = ridings.child("Record/Hashtag").value as MutableMap<String, String>,
+                                                // hashtag = ridings.child("Record/Hashtag").value as MutableMap<String, String>,
                                                 date = ridings.child("Record/date").toString(),
                                                 title = ridings.child("Record/title").value.toString(),
                                                 photoUrl = "imsi"
                                             )
 
-                                        if (ridings!!.child("Hashtag").value != null){
-                                            ticket.hashtag = ridings!!.child("Hashtag").value as MutableMap<String, String>
-                                        }
+                                            if (ridings!!.child("Hashtag").value != null){
+                                                ticket.hashtag = ridings!!.child("Hashtag").value as MutableMap<String, String>
+                                            }
 
                                             tickets.add(ticket)
 
-                                            Log.d("checkOK", ridings.value.toString())
+                                        }
+
+                                       else { // 이 외의 해시태그 선택한 경우
+
+                                           if (ridings!!.child("Hashtag").value != null) {  // 해시태그가 null 이 아닌 것 중에서
+
+                                               var tempHashtag : MutableMap<String, String>
+                                               tempHashtag = ridings!!.child("Hashtag").value as MutableMap<String, String>
+
+                                               if (tempHashtag.containsValue(selectedHashTag) == true ){ //선택한 해시태그만 담음
+                                                   var ticket: Post = Post(
+                                                       recordId = ridings.key,
+                                                       riderId = CurrentUser?.uid.toString(),
+                                                       hashtag = ridings.child("Hashtag").value as MutableMap<String, String>,
+                                                       date = ridings.child("Record/date").toString(),
+                                                       title = ridings.child("Record/title").value.toString(),
+                                                       photoUrl = "imsi"
+                                                   )
+                                                   tickets.add(ticket)
+                                               }
+                                           }
+                                        }
+
+//                                        var ticket: Post = Post(
+//                                                recordId = ridings.key,
+//                                                riderId = CurrentUser?.uid.toString(),
+//                                               // hashtag = ridings.child("Record/Hashtag").value as MutableMap<String, String>,
+//                                                date = ridings.child("Record/date").toString(),
+//                                                title = ridings.child("Record/title").value.toString(),
+//                                                photoUrl = "imsi"
+//                                            )
+//
+//                                        if (ridings!!.child("Hashtag").value != null){
+//                                            ticket.hashtag = ridings!!.child("Hashtag").value as MutableMap<String, String>
+//                                        }
+//
+//                                            tickets.add(ticket)
+//
+//                                            Log.d("checkOK", ridings.value.toString())
 
                                     }
-
                                     communityAdapter = CommunityMain.CommunityAdapter(applicationContext, tickets)
                                     communityRecyclerView.adapter = communityAdapter
 
@@ -159,7 +201,7 @@ class Mypage : AppCompatActivity() {
                                         }
                                     })
 
-                                }
+                                }// 일일 riding for문 끝
                             }
 
                         }
