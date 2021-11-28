@@ -74,8 +74,8 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             window.navigationBarColor = Color.TRANSPARENT
 //            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
 //            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            //window.statusBarColor = Color.parseColor("#0CE795")
-            //window.navigationBarColor = Color.TRANSPARENT
+//            window.statusBarColor = Color.parseColor("#00000000")
+//            window.navigationBarColor = Color.parseColor("#00000000")
         }
     }
 
