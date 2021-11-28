@@ -143,7 +143,6 @@ class AfterRidingActivity: AppCompatActivity() {
         ridingKey= intent.getStringExtra("pushKey")!!
         Log.d("intent", "check pushKey ${ridingKey}")
 
-
         database.child("users/${uid}/nickname").get().addOnSuccessListener {
             Log.d("readyTicket", "nickname check ${it.value}")
             after_name_txtview.text = it.value.toString()
@@ -181,7 +180,7 @@ class TodayPhotoAdapter(private val context: Context, private var photoList:Arra
 
     override fun onBindViewHolder(holder: TodayPhotoAdapter.CustomViewHolder, position: Int) {
 
-        Log.d("firebaseMAdapter2",photoList.get(position))
+        Log.d("afterRiding photo",photoList.get(position))
         Firebase.storage.reference.child("Community/${photoList[position]}").downloadUrl.addOnCompleteListener {
             if (it.isSuccessful) {
                 Glide.with(context).load(it.result).into(holder.photo_item_imgview)
@@ -194,12 +193,22 @@ class TodayPhotoAdapter(private val context: Context, private var photoList:Arra
 
 
     override fun getItemCount(): Int {
-        return 3
+        return photoList.size
     }
 
     class CustomViewHolder(itemView : View): RecyclerView.ViewHolder(itemView) {
         var photo_item_imgview = itemView.findViewById<ImageView>(R.id.photo_item_imgview)
 
+//        fun bind(community : Post, context: Context, position: Int) {
+//
+//
+//
+//            Firebase.storage.reference.child("community/${photoList[position]}").downloadUrl.addOnCompleteListener {
+//                if (it.isSuccessful) {
+//                    Glide.with(context).load(it.result).into(photo_item_imgview)
+//                }
+//            }
+//        }
 
 
     }

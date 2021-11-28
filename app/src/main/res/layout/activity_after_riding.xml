@@ -49,7 +49,7 @@
             android:id="@+id/after_course_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="54dp"
             android:text="밤하늘을 수 놓은 별"
             android:textColor="@color/white"
             android:textSize="16sp"
@@ -62,7 +62,7 @@
             android:id="@+id/constraintLayout2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="34dp"
+            android:layout_marginTop="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/after_course_textview">
@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:text="Name"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -206,7 +206,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="130dp"
         android:background="@color/white"
         android:layout_marginStart="35dp"
         android:layout_marginTop="10dp"
