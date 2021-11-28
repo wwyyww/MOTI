@@ -95,7 +95,7 @@
             android:layout_height="55dp"
             app:layout_constraintTop_toBottomOf="@+id/category_menu"
             app:layout_constraintBottom_toTopOf="@+id/searchplace_main_contents"
-            android:background="#F1EEEE"
+            android:background="#F0F1F3"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -157,8 +157,8 @@
                     android:id="@+id/distancebar"
                     android:max="20000"
                     android:min="0"
-                    android:progressDrawable="@drawable/custom_seekbar_progress"
-                    android:thumb="@drawable/custom_seekbar"
+
+                    android:indeterminateTint="@color/green"
                     android:progress="10000"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -168,6 +168,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="10000m"
+
                     android:layout_gravity="center_horizontal"/>
             </LinearLayout>
 

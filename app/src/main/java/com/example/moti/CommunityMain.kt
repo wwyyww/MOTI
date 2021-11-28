@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Address
@@ -18,6 +19,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -49,6 +51,44 @@ import kotlin.collections.ArrayList
 
 
 class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallback {
+
+    private fun transparentStatusAndNavigation() {
+        //make full transparent statusBar
+        if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
+            setWindowFlag(
+                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, true
+            )
+        }
+        if (Build.VERSION.SDK_INT >= 19) {
+            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
+        }
+        if (Build.VERSION.SDK_INT >= 21) {
+            setWindowFlag(
+                (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION), false
+            )
+            window.statusBarColor = Color.TRANSPARENT
+            window.navigationBarColor = Color.TRANSPARENT
+//            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+//            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            //window.statusBarColor = Color.parseColor("#0CE795")
+            //window.navigationBarColor = Color.TRANSPARENT
+        }
+    }
+
+    private fun setWindowFlag(bits: Int, on: Boolean) {
+        val win = window
+        val winParams = win.attributes
+        if (on) {
+            winParams.flags = winParams.flags or bits
+        } else {
+            winParams.flags = winParams.flags and bits.inv()
+        }
+        win.attributes = winParams
+    }
 
     lateinit var edit_searchBar: EditText
     var tmapview: TMapView? = null
@@ -236,6 +276,8 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_community_main)
+        transparentStatusAndNavigation()
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         hashtagRecyclerView = findViewById(R.id.mytickets)
 

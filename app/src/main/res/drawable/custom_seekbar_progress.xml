@@ -13,17 +13,17 @@
     </item>
 
     <!-- 시크바 진행 프로그레스 -->
-    <item android:id="@android:id/progress" >
-        <clip>
-            <shape android:shape="rectangle">
-                <!-- 시크바 선 굵기 : 길이 10dp -->
-                <stroke android:width="10dp" android:color="#6799FF" />
-                <!-- 시크바 내용 색상 -->
-                <solid android:color="#6799FF"/>
-                <!-- 테두리 둥글게 설정 -->
-                <corners android:radius="10dp"/>
-            </shape>
-        </clip>
-    </item>
+<!--    <item android:id="@android:id/progress" >-->
+<!--        <clip>-->
+<!--            <shape android:shape="rectangle">-->
+<!--                &lt;!&ndash; 시크바 선 굵기 : 길이 10dp &ndash;&gt;-->
+<!--                <stroke android:width="10dp" android:color="#6799FF" />-->
+<!--                &lt;!&ndash; 시크바 내용 색상 &ndash;&gt;-->
+<!--                <solid android:color="#6799FF"/>-->
+<!--                &lt;!&ndash; 테두리 둥글게 설정 &ndash;&gt;-->
+<!--                <corners android:radius="10dp"/>-->
+<!--            </shape>-->
+<!--        </clip>-->
+<!--    </item>-->
 
 </layer-list>

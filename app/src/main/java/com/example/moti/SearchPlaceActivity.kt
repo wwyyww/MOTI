@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -127,6 +128,8 @@ class SearchPlaceActivity : AppCompatActivity() {
         distancetxt = findViewById(R.id.distancetxt)
         distancebtn = findViewById(R.id.distance_btn)
         seekBar = findViewById(R.id.distancebar)
+        seekBar.getProgressDrawable().setColorFilter( resources.getColor(R.color.green), PorterDuff.Mode.SRC_IN );
+        seekBar.getThumb().setColorFilter( resources.getColor(R.color.green), PorterDuff.Mode.SRC_IN );
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 distancetxt.text = p1.toString()+"m"
