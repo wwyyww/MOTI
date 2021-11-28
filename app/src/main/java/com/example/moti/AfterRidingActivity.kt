@@ -18,10 +18,12 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.activity_after_riding.*
 import kotlinx.android.synthetic.main.activity_ready_ticket.*
 import kotlinx.android.synthetic.main.activity_riding.*
@@ -84,6 +86,9 @@ class AfterRidingActivity: AppCompatActivity() {
     private val CurrentUser = FirebaseAuth.getInstance().currentUser
     val uid = CurrentUser?.uid
 
+    //recycler view
+    lateinit var todayphotoadapter: TodayPhotoAdapter
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,6 +126,15 @@ class AfterRidingActivity: AppCompatActivity() {
         }
 
 
+        var photo_url_list = ArrayList<String>()
+
+        photo_url_list.add("scene.jpg")
+        photo_url_list.add("scene2.jpg")
+        photo_url_list.add("IMG_6597.PNG")
+        todayphotoadapter= TodayPhotoAdapter(this, photo_url_list)
+        after_photo_recyclerview.adapter=todayphotoadapter
+
+
         after_time_txtview.text=intent.getStringExtra("time")
         after_date_txtview.text = formattedDate
         after_maintxt_txtView.text = "${sharedPlaces!!.title}"
@@ -135,12 +149,8 @@ class AfterRidingActivity: AppCompatActivity() {
             after_name_txtview.text = it.value.toString()
         }
 
-
         after_departure_textview.text = departure.fullAddressRoad.split(" ")[2]
         after_arrival_textview.text = destination.fullAddressRoad.split(" ")[2]
-
-
-
 
         after_next_button.setOnClickListener {
             val intent = Intent(this, SharingActivity::class.java).apply {
@@ -151,54 +161,48 @@ class AfterRidingActivity: AppCompatActivity() {
             }.run {startActivity(this) }
         }
 
-
     }
 
 }
 
-//
-//class TodayPhotoAdapter(private val context: Context, private var hashtagList:ArrayList<String>)
-//    : RecyclerView.Adapter<TodayPhotoAdapter.CustomViewHolder>(){
-//
-//    override fun onCreateViewHolder(
-//        parent: ViewGroup,
-//        viewType: Int,
-//    ): TodayPhotoAdapter.CustomViewHolder {
-//        Log.d("firebaseMAdapter1",hashtagList.toString())
-//        val view = LayoutInflater.from(parent.context).inflate(R.layout.photo_item,parent,false)
-//        return CustomViewHolder(view)
-//
-//    }
-//
-//    override fun onBindViewHolder(holder: TodayPhotoAdapter.CustomViewHolder, position: Int) {
-//
-//        Log.d("firebaseMAdapter2",hashtagList.get(position))
-//
-//
-//
-//
-//    }
-//
-//
-//    override fun getItemCount(): Int {
-//        return hashtagList.size
-//    }
-//
-//    class CustomViewHolder(itemView : View): RecyclerView.ViewHolder(itemView) {
-//        var photo_item_imgview = itemView.findViewById<ImageView>(R.id.photo_item_imgview)
-//
-//        fun bind(onboard : Onboard, context: Context, position: Int) {
-//            photo_item_imgview.setImageResource(onboard.image1)
-//
-//        }
-//
-//
-//
-//    }
-//
-//    fun updateHashtagList(tagList : ArrayList<String>){
-//        hashtagList=tagList
-//        this.notifyDataSetChanged()
-//    }
-//
-//}
+
+class TodayPhotoAdapter(private val context: Context, private var photoList:ArrayList<String>)
+    : RecyclerView.Adapter<TodayPhotoAdapter.CustomViewHolder>(){
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): TodayPhotoAdapter.CustomViewHolder {
+        Log.d("AfterRidingAdapter",photoList.toString())
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.photo_item,parent,false)
+        return CustomViewHolder(view)
+
+    }
+
+    override fun onBindViewHolder(holder: TodayPhotoAdapter.CustomViewHolder, position: Int) {
+
+        Log.d("firebaseMAdapter2",photoList.get(position))
+        Firebase.storage.reference.child("Community/${photoList[position]}").downloadUrl.addOnCompleteListener {
+            if (it.isSuccessful) {
+                Glide.with(context).load(it.result).into(holder.photo_item_imgview)
+            }
+        }
+
+
+
+    }
+
+
+    override fun getItemCount(): Int {
+        return 3
+    }
+
+    class CustomViewHolder(itemView : View): RecyclerView.ViewHolder(itemView) {
+        var photo_item_imgview = itemView.findViewById<ImageView>(R.id.photo_item_imgview)
+
+
+
+    }
+
+
+}
