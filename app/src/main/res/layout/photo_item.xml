@@ -5,6 +5,7 @@
     android:layout_margin="10dp">
 
     <ImageView
+        android:id="@+id/photo_item_imgview"
         android:layout_margin="10dp"
         android:layout_width="150dp"
         android:layout_height="150dp"

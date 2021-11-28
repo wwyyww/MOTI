@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.*
 import android.widget.Button
@@ -111,6 +112,8 @@ class SharingActivity: AppCompatActivity() {
         todayDate = (mCalendar.get(Calendar.YEAR)).toString() + "/" + (mCalendar.get(Calendar.MONTH) + 1).toString() +
                 "/" + (mCalendar.get(Calendar.DAY_OF_MONTH)).toString()
         recordKey= intent.getStringExtra("pushKey")!!
+        var sharedPlaces = intent.getParcelableExtra<Post>("sharing")
+
         myPost.recordId=recordKey
 
         val current = LocalDateTime.now()
@@ -120,6 +123,7 @@ class SharingActivity: AppCompatActivity() {
         //2021년 11월 26일 금요일
         sharing_date_textview.text=formattedDate
 
+        sharing_course_textview.text=sharedPlaces!!.title as Editable
         sharingtagAdapter= SharingTagAdapter(this, selectList)
         sharing_recyclerview.adapter=sharingtagAdapter
 

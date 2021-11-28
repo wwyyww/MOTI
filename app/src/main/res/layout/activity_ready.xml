@@ -150,8 +150,8 @@
 
     <ImageView
         android:id="@+id/ready_music_img1"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="145dp"
+        android:layout_height="145dp"
         android:src="@drawable/celebrity"
         android:background="@drawable/rectangle_7"
         android:layout_marginTop="10dp"
@@ -162,8 +162,8 @@
 
     <ImageView
         android:id="@+id/ready_music_img2"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="145dp"
+        android:layout_height="145dp"
         android:src="@drawable/butter"
         android:background="@drawable/rectangle_7"
         android:layout_marginTop="10dp"
@@ -174,8 +174,8 @@
 
     <ImageView
         android:id="@+id/ready_music_img3"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="145dp"
+        android:layout_height="145dp"
         android:src="@drawable/ariana"
         android:background="@drawable/rectangle_7"
         android:layout_marginTop="10dp"
