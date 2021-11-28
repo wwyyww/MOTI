@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -36,6 +37,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.skt.Tmap.TMapGpsManager
 import com.skt.Tmap.TMapPoint
 import com.skt.Tmap.TMapPolyLine
@@ -168,7 +170,7 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
         inner class ViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
             val title = view!!.findViewById<TextView>(R.id.txtV_title)
-            //val imgV_image = itemView.findViewById<ImageView>(R.id.imgV_image)
+            val imgV_image = itemView.findViewById<ImageView>(R.id.imgV_image)
             val list_hashtag = itemView.findViewById<RecyclerView>(R.id.list_hashtag)
             //val constL_startbtn = itemView.findViewById<ConstraintLayout>(R.id.constL_startbtn)
 
@@ -181,20 +183,16 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 var adapter = SubHashtagAdapter(context, al as ArrayList<String>)
                 list_hashtag.adapter = adapter
 
-/*
-                val layoutManager = LinearLayoutManager(context)
-                layoutManager.orientation = LinearLayoutManager.VERTICAL
-                list_hashtag.adapter.setLayoutManager(layoutManager)
 
- */
 
-                /*
-                var arrayOfListView = ArrayList<String>()
-                arrayOfListView = community.hashtag as ArrayList<String>
-                val adapter = ArrayAdapter(this@CommunityAdapter, android.R.layout.activity_list_item, arrayOfListView)
-                list_hashtag.adapter = adapter
+                Log.d("checkcheck", community.photoUrl.toString())
 
-                 */
+
+                Firebase.storage.reference.child("community/${community.photoUrl}").downloadUrl.addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Glide.with(context).load(it.result).into(imgV_image)
+                    }
+                }
             }
 
         }
@@ -312,6 +310,10 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                     //hashTagAdapter.hashtagList = hashtagList
                     hashtagRecyclerView.adapter = hashTagAdapter
                     hashTagAdapter.notifyDataSetChanged()
+
+                    searchPlaces("많이 찾는")  // 디폴트 값
+
+
                     // 해시태그 클릭 리스너
                     hashTagAdapter.setItemClickListener(object : HashTagAdapter.OnItemClickListener{
                         override fun onClick(v: View, position: Int) {
@@ -513,12 +515,16 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                         val getData = userSnapshot.getValue(Post::class.java)
                         getData?.toString()?.let { it1 -> Log.d("firebaseM3", it1) }
 
-                        // 현재 선택된 해시태그만 가져옴
-                        if (getData?.hashtag?.containsValue(selectedHashTag) == true) {
+                        if (selectedHashTag == "많이 찾는") {
                             communityData.add(getData!!)
-                            Log.d("CM", getData.hashtag.toString())
                         }
-
+                        else {
+                            // 현재 선택된 해시태그만 가져옴
+                            if (getData?.hashtag?.containsValue(selectedHashTag) == true) {
+                                communityData.add(getData!!)
+                                Log.d("CM", getData.hashtag.toString())
+                            }
+                        }
                         //mutableData = postList
 
                         communityAdapter = CommunityAdapter(applicationContext, communityData)
