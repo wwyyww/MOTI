@@ -188,7 +188,7 @@ class Login : AppCompatActivity() {
 //                            Toast.makeText(this, "로그인 완료", Toast.LENGTH_SHORT).show()
                         if (auth!!.currentUser != null) {
 //                                Toast.makeText(this, "로그인 찐 완료", Toast.LENGTH_SHORT).show()
-                            var intent = Intent(this, MainActivity::class.java)
+                            var intent = Intent(this, SignUp::class.java)
                             startActivity(intent)
                             finish()
                         }
@@ -299,7 +299,7 @@ class Login : AppCompatActivity() {
 
     private fun updateUI(user: FirebaseUser?) { //update ui code here
         if (user != null) {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, SignUp::class.java)
             startActivity(intent)
             finish()
         }
