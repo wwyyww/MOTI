@@ -5,9 +5,12 @@ import android.Manifest.permission.CAMERA
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
@@ -145,7 +148,7 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         Log.d("riding", "departure 확인 : ${departure}")
 
 
-
+        riding_course_textview.text=sharedPlaces!!.title
 
         setPayload()
         val callGuidePedestrian = tmapApi.guidePedestrian(APPKEY, request.startX,request.startY,
@@ -489,7 +492,32 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     }
 
 
+    //주소 좌표를 한글 주소로 반환
+    private fun getCompleteAddressString(context: Context?, LATITUDE: Double, LONGITUDE: Double): String {
+        var strAdd = ""
+        val geocoder = Geocoder(context, Locale.getDefault())
+        try {
+            val addresses: List<Address>? = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1)
+            if (addresses != null) {
+                val returnedAddress: Address = addresses[0]
+                val strReturnedAddress = StringBuilder("")
+                for (i in 0..returnedAddress.getMaxAddressLineIndex()) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n")
+                }
+                strAdd = strReturnedAddress.toString()
+                Log.w("MyCurrentloctionaddress", strReturnedAddress.toString())
+            } else {
+                Log.w("MyCurrentloctionaddress", "No Address returned!")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.w("MyCurrentloctionaddress", "Canont get Address!")
+        }
 
+        // "대한민국 " 글자 지워버림
+        strAdd = strAdd.substring(5)
+        return strAdd
+    }
 
     private fun startTimer(){
         timerTask=kotlin.concurrent.timer(period = 10){
@@ -576,15 +604,15 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     }
 
 
-
-
-
     override fun onLocationChange(location: Location) {
 //        tmapview!!.setLocationPoint(location.longitude, location.latitude)
 //        tmapview!!.setCenterPoint(location.longitude, location.latitude)
 
         tmapview!!.setLocationPoint(departure.frontLon.toDouble(), departure.frontLat.toDouble())
         tmapview!!.setCenterPoint(departure.frontLon.toDouble(), departure.frontLat.toDouble())
+
+        var fulladdr=getCompleteAddressString(this, location.latitude, location.longitude)
+        riding_gps_textview.text=fulladdr.split(" ")[2]
 
         var lat=location.latitude
         var long=location.longitude
