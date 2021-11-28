@@ -78,6 +78,8 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     private val CurrentUser = FirebaseAuth.getInstance().currentUser
     val uid = CurrentUser?.uid
 
+    var nowGPS = 0
+
     companion object {
         const val PERMISSION_REQUEST_CODE = 1001
     }
@@ -408,8 +410,13 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
 
     override fun onLocationChange(location: Location) {
-        tmapview!!.setLocationPoint(location.longitude, location.latitude)
-        tmapview!!.setCenterPoint(location.longitude, location.latitude)
+
+        if(nowGPS==0){
+            tmapview!!.setLocationPoint(location.longitude, location.latitude)
+            tmapview!!.setCenterPoint(location.longitude, location.latitude)
+            nowGPS+=1
+        }
+
         this.address = getCompleteAddressString(this, location.latitude, location.longitude)
         textV_nowPlace.text=getCompleteAddressString(this, location.latitude, location.longitude)
 
@@ -579,7 +586,6 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
                     nowSelectedPlace = selectedPlace
                     Log.i("showPlacesSN", "nowselected key : ${nowSelectedPlace.recordId}")
-
                     postRef.child("$uid/course/date/${nowSelectedPlace.date}/${nowSelectedPlace.recordId}").get().addOnSuccessListener {
 
                         var childlist = it.child("Coordinates").children
@@ -595,6 +601,12 @@ class CommunityMain: AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                             polyline.addLinePoint(point)
                             tmapview!!.addTMapPolyLine("line", polyline)
                         }
+
+                        var startLong = it.child("Record/startLon").value.toString().toDouble()
+                        var startLat = it.child("Record/startLat").value.toString().toDouble()
+
+                        tmapview!!.setCenterPoint(startLong, startLat)
+                        tmapview!!.setLocationPoint(startLong, startLat)
 
                     }
 
