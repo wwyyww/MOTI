@@ -1,16 +1,23 @@
 package com.example.moti
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
@@ -139,6 +146,7 @@ class AfterRidingActivity: AppCompatActivity() {
             val intent = Intent(this, SharingActivity::class.java).apply {
 //                putExtra("time", riding_timer_textview.text)
                 putExtra("pushKey", ridingKey)
+                putExtra("sharing", sharedPlaces)
 
             }.run {startActivity(this) }
         }
@@ -147,3 +155,50 @@ class AfterRidingActivity: AppCompatActivity() {
     }
 
 }
+
+//
+//class TodayPhotoAdapter(private val context: Context, private var hashtagList:ArrayList<String>)
+//    : RecyclerView.Adapter<TodayPhotoAdapter.CustomViewHolder>(){
+//
+//    override fun onCreateViewHolder(
+//        parent: ViewGroup,
+//        viewType: Int,
+//    ): TodayPhotoAdapter.CustomViewHolder {
+//        Log.d("firebaseMAdapter1",hashtagList.toString())
+//        val view = LayoutInflater.from(parent.context).inflate(R.layout.photo_item,parent,false)
+//        return CustomViewHolder(view)
+//
+//    }
+//
+//    override fun onBindViewHolder(holder: TodayPhotoAdapter.CustomViewHolder, position: Int) {
+//
+//        Log.d("firebaseMAdapter2",hashtagList.get(position))
+//
+//
+//
+//
+//    }
+//
+//
+//    override fun getItemCount(): Int {
+//        return hashtagList.size
+//    }
+//
+//    class CustomViewHolder(itemView : View): RecyclerView.ViewHolder(itemView) {
+//        var photo_item_imgview = itemView.findViewById<ImageView>(R.id.photo_item_imgview)
+//
+//        fun bind(onboard : Onboard, context: Context, position: Int) {
+//            photo_item_imgview.setImageResource(onboard.image1)
+//
+//        }
+//
+//
+//
+//    }
+//
+//    fun updateHashtagList(tagList : ArrayList<String>){
+//        hashtagList=tagList
+//        this.notifyDataSetChanged()
+//    }
+//
+//}
