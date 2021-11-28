@@ -123,7 +123,8 @@ class SharingActivity: AppCompatActivity() {
         //2021년 11월 26일 금요일
         sharing_date_textview.text=formattedDate
 
-        sharing_course_textview.text=sharedPlaces!!.title as Editable
+//        sharing_course_textview.text=sharedPlaces!!.title as Editable
+        sharing_course_textview.setText("${sharedPlaces!!.title}")
         sharingtagAdapter= SharingTagAdapter(this, selectList)
         sharing_recyclerview.adapter=sharingtagAdapter
 

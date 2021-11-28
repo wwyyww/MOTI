@@ -273,6 +273,26 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
         Handler().postDelayed({
 
+            for (res in responseFeatureList){
+
+                var resCoordList=res.geometry.coordinates
+                for (rescoord in resCoordList){
+                    var restext=rescoord.toString()
+
+                    if(restext.indexOf("[")==0){
+//                        Log.d("tmap", "rescoord 확인 : ${rescoord}")
+                        var array=rescoord as ArrayList<Any>
+                        var coord=Coordinate()
+                        coord.lat= array[1].toString()
+                        coord.lng= array[0].toString()
+                        ResponsecoordList.add(coord)
+
+                    }
+                }
+            }
+
+            //코스 경로 지도에 세팅
+            getCoordinates()
 
 
 
@@ -360,26 +380,26 @@ class RidingActivity:AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 //            Log.d("tmap","잘 넘어왔는지 확인. layover : ${layover}")
 //            Log.d("tmap", "list[i] : ${responseFeatureList[i]}")
 
-            for (res in responseFeatureList){
-
-                var resCoordList=res.geometry.coordinates
-                for (rescoord in resCoordList){
-                    var restext=rescoord.toString()
-
-                    if(restext.indexOf("[")==0){
-//                        Log.d("tmap", "rescoord 확인 : ${rescoord}")
-                        var array=rescoord as ArrayList<Any>
-                        var coord=Coordinate()
-                        coord.lat= array[1].toString()
-                        coord.lng= array[0].toString()
-                        ResponsecoordList.add(coord)
-
-                    }
-                }
-            }
-
-            //코스 경로 지도에 세팅
-            getCoordinates()
+//            for (res in responseFeatureList){
+//
+//                var resCoordList=res.geometry.coordinates
+//                for (rescoord in resCoordList){
+//                    var restext=rescoord.toString()
+//
+//                    if(restext.indexOf("[")==0){
+////                        Log.d("tmap", "rescoord 확인 : ${rescoord}")
+//                        var array=rescoord as ArrayList<Any>
+//                        var coord=Coordinate()
+//                        coord.lat= array[1].toString()
+//                        coord.lng= array[0].toString()
+//                        ResponsecoordList.add(coord)
+//
+//                    }
+//                }
+//            }
+//
+//            //코스 경로 지도에 세팅
+//            getCoordinates()
 
             //길 안내 세팅
 //            Log.d("tmap", "list[i+1] : ${responseFeatureList[i+1].geometry}")
