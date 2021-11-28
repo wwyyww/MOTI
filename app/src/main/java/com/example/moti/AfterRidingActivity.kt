@@ -116,7 +116,7 @@ class AfterRidingActivity: AppCompatActivity() {
 
         after_time_txtview.text=intent.getStringExtra("time")
         after_date_txtview.text = formattedDate
-        after_maintxt_txtView.text = "${sharedPlaces!!.title}코스"
+        after_maintxt_txtView.text = "${sharedPlaces!!.title}"
         after_course_textview.text = sharedPlaces!!.title
 
         ridingKey= intent.getStringExtra("pushKey")!!

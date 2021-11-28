@@ -220,6 +220,7 @@ public class SelectHashtag : Activity() {
                 hashtagList[i+4].select=!hashtagList[i+4].select
                 if (hashtagList[i+4].select){
                     test.background=ContextCompat.getDrawable(this, R.drawable.hashtag_select)
+                    test.setTextColor(Color.parseColor("#0BE795"))
                     selectList.add("${test.text}")
                     mapHashList["m${i}"]="${test.text}"
 
