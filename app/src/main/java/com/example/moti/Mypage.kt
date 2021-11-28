@@ -1,11 +1,16 @@
 package com.example.moti
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.TextView
+import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -17,6 +22,43 @@ import com.google.firebase.ktx.Firebase
 
 class Mypage : AppCompatActivity() {
 
+    private fun transparentStatusAndNavigation() {
+        //make full transparent statusBar
+        if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
+            setWindowFlag(
+                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, true
+            )
+        }
+        if (Build.VERSION.SDK_INT >= 19) {
+            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
+        }
+        if (Build.VERSION.SDK_INT >= 21) {
+            setWindowFlag(
+                (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION), false
+            )
+            //window.statusBarColor = Color.TRANSPARENT
+            window.navigationBarColor = Color.TRANSPARENT
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            window.statusBarColor = Color.TRANSPARENT
+            window.navigationBarColor = Color.TRANSPARENT
+        }
+    }
+
+    private fun setWindowFlag(bits: Int, on: Boolean) {
+        val win = window
+        val winParams = win.attributes
+        if (on) {
+            winParams.flags = winParams.flags or bits
+        } else {
+            winParams.flags = winParams.flags and bits.inv()
+        }
+        win.attributes = winParams
+    }
 
     lateinit var textV_name : TextView
     lateinit var myHashtags : RecyclerView
@@ -37,11 +79,16 @@ class Mypage : AppCompatActivity() {
 
 
         override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_mypage)
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_mypage)
+            transparentStatusAndNavigation()
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-
-        textV_name = findViewById(R.id.textV_name)
+            //action bar 숨기기
+            var actionBar: ActionBar?
+            actionBar=supportActionBar
+            actionBar?.hide()
+            textV_name = findViewById(R.id.textV_name)
 
 
             //어댑터 연결

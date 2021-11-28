@@ -48,7 +48,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myHashtags"
         android:layout_width="391dp"
-        android:layout_height="56dp"
+        android:layout_height="45dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="148dp"
         android:orientation="horizontal"
@@ -63,7 +63,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myTickets"
         android:layout_width="413dp"
-        android:layout_height="502dp"
+        android:layout_height="562dp"
         android:clickable="true"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -73,7 +73,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toBottomOf="@+id/myHashtags"
         app:layout_constraintVertical_bias="1.0">
 
