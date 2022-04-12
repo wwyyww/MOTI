@@ -7,7 +7,7 @@
 
 ## 개발 스택 
 - Client : Kotlin (Android Studio)
-- 
+- DB : Firebase
 
 ## 외부 라이브러리 
 - Retrofit
